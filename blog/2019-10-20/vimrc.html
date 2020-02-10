@@ -1,0 +1,117 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>vimrc - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >vimrc</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=vimrc >vimrc</h1> <p>For manjaro:</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S gedit xsel
+</pre></div> </table> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre></div><td class=code ><div class=codehilite ><pre><span></span>if has(&quot;syntax&quot;)
+  syntax on
+endif
+
+set     nocompatible    &quot;去掉有关vi一致性模式，避免以前版本的bug和局限
+set     ai!             &quot;设置自动缩进
+set     tabstop=4       &quot;设置TAB为4格
+set     shiftwidth=4    &quot;设定 &lt;&lt; 和 &gt;&gt; 命令移动时的宽度为 4
+set     softtabstop=4   &quot;使得按退格键时可以一次删掉 4 个空格
+set     autoindent      &quot;设置自动缩进
+set     smarttab        &quot;在行和段开始处使用制表符
+set     nu              &quot;显示行号
+set     mouse=a         &quot;激活鼠标
+set     cursorline      &quot;突出显示该行
+set     nobackup        &quot;覆盖文件时不备份
+color   desert          &quot;设置颜色主题为DESERT
+set     ruler           &quot;设置显示行号
+set     autoread        &quot;设置自动读取文件
+set     autowrite       &quot;在切换buffer时自动保存当前文件
+set     autochdir       &quot;自动切换当前目录为当前文件所在的目录
+set     incsearch       &quot;输入搜索内容时就显示搜索结果
+set     hlsearch        &quot;搜索时高亮显示被找到的文本
+set     showcmd         &quot;命令模式下，在底部显示，当前键入的指令
+set     showmatch       &quot;插入括号时，短暂地跳转到匹配的对应括号
+set     matchtime=1     &quot;短暂跳转到匹配括号的时间
+set     hidden          &quot;允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
+set     smartindent     &quot;开启新行时使用智能自动缩进
+set     guioptions-=T   &quot;隐藏工具栏
+set     guioptions-=m   &quot;隐藏菜单栏
+set     noerrorbells    &quot;不让vim发出讨厌的滴滴声 
+set     t_Co=256        &quot;启用256色
+set     undofile        &quot;保留撤销历史
+set     history=1000    &quot;Vim 需要记住多少次历史操作
+filetype plugin on      &quot;根据文件类型加载对应的插件
+filetype indent on      &quot;开启文件类型检查，并且载入与该类型对应的缩进规则
+
+map &lt;F5&gt; &lt;Esc&gt;:w&lt;CR&gt; :!gedit % &lt;CR&gt;
+imap &lt;F5&gt; &lt;Esc&gt;:w&lt;CR&gt; :!gedit % &lt;CR&gt;   &quot;按F5使用gedit打开
+
+map &lt;F6&gt; &lt;Esc&gt;:w&lt;CR&gt; :!code % &lt;CR&gt;
+imap &lt;F6&gt; &lt;Esc&gt;:w&lt;CR&gt; :!code % &lt;CR&gt;   &quot;按F6使用code打开(需安装VScode)
+
+map &lt;F9&gt; &lt;Esc&gt;:w&lt;CR&gt; :!g++ % -g -Wall -Wextra -o %&lt;  &amp;&amp; ./%&lt; &lt;CR&gt;   
+imap &lt;F9&gt; &lt;Esc&gt;:w&lt;CR&gt; :!g++ % -g -Wall -Wextra -o %&lt;  &amp;&amp; ./%&lt; &lt;CR&gt;   &quot;按F9编译运行
+
+func! YankToClipboard()
+    exec &quot;w&quot;
+    exec &quot;!cat % |xsel --clipboard&quot;
+endfunc
+
+map &lt;F8&gt; :call YankToClipboard() &lt;CR&gt;
+imap &lt;F8&gt; :call YankToClipboard() &lt;CR&gt; &quot;按F8将整个文件的内容拷贝到剪贴版内(需安装xsel)
+
+autocmd BufNewFile *.cpp 0r ~/.vim/template/cppconfig.cpp
+
+if filereadable(&quot;/etc/vim/vimrc.local&quot;)
+  source /etc/vim/vimrc.local
+endif
+</pre></div> </table> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: '076d61938d25fd036d6436c94d8778fa', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=vim"><span class=label >vim</span></a><br/> 创建时间: 2019.10.20<br/> 上次修改: 2019.11.12<br/> 字数统计: 2295 字 / 约 9 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#vimrc">vimrc</a> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2019-10-20/vimrc.md" id=nano-link >vimrc.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

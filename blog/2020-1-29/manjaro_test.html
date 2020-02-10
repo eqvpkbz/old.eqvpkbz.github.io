@@ -1,0 +1,69 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>manjaro系统初探 - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >manjaro系统初探</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=manjaro >manjaro系统初探</h1> <p>其实<code>manjaro</code>各方面都挺香的</p> <p>我觉得可以吊打<code>ubuntu</code></p> <p>好的，接下来记录一下安装的过程</p> <p>首先和<code>ubuntu</code>的刻录软件一样，用的是<a href="https://rufus.ie/">rufus</a></p> <p>刻录好之后安装就行</p> <h3 id=_1 >更换国内源</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -Syy
+sudo pacman-mirrors -i -c China -m rank  #选清华源即可
+sudo pacman -Syyu
+</pre></div> </table> <p>添加<code>Arch</code>的国内源</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S vim
+sudo vim /etc/pacman.conf
+</pre></div> </table> <p>在文件末尾添加</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3</pre></div><td class=code ><div class=codehilite ><pre><span></span>[archlinuxcn]
+SigLevel = Optional TrustedOnly
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+</pre></div> </table> <p>然后</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -Syy &amp;&amp; sudo pacman -S archlinuxcn-keyring
+</pre></div> </table> <h3 id=git >安装git</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S git
+git config --global user.name &quot;Eqvpkbz&quot;
+git config --global user.email &quot;2581505024@qq.com&quot;
+</pre></div> </table> <h3 id=zsh >安装zsh</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S zsh
+sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+</pre></div> </table> <h3 id=_2 >输入法</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S yay fcitx-sogoupinyin fcitx-im fcitx-configtool
+sudo pacman -S fcitx-skin-material yay
+yay -S fcitx-qt4
+</pre></div> </table> <p>设置中文输入法环境变量，编辑~/.xprofile文件，增加下面几行(如果文件不存在，则新建)</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3</pre></div><td class=code ><div class=codehilite ><pre><span></span>export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=&quot;@im=fcitx&quot;
+</pre></div> </table> <p>打开<code>fcitx配置</code>-<code>附加组件</code>, 取消选定<code>经典皮肤</code></p> <h3 id=_3 >常用软件安装</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S screenfetch
+sudo pacman -S deepin-picker deepin-screen-recorder deepin-screenshot deepin-system-monitor
+sudo pacman -S gdb gcc make cmake clang nodejs npm maven
+sudo pacman -S pycharm-professional visual-studio-code-bin
+sudo pacman -S google-chrome unrar unzip p7zip
+sudo pacman -S wps-office pencil gimp netease-cloud-music
+sudo pacman -S aria2 filezilla albert net-tools
+yay -S tree typora lemon-lime
+</pre></div> </table> <h3 id=_4 >安装中文字体</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3
+4
+5
+6</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S wqy-zenhei
+sudo pacman -S wqy-bitmapfont
+sudo pacman -S wqy-microhei
+sudo pacman -S ttf-wps-fonts
+sudo pacman -S adobe-source-han-sans-cn-fonts
+sudo pacman -S adobe-source-han-serif-cn-fonts
+</pre></div> </table> <h3 id=skype >Skype</h3> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S gnome-keyring
+yay -S skype
+</pre></div> </table> <p>然后登录skype的时候，输完密码会提示创建密钥环，此时不输任何密码，直接继续(不加密操作，可以让后面登录不用输密码)</p> <p>值得一提的是<code>KDE Wallet</code>不能取消，不然每次网络密码要重输</p> <h3 id=tim >TIM</h3> <h4 id=tim_1 >安装TIM</h4> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3</pre></div><td class=code ><div class=codehilite ><pre><span></span>sudo pacman -S gnome-settings-daemon
+sudo  cp  /etc/xdg/autostart/org.gnome.SettingsDaemon.XSettings.desktop   ~/.config/autostart
+yay -S deepin-wine-tim 
+</pre></div> </table> <p>然后安装即可</p> <h4 id=ie >修改内置IE浏览器</h4> <p>因为<code>deepin-wine</code>内部似乎还打包了一个<code>ie浏览器</code>，但是什么内容都显示不出来</p> <p>所以我们可以把<code>ie浏览器</code>改成系统的浏览器，比如<code>google-chrome</code></p> <ol> <li>找到<code>iexplore.exe</code>的位置，一般在<code>/home/用户名/.deepinwine/Deepin-TIM/drive_c/Program Files/Internet Explorer/</code>，在此处打开终端 </ol> <p>先备份</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1</pre></div><td class=code ><div class=codehilite ><pre><span></span>mv iexplore.exe iexplore.exe.backup
+</pre></div> </table> <ol> <li>找到自己正在用的浏览器的位置，创建软连接 </ol> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1</pre></div><td class=code ><div class=codehilite ><pre><span></span>ln -s $(which google-chrome-stable) iexplore.exe
+</pre></div> </table> <h3 id=_5 >个性化</h3> <p><code>KDE</code>的<code>konsole</code>可以自定义终端背景</p> <p><code>Ubuntu</code>弱爆了!!!</p> <p><a href="https://github.com/fengT-T/Mikuconsole">终端主题</a></p> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: '133ee5a44892a57ad095b14da5f562dc', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=Linux"><span class=label >Linux</span></a><br/> 创建时间: 2020.01.29<br/> 上次修改: 2020.02.07<br/> 字数统计: 2492 字 / 约 9 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#manjaro">manjaro系统初探</a><ul> <li><a href="#_1">更换国内源</a> <li><a href="#git">安装git</a> <li><a href="#zsh">安装zsh</a> <li><a href="#_2">输入法</a> <li><a href="#_3">常用软件安装</a> <li><a href="#_4">安装中文字体</a> <li><a href="#skype">Skype</a> <li><a href="#tim">TIM</a><ul> <li><a href="#tim_1">安装TIM</a> <li><a href="#ie">修改内置IE浏览器</a> </ul> <li><a href="#_5">个性化</a> </ul> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2020-1-29/manjaro_test.md" id=nano-link >manjaro_test.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

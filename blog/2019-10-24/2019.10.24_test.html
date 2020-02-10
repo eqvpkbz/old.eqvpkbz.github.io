@@ -1,0 +1,214 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>2019-10-24测试总结 - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >2019-10-24测试总结</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=2019-10-24 >2019-10-24测试总结</h1> <h3 id=merge ><tex>$merge$</tex></h3> <p>题目大意</p> <blockquote> <p>有<tex>$n(1 \leqslant n \leqslant 300)$</tex>个只有<tex>$1$</tex>个数字的集合呈环形排列，并集操作<tex>$S \bigcup T$</tex>会产生<tex>$|S| * |T|$</tex>的收益，其中<tex>$|S|$</tex>表示集合<tex>$S$</tex>的元素个数，现在给定这<tex>$n$</tex>个数字，第i个数字为<tex>$a_i$</tex>(<tex>$1 \leqslant a_i \leqslant n$</tex>)，求合并到只剩下最后一个数字的时候能获得的最大的收益之和</p> </blockquote> <p>环形区间<tex>$dp$</tex>水题</p> <p>首先一个区间所合并之后的元素个数是固定的，所以可以<tex>$O(n ^ 3)$</tex>预处理一遍</p> <p>然后就是直接环形区间<tex>$dp$</tex>即可</p> <p>但是注意是环形的所以控制区间的位置要注意细节</p> <p>最后就是我考场上写的<tex>$map$</tex>但是可以直接开<tex>$bool$</tex>数组，活活炸掉<tex>$50$</tex>分</p> <p>然后我也没有查找长度为<tex>$n$</tex>的区间最大值而是直接输出<tex>$f[1][n]$</tex></p> <p>然后我的区间处理也有问题</p> <p>所以就爆<tex>$0$</tex>了</p> <p>更正后的代码:</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;algorithm&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=cp >#define file(SSS) freopen(SSS&quot;.in&quot;,&quot;r&quot;,stdin),freopen(SSS&quot;.out&quot;,&quot;w&quot;,stdout)</span>
+<span class=cp >#define file_close fclose(stdin),fclose(stdout)</span>
+
+<span class=cp >#define MAXN 605</span>
+<span class=kt >int</span> <span class=n >n</span><span class=p >,</span><span class=n >a</span><span class=p >[</span><span class=n >MAXN</span><span class=p >][</span><span class=n >MAXN</span><span class=p >],</span><span class=n >dp</span><span class=p >[</span><span class=n >MAXN</span><span class=p >][</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=kt >int</span> <span class=n >t</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=kt >bool</span> <span class=n >e</span><span class=p >[</span><span class=n >MAXN</span><span class=p >][</span><span class=n >MAXN</span><span class=p >][</span><span class=n >MAXN</span> <span class=o >&gt;&gt;</span> <span class=mi >1</span><span class=p >];</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >file</span><span class=p >(</span><span class=s >&quot;merge&quot;</span><span class=p >);</span>
+
+    <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >n</span><span class=p >);</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >t</span><span class=p >[</span><span class=n >i</span><span class=p >]),</span><span class=n >t</span><span class=p >[</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span><span class=p >]</span> <span class=o >=</span> <span class=n >t</span><span class=p >[</span><span class=n >i</span><span class=p >];</span>
+        <span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span><span class=p >]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >,</span><span class=n >a</span><span class=p >[</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span><span class=p >]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >,</span><span class=n >e</span><span class=p >[</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span><span class=p >][</span><span class=n >t</span><span class=p >[</span><span class=n >i</span><span class=p >]]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span>
+    <span class=p >}</span>
+
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >len</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >len</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span><span class=n >len</span> <span class=o >++</span><span class=p >)</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=mi >2</span> <span class=o >*</span> <span class=n >n</span> <span class=o >-</span> <span class=mi >1</span> <span class=o >-</span> <span class=n >len</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >k</span> <span class=o >=</span> <span class=n >i</span><span class=p >;</span><span class=n >k</span> <span class=o >&lt;=</span> <span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >;</span><span class=n >k</span> <span class=o >++</span><span class=p >)</span>
+        <span class=k >if</span><span class=p >(</span><span class=o >!</span><span class=n >e</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >][</span><span class=n >t</span><span class=p >[</span><span class=n >k</span><span class=p >]])</span> <span class=n >e</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >][</span><span class=n >t</span><span class=p >[</span><span class=n >k</span><span class=p >]]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >,</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >]</span> <span class=o >++</span><span class=p >;</span>
+
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >len</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >len</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span><span class=n >len</span> <span class=o >++</span><span class=p >)</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=mi >2</span> <span class=o >*</span> <span class=n >n</span> <span class=o >-</span> <span class=mi >1</span> <span class=o >-</span> <span class=n >len</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >k</span> <span class=o >=</span> <span class=n >i</span><span class=p >;</span><span class=n >k</span> <span class=o >&lt;</span> <span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >;</span><span class=n >k</span> <span class=o >++</span><span class=p >)</span>
+    <span class=n >dp</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >]</span> <span class=o >=</span> <span class=n >max</span><span class=p >(</span><span class=n >dp</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >],</span>
+    <span class=n >dp</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >k</span><span class=p >]</span> <span class=o >+</span> <span class=n >dp</span><span class=p >[</span><span class=n >k</span> <span class=o >+</span> <span class=mi >1</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >]</span> <span class=o >+</span> <span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >k</span><span class=p >]</span> <span class=o >*</span> <span class=n >a</span><span class=p >[</span><span class=n >k</span> <span class=o >+</span> <span class=mi >1</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >len</span><span class=p >]);</span>
+
+    <span class=kt >int</span> <span class=n >Max</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >dp</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span> <span class=o >-</span> <span class=mi >1</span><span class=p >]</span> <span class=o >&gt;</span> <span class=n >Max</span><span class=p >)</span> <span class=n >Max</span> <span class=o >=</span> <span class=n >dp</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span> <span class=o >+</span> <span class=n >n</span> <span class=o >-</span> <span class=mi >1</span><span class=p >];</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=n >Max</span><span class=p >);</span>
+
+    <span class=n >file_close</span><span class=p >;</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h3 id=climb ><tex>$climb$</tex></h3> <p>题目大意</p> <blockquote> <p>有<tex>$n(n \leqslant 10^5)$</tex>个操作，目标高度<tex>$L$</tex>，第<tex>$i$</tex>个操作可以使高度升高<tex>$a_i$</tex>，并在升高后下降<tex>$b_i$</tex>，每次操作最多使用<tex>$1$</tex>次,同时每次操作之后的高度都不能低于<tex>$\sum\limits_{j = 1}^{i} c_j$</tex>，<tex>$a_i,b_i,c_i$</tex>满足<tex>$0 \leqslant a_i,b_i,c_i \leqslant 10^9$</tex>,任何时候，当高度满足高度<tex>$h &gt;= L$</tex>时，操作结束，求最少操作数</p> </blockquote> <p>贪心思路</p> <p>首先先看当前高度下最大的<tex>$a_i$</tex>是否满足<tex>$a_i \geqslant L - h$</tex>，如果满足就可以直接结束操作</p> <p>否则看当前高度<tex>$h += a_i - b_i$</tex>，且在<tex>$a_i - b_i == a_j - b_j$</tex>时，先做<tex>$a_i$</tex>小的操作，以保证当前高度在下一次能够用最大的<tex>$a_i$</tex>更新</p> <p>贪心的正确性</p> <p>我们主要是考虑在选定了最大的<tex>$a_i - b_i$</tex>之后，是不是会浪费掉一个比较大的<tex>$a_i$</tex></p> <p>然后发现在找贪心的正确性的时候发现了贪心的错误</p> <p>Hack数据</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3
+4
+5
+6
+7</pre></div><td class=code ><div class=codehilite ><pre><span></span>3 10
+5 2
+7 3
+1 1
+1
+1
+1
+</pre></div> </table> <p>显然原来的选择策略变成了错误的</p> <p>然后就发现标程从<code>300</code>被卡成了<strong>290</strong></p> <p>还是放一下考场上的代码：</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;queue&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=cp >#define file(SSS) freopen(SSS&quot;.in&quot;,&quot;r&quot;,stdin),freopen(SSS&quot;.out&quot;,&quot;w&quot;,stdout)</span>
+<span class=cp >#define file_close fclose(stdin),fclose(stdout)</span>
+
+<span class=cp >#define MAXN 100005</span>
+<span class=kt >int</span> <span class=n >n</span><span class=p >,</span><span class=n >l</span><span class=p >;</span>
+<span class=k >struct</span> <span class=n >MED1</span>
+<span class=p >{</span>
+    <span class=kt >int</span> <span class=n >a</span><span class=p >,</span><span class=n >b</span><span class=p >,</span><span class=n >r</span><span class=p >,</span><span class=n >num</span><span class=p >;</span>
+    <span class=kt >bool</span> <span class=k >operator</span> <span class=o >&lt;</span> <span class=p >(</span><span class=k >const</span> <span class=n >MED1</span> <span class=o >&amp;</span><span class=n >c</span><span class=p >)</span> <span class=k >const</span>
+    <span class=p >{</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >r</span> <span class=o >==</span> <span class=n >c</span><span class=p >.</span><span class=n >r</span><span class=p >)</span> <span class=k >return</span> <span class=n >a</span> <span class=o >&gt;</span> <span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >;</span>
+        <span class=k >else</span> <span class=k >return</span> <span class=n >r</span> <span class=o >&lt;</span> <span class=n >c</span><span class=p >.</span><span class=n >r</span><span class=p >;</span>
+    <span class=p >}</span>
+<span class=p >}</span><span class=n >m1</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=k >struct</span> <span class=n >MED2</span>
+<span class=p >{</span>
+    <span class=kt >int</span> <span class=n >a</span><span class=p >,</span><span class=n >num</span><span class=p >;</span>
+    <span class=kt >bool</span> <span class=k >operator</span> <span class=o >&lt;</span> <span class=p >(</span><span class=k >const</span> <span class=n >MED2</span> <span class=o >&amp;</span><span class=n >c</span><span class=p >)</span> <span class=k >const</span> <span class=p >{</span><span class=k >return</span> <span class=n >a</span> <span class=o >&lt;</span> <span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >;}</span>
+<span class=p >}</span><span class=n >m2</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=kt >bool</span> <span class=n >vis</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=kt >int</span> <span class=n >sum</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=n >priority_queue</span><span class=o >&lt;</span><span class=n >MED1</span><span class=o >&gt;</span> <span class=n >p</span><span class=p >;</span>
+<span class=n >priority_queue</span><span class=o >&lt;</span><span class=n >MED2</span><span class=o >&gt;</span> <span class=n >q</span><span class=p >;</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >file</span><span class=p >(</span><span class=s >&quot;climb&quot;</span><span class=p >);</span>
+    <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >n</span><span class=p >,</span><span class=o >&amp;</span><span class=n >l</span><span class=p >);</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >a</span><span class=p >,</span><span class=o >&amp;</span><span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >b</span><span class=p >);</span>
+        <span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >r</span> <span class=o >=</span> <span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >a</span> <span class=o >-</span> <span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >b</span><span class=p >,</span><span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >num</span> <span class=o >=</span> <span class=n >i</span><span class=p >;</span>
+        <span class=n >m2</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >a</span> <span class=o >=</span> <span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >a</span><span class=p >,</span><span class=n >m2</span><span class=p >[</span><span class=n >i</span><span class=p >].</span><span class=n >num</span> <span class=o >=</span> <span class=n >i</span><span class=p >;</span>
+        <span class=n >p</span><span class=p >.</span><span class=n >push</span><span class=p >(</span><span class=n >m1</span><span class=p >[</span><span class=n >i</span><span class=p >]),</span><span class=n >q</span><span class=p >.</span><span class=n >push</span><span class=p >(</span><span class=n >m2</span><span class=p >[</span><span class=n >i</span><span class=p >]);</span>
+    <span class=p >}</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=kt >int</span> <span class=n >x</span><span class=p >;</span><span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >x</span><span class=p >);</span>
+        <span class=n >sum</span><span class=p >[</span><span class=n >i</span><span class=p >]</span> <span class=o >=</span> <span class=n >sum</span><span class=p >[</span><span class=n >i</span> <span class=o >-</span> <span class=mi >1</span><span class=p >]</span> <span class=o >+</span> <span class=n >x</span><span class=p >;</span>
+    <span class=p >}</span>
+    <span class=kt >int</span> <span class=n >h</span> <span class=o >=</span> <span class=mi >0</span><span class=p >,</span><span class=n >cnt</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+    <span class=kt >bool</span> <span class=n >flag</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+    <span class=k >while</span><span class=p >(</span><span class=n >h</span> <span class=o >&lt;</span> <span class=n >l</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=n >MED2</span> <span class=n >temp</span> <span class=o >=</span> <span class=n >q</span><span class=p >.</span><span class=n >top</span><span class=p >();</span>
+        <span class=k >while</span><span class=p >(</span><span class=n >vis</span><span class=p >[</span><span class=n >temp</span><span class=p >.</span><span class=n >num</span><span class=p >]</span> <span class=o >&amp;&amp;</span> <span class=o >!</span><span class=n >q</span><span class=p >.</span><span class=n >empty</span><span class=p >())</span> <span class=n >q</span><span class=p >.</span><span class=n >pop</span><span class=p >(),</span><span class=n >temp</span> <span class=o >=</span> <span class=n >q</span><span class=p >.</span><span class=n >top</span><span class=p >();</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >q</span><span class=p >.</span><span class=n >empty</span><span class=p >()){</span><span class=n >flag</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=k >break</span><span class=p >;}</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >h</span> <span class=o >+</span> <span class=n >temp</span><span class=p >.</span><span class=n >a</span> <span class=o >&gt;=</span> <span class=n >l</span><span class=p >){</span><span class=n >cnt</span> <span class=o >++</span><span class=p >;</span><span class=k >break</span><span class=p >;}</span>
+        <span class=n >MED1</span> <span class=n >TEMP</span> <span class=o >=</span> <span class=n >p</span><span class=p >.</span><span class=n >top</span><span class=p >();</span>
+        <span class=k >while</span><span class=p >(</span><span class=n >vis</span><span class=p >[</span><span class=n >TEMP</span><span class=p >.</span><span class=n >num</span><span class=p >])</span> <span class=n >p</span><span class=p >.</span><span class=n >pop</span><span class=p >(),</span><span class=n >TEMP</span> <span class=o >=</span> <span class=n >p</span><span class=p >.</span><span class=n >top</span><span class=p >();</span>
+        <span class=n >vis</span><span class=p >[</span><span class=n >TEMP</span><span class=p >.</span><span class=n >num</span><span class=p >]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span>
+        <span class=n >h</span> <span class=o >+=</span> <span class=n >TEMP</span><span class=p >.</span><span class=n >r</span><span class=p >;</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >h</span> <span class=o >&lt;=</span> <span class=n >sum</span><span class=p >[</span><span class=o >++</span><span class=n >cnt</span><span class=p >]){</span><span class=n >flag</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=k >break</span><span class=p >;}</span>
+    <span class=p >}</span>
+    <span class=k >if</span><span class=p >(</span><span class=o >!</span><span class=n >flag</span><span class=p >)</span> <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=n >cnt</span><span class=p >);</span>
+    <span class=k >else</span> <span class=n >puts</span><span class=p >(</span><span class=s >&quot;-1&quot;</span><span class=p >);</span>
+    <span class=n >file_close</span><span class=p >;</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h3 id=coin ><tex>$coin$</tex></h3> <p>高级博弈论，不会</p> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: 'b09c02a6f8e9b5fab66981befb69eb57', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=TEST"><span class=label >TEST</span></a><br/> 创建时间: 2019.10.24<br/> 上次修改: 2019.10.24<br/> 字数统计: 4106 字 / 约 16 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#2019-10-24">2019-10-24测试总结</a><ul> <li><a href="#merge">$merge$</a> <li><a href="#climb">$climb$</a> <li><a href="#coin">$coin$</a> </ul> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2019-10-24/2019.10.24_test.md" id=nano-link >2019.10.24_test.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

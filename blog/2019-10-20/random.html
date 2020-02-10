@@ -1,0 +1,74 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>随机数初探 - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >随机数初探</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=_1 >随机数初探</h1> <p>在各种各样的考试中，我们经常会碰见各种各样的情况，诸如:</p> <ul> <li><code>wori</code>，我明明打的是正解啊! <li><code>wori</code>，我过了大样例啊! </ul> <p>等等情况，这种情况您可能需要对拍这种方式来解决问题，但是也有人说:</p> <ul> <li><code>wori</code>，我明明拍过了<code>1e5</code>组数据啊!!! </ul> <p>那八成就是随机数或者暴力打挂了</p> <p>本文主要讲述随机数的科学使用</p> <h2 id=random >Random</h2> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;ctime&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;cstdlib&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=k >typedef</span> <span class=kt >long</span> <span class=kt >long</span> <span class=n >ll</span><span class=p >;</span>
+<span class=kr >inline</span> <span class=n >ll</span> <span class=nf >Rand</span><span class=p >(</span><span class=n >ll</span> <span class=n >lef</span><span class=p >,</span><span class=n >ll</span> <span class=n >rig</span><span class=p >){</span><span class=k >return</span> <span class=n >rand</span><span class=p >()</span> <span class=o >%</span> <span class=p >(</span><span class=n >rig</span> <span class=o >-</span> <span class=n >lef</span> <span class=o >+</span> <span class=mi >1</span><span class=p >)</span> <span class=o >+</span> <span class=n >lef</span><span class=p >;}</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >srand</span><span class=p >(</span><span class=n >time</span><span class=p >(</span><span class=mi >0</span><span class=p >));</span>
+    <span class=n >ll</span> <span class=n >lef</span> <span class=o >=</span> <span class=mi >21474836488</span><span class=p >,</span> <span class=n >rig</span> <span class=o >=</span> <span class=mi >21474836490</span><span class=p >;</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%lld&quot;</span><span class=p >,</span><span class=n >Rand</span><span class=p >(</span><span class=n >lef</span><span class=p >,</span><span class=n >rig</span><span class=p >));</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h2 id=default_random_engine >default_random_engine</h2> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span> <span class=cpf >&lt;random&gt;</span><span class=cp ></span>
+<span class=cp >#include</span> <span class=cpf >&lt;ctime&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=k >typedef</span> <span class=kt >long</span> <span class=kt >long</span> <span class=n >ll</span><span class=p >;</span>
+
+<span class=n >ll</span> <span class=nf >Rand</span><span class=p >(</span><span class=k >const</span> <span class=n >ll</span> <span class=n >lef</span><span class=p >,</span> <span class=k >const</span> <span class=n >ll</span> <span class=n >rig</span><span class=p >)</span>
+<span class=p >{</span>
+    <span class=k >static</span> <span class=n >std</span><span class=o >::</span><span class=n >default_random_engine</span> <span class=n >e</span><span class=p >(</span><span class=n >time</span><span class=p >(</span><span class=nb >NULL</span><span class=p >));</span>
+    <span class=k >static</span> <span class=n >std</span><span class=o >::</span><span class=n >uniform_int_distribution</span><span class=o >&lt;</span><span class=n >ll</span><span class=o >&gt;</span> <span class=n >u</span><span class=p >(</span><span class=n >lef</span><span class=p >,</span> <span class=n >rig</span><span class=p >);</span>
+    <span class=k >return</span> <span class=n >u</span><span class=p >(</span><span class=n >e</span><span class=p >);</span>
+<span class=p >}</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >ll</span> <span class=n >lef</span> <span class=o >=</span> <span class=mi >21474836488</span><span class=p >,</span><span class=n >rig</span> <span class=o >=</span> <span class=mi >21474836490</span><span class=p >;</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%lld &quot;</span><span class=p >,</span><span class=n >Rand</span><span class=p >(</span><span class=n >lef</span><span class=p >,</span> <span class=n >rig</span><span class=p >));</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h2 id=mt19937 >mt19937</h2> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;random&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;ctime&gt;</span><span class=cp ></span>
+<span class=n >std</span><span class=o >::</span><span class=n >mt19937</span> <span class=n >rnd</span><span class=p >(</span><span class=n >time</span><span class=p >(</span><span class=mi >0</span><span class=p >));</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%lld</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span><span class=n >rnd</span><span class=p >());</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: '3bd9088c4f207552308b3315ec42bba7', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=random"><span class=label >random</span></a><br/> 创建时间: 2019.10.20<br/> 上次修改: 2019.10.20<br/> 字数统计: 1174 字 / 约 4 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#_1">随机数初探</a><ul> <li><a href="#random">Random</a> <li><a href="#default_random_engine">default_random_engine</a> <li><a href="#mt19937">mt19937</a> </ul> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2019-10-20/random.md" id=nano-link >random.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

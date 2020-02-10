@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /templates/
+Disallow: /search.html
+Sitemap: https://eqvpkbz.github.io/sitemap.txt

@@ -1,0 +1,375 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>数据生成器,对拍,多数据自动生成器 - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >数据生成器,对拍,多数据自动生成器</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=_1 >对拍,多组数据自动生成器</h1> <h3 id=_2 >使用平台</h3> <p>Linux,gcc,g++编译器</p> <h3 id=_3 >注意事项</h3> <p>记得标程，数据生成器和暴力别出问题了</p> <p>另外数据生成器中的随机数改天会去看看的<del>目前来看还是在鸽着的</del></p> <h3 id=_4 >对拍</h3> <h4 id=_5 >注释版</h4> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;cstdlib&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;sys/time.h&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=cp >#define DEFAULT_NUM 100</span>
+<span class=cp >#define sec 1000000</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ maker.cpp -o maker&quot;</span><span class=p >);</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ std.cpp -o std&quot;</span><span class=p >);</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ brute.cpp -o brute&quot;</span><span class=p >);</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >DEFAULT_NUM</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=k >struct</span> <span class=n >timeval</span> <span class=n >STD_START</span><span class=p >,</span><span class=n >STD_END</span><span class=p >,</span><span class=n >MAKER_START</span><span class=p >,</span><span class=n >MAKER_END</span><span class=p >,</span><span class=n >BRUTE_START</span><span class=p >,</span><span class=n >BRUTE_END</span><span class=p >;</span> <span class=c1 >//计算时间所需要的结构体</span>
+
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;./maker &gt; in&quot;</span><span class=p >);</span>
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=kt >long</span> <span class=kt >double</span> <span class=n >MAKER_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Make data %d : used %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >MAKER_TIME</span><span class=p >);</span> <span class=c1 >//造数据的程序计时</span>
+
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;./std &lt; in &gt; sout&quot;</span><span class=p >);</span>
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=kt >long</span> <span class=kt >double</span> <span class=n >STD_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >STD_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >STD_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >STD_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >STD_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Run std in data %d : use %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >STD_TIME</span><span class=p >);</span> <span class=c1 >//标程计时</span>
+
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >BRUTE_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;./brute &lt; in &gt; bout&quot;</span><span class=p >);</span>
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >BRUTE_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=kt >long</span> <span class=kt >double</span> <span class=n >BRUTE_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >BRUTE_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >BRUTE_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >BRUTE_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >BRUTE_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Run brute in data %d : use %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >BRUTE_TIME</span><span class=p >);</span><span class=c1 >//暴力计时</span>
+
+        <span class=k >if</span><span class=p >(</span><span class=n >system</span><span class=p >(</span><span class=s >&quot;diff -Bb sout bout&quot;</span><span class=p >))</span>
+        <span class=p >{</span>
+            <span class=n >puts</span><span class=p >(</span><span class=s >&quot;GG&quot;</span><span class=p >);</span>
+            <span class=n >exit</span><span class=p >(</span><span class=mi >0</span><span class=p >);</span>
+        <span class=p >}</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Passed %d ......</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span><span class=n >i</span><span class=p >);</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >MAKER_TIME</span> <span class=o >+</span> <span class=n >STD_TIME</span> <span class=o >+</span> <span class=n >BRUTE_TIME</span> <span class=o >&lt;</span> <span class=n >sec</span><span class=p >)</span> <span class=n >system</span><span class=p >(</span><span class=s >&quot;sleep 1&quot;</span><span class=p >);</span> <span class=c1 >//如果时间超过1s就可以直接进行下一组数据</span>
+    <span class=p >}</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h4 id=_6 >复制版</h4> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;cstdlib&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;sys/time.h&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=cp >#define DEFAULT_NUM 100</span>
+<span class=cp >#define sec 1000000</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ maker.cpp -o maker&quot;</span><span class=p >);</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ std.cpp -o std&quot;</span><span class=p >);</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ brute.cpp -o brute&quot;</span><span class=p >);</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >DEFAULT_NUM</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=k >struct</span> <span class=n >timeval</span> <span class=n >STD_START</span><span class=p >,</span><span class=n >STD_END</span><span class=p >,</span><span class=n >MAKER_START</span><span class=p >,</span><span class=n >MAKER_END</span><span class=p >,</span><span class=n >BRUTE_START</span><span class=p >,</span><span class=n >BRUTE_END</span><span class=p >;</span>
+
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;./maker &gt; in&quot;</span><span class=p >);</span>
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=kt >long</span> <span class=kt >double</span> <span class=n >MAKER_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Make data %d : used %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >MAKER_TIME</span><span class=p >);</span>
+
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;./std &lt; in &gt; sout&quot;</span><span class=p >);</span>
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=kt >long</span> <span class=kt >double</span> <span class=n >STD_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >STD_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >STD_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >STD_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >STD_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Run std in data %d : use %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >STD_TIME</span><span class=p >);</span>
+
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >BRUTE_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;./brute &lt; in &gt; bout&quot;</span><span class=p >);</span>
+        <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >BRUTE_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+        <span class=kt >long</span> <span class=kt >double</span> <span class=n >BRUTE_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >BRUTE_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >BRUTE_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >BRUTE_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >BRUTE_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Run brute in data %d : use %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >BRUTE_TIME</span><span class=p >);</span>
+
+        <span class=k >if</span><span class=p >(</span><span class=n >system</span><span class=p >(</span><span class=s >&quot;diff -Bb sout bout&quot;</span><span class=p >))</span>
+        <span class=p >{</span>
+            <span class=n >puts</span><span class=p >(</span><span class=s >&quot;GG&quot;</span><span class=p >);</span>
+            <span class=n >exit</span><span class=p >(</span><span class=mi >0</span><span class=p >);</span>
+        <span class=p >}</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Passed %d ......</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span><span class=n >i</span><span class=p >);</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >MAKER_TIME</span> <span class=o >+</span> <span class=n >STD_TIME</span> <span class=o >+</span> <span class=n >BRUTE_TIME</span> <span class=o >&lt;</span> <span class=n >sec</span><span class=p >)</span> <span class=n >system</span><span class=p >(</span><span class=s >&quot;sleep 1&quot;</span><span class=p >);</span>
+    <span class=p >}</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h3 id=_7 >多组数据自动生成器</h3> <h4 id=_8 >详细注释版</h4> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;ctime&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;string&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;cstdlib&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;sstream&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;unistd.h&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;sys/time.h&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+
+<span class=n >string</span> <span class=n >I</span><span class=p >,</span> <span class=n >ord1</span><span class=p >,</span> <span class=n >ord2</span><span class=p >;</span>
+<span class=n >stringstream</span> <span class=n >tmp</span><span class=p >;</span>
+<span class=n >string</span> <span class=n >name</span> <span class=o >=</span> <span class=s >&quot;seg&quot;</span><span class=p >;</span>
+<span class=cp >#define sec 1000000</span>
+<span class=c1 >//sec就是一秒对应的微秒数</span>
+<span class=kt >int</span> <span class=n >l</span><span class=p >,</span> <span class=n >r</span><span class=p >;</span>
+
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span> 
+<span class=p >{</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ std.cpp -o std&quot;</span><span class=p >);</span> <span class=c1 >//编译标程</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;please type the first l and r</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >);</span>
+    <span class=k >while</span><span class=p >(</span><span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d%d&quot;</span><span class=p >,</span> <span class=o >&amp;</span><span class=n >l</span><span class=p >,</span> <span class=o >&amp;</span><span class=n >r</span><span class=p >)</span> <span class=o >==</span> <span class=mi >2</span><span class=p >)</span> <span class=c1 >//输入数据的文件下标范围</span>
+    <span class=p >{</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ maker.cpp -o maker&quot;</span><span class=p >);</span><span class=c1 >//为了方便改了maker之后直接造数据</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=n >l</span><span class=p >;</span> <span class=n >i</span> <span class=o >&lt;=</span> <span class=n >r</span><span class=p >;</span> <span class=n >i</span> <span class=o >++</span><span class=p >)</span> 
+        <span class=p >{</span>
+            <span class=n >tmp</span><span class=p >.</span><span class=n >clear</span><span class=p >(),</span><span class=n >tmp</span> <span class=o >&lt;&lt;</span> <span class=n >i</span><span class=p >,</span><span class=n >tmp</span> <span class=o >&gt;&gt;</span> <span class=n >I</span><span class=p >;</span> <span class=c1 >//将下标i倒序处理以便用来做文件名</span>
+            <span class=n >string</span> <span class=n >ord1</span> <span class=o >=</span> <span class=s >&quot;./maker &gt; &quot;</span> <span class=o >+</span> <span class=n >name</span> <span class=o >+</span> <span class=n >I</span> <span class=o >+</span> <span class=s >&quot;.in&quot;</span><span class=p >;</span>
+            <span class=n >string</span> <span class=n >ord2</span> <span class=o >=</span> <span class=s >&quot;./std &lt; &quot;</span> <span class=o >+</span> <span class=n >name</span> <span class=o >+</span> <span class=n >I</span> <span class=o >+</span> <span class=s >&quot;.in &gt; &quot;</span> <span class=o >+</span> <span class=n >name</span> <span class=o >+</span> <span class=n >I</span> <span class=o >+</span> <span class=s >&quot;.out&quot;</span><span class=p >;</span>
+            <span class=k >struct</span> <span class=n >timeval</span> <span class=n >STD_START</span><span class=p >,</span><span class=n >STD_END</span><span class=p >,</span><span class=n >MAKER_START</span><span class=p >,</span><span class=n >MAKER_END</span><span class=p >;</span> <span class=c1 >//计算时间所需要的结构体</span>
+
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=n >system</span><span class=p >(</span><span class=n >ord1</span><span class=p >.</span><span class=n >data</span><span class=p >());</span>
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=kt >long</span> <span class=kt >double</span> <span class=n >MAKER_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+            <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Make data %d : used %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >MAKER_TIME</span><span class=p >);</span> <span class=c1 >//造数据的程序计时</span>
+
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=n >system</span><span class=p >(</span><span class=n >ord2</span><span class=p >.</span><span class=n >data</span><span class=p >());</span>
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=kt >long</span> <span class=kt >double</span> <span class=n >STD_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >STD_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >STD_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >STD_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >STD_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span> <span class=c1 >//标程计时</span>
+            <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Run std in data %d : use %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >STD_TIME</span><span class=p >);</span>
+
+            <span class=k >if</span><span class=p >(</span><span class=n >MAKER_TIME</span> <span class=o >+</span> <span class=n >STD_TIME</span> <span class=o >&lt;</span> <span class=n >sec</span><span class=p >)</span> <span class=n >system</span><span class=p >(</span><span class=s >&quot;sleep 1&quot;</span><span class=p >);</span> <span class=c1 >//如果时间超过1s就可以直接进行下一组数据</span>
+            <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span> <span class=n >j</span> <span class=o >&lt;=</span> <span class=mi >10</span><span class=p >;</span> <span class=n >j</span> <span class=o >++</span><span class=p >)</span>
+                <span class=n >puts</span><span class=p >(</span><span class=s >&quot;................&quot;</span><span class=p >);</span>
+            <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Finish Make Data %d</span><span class=se >\n\n\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >);</span>
+        <span class=p >}</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Data %d to %d is finish</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >l</span><span class=p >,</span> <span class=n >r</span><span class=p >);</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;please change maker.cpp and then type next l and r</span><span class=se >\n\n</span><span class=s >&quot;</span><span class=p >);</span>
+    <span class=p >}</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h4 id=_9 >直接复制版</h4> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;ctime&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;string&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;cstdlib&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;sstream&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;unistd.h&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;sys/time.h&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+
+<span class=n >string</span> <span class=n >I</span><span class=p >,</span> <span class=n >ord1</span><span class=p >,</span> <span class=n >ord2</span><span class=p >;</span>
+<span class=n >stringstream</span> <span class=n >tmp</span><span class=p >;</span>
+<span class=n >string</span> <span class=n >name</span> <span class=o >=</span> <span class=s >&quot;seg&quot;</span><span class=p >;</span>
+<span class=cp >#define sec 1000000</span>
+<span class=kt >int</span> <span class=n >l</span><span class=p >,</span> <span class=n >r</span><span class=p >;</span>
+
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span> 
+<span class=p >{</span>
+    <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ std.cpp -o std&quot;</span><span class=p >);</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;please type the first l and r</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >);</span>
+    <span class=k >while</span><span class=p >(</span><span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d%d&quot;</span><span class=p >,</span> <span class=o >&amp;</span><span class=n >l</span><span class=p >,</span> <span class=o >&amp;</span><span class=n >r</span><span class=p >)</span> <span class=o >==</span> <span class=mi >2</span><span class=p >)</span> 
+    <span class=p >{</span>
+        <span class=n >system</span><span class=p >(</span><span class=s >&quot;g++ maker.cpp -o maker&quot;</span><span class=p >);</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=n >l</span><span class=p >;</span> <span class=n >i</span> <span class=o >&lt;=</span> <span class=n >r</span><span class=p >;</span> <span class=n >i</span> <span class=o >++</span><span class=p >)</span> 
+        <span class=p >{</span>
+            <span class=n >tmp</span><span class=p >.</span><span class=n >clear</span><span class=p >(),</span><span class=n >tmp</span> <span class=o >&lt;&lt;</span> <span class=n >i</span><span class=p >,</span><span class=n >tmp</span> <span class=o >&gt;&gt;</span> <span class=n >I</span><span class=p >;</span>
+            <span class=n >string</span> <span class=n >ord1</span> <span class=o >=</span> <span class=s >&quot;./maker &gt; &quot;</span> <span class=o >+</span> <span class=n >name</span> <span class=o >+</span> <span class=n >I</span> <span class=o >+</span> <span class=s >&quot;.in&quot;</span><span class=p >;</span>
+            <span class=n >string</span> <span class=n >ord2</span> <span class=o >=</span> <span class=s >&quot;./std &lt; &quot;</span> <span class=o >+</span> <span class=n >name</span> <span class=o >+</span> <span class=n >I</span> <span class=o >+</span> <span class=s >&quot;.in &gt; &quot;</span> <span class=o >+</span> <span class=n >name</span> <span class=o >+</span> <span class=n >I</span> <span class=o >+</span> <span class=s >&quot;.out&quot;</span><span class=p >;</span>
+            <span class=k >struct</span> <span class=n >timeval</span> <span class=n >STD_START</span><span class=p >,</span><span class=n >STD_END</span><span class=p >,</span><span class=n >MAKER_START</span><span class=p >,</span><span class=n >MAKER_END</span><span class=p >;</span>
+
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=n >system</span><span class=p >(</span><span class=n >ord1</span><span class=p >.</span><span class=n >data</span><span class=p >());</span>
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >MAKER_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=kt >long</span> <span class=kt >double</span> <span class=n >MAKER_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >MAKER_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >MAKER_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+            <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Make data %d : used %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >MAKER_TIME</span><span class=p >);</span>
+
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_START</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=n >system</span><span class=p >(</span><span class=n >ord2</span><span class=p >.</span><span class=n >data</span><span class=p >());</span>
+            <span class=n >gettimeofday</span><span class=p >(</span><span class=o >&amp;</span><span class=n >STD_END</span><span class=p >,</span><span class=nb >NULL</span><span class=p >);</span>
+            <span class=kt >long</span> <span class=kt >double</span> <span class=n >STD_TIME</span> <span class=o >=</span> <span class=n >sec</span> <span class=o >*</span> <span class=p >(</span><span class=n >STD_END</span><span class=p >.</span><span class=n >tv_sec</span><span class=o >-</span><span class=n >STD_START</span><span class=p >.</span><span class=n >tv_sec</span><span class=p >)</span> <span class=o >+</span> <span class=n >STD_END</span><span class=p >.</span><span class=n >tv_usec</span> <span class=o >-</span> <span class=n >STD_START</span><span class=p >.</span><span class=n >tv_usec</span><span class=p >;</span>
+            <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Run std in data %d : use %.2Lfus</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >,</span> <span class=n >STD_TIME</span><span class=p >);</span>
+
+            <span class=k >if</span><span class=p >(</span><span class=n >MAKER_TIME</span> <span class=o >+</span> <span class=n >STD_TIME</span> <span class=o >&lt;</span> <span class=n >sec</span><span class=p >)</span> <span class=n >system</span><span class=p >(</span><span class=s >&quot;sleep 1&quot;</span><span class=p >);</span>
+            <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span> <span class=n >j</span> <span class=o >&lt;=</span> <span class=mi >10</span><span class=p >;</span> <span class=n >j</span> <span class=o >++</span><span class=p >)</span>
+                <span class=n >puts</span><span class=p >(</span><span class=s >&quot;................&quot;</span><span class=p >);</span>
+            <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Finish Make Data %d</span><span class=se >\n\n\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >i</span><span class=p >);</span>
+        <span class=p >}</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;Data %d to %d is finish</span><span class=se >\n</span><span class=s >&quot;</span><span class=p >,</span> <span class=n >l</span><span class=p >,</span> <span class=n >r</span><span class=p >);</span>
+        <span class=n >printf</span><span class=p >(</span><span class=s >&quot;please change maker.cpp and then type next l and r</span><span class=se >\n\n</span><span class=s >&quot;</span><span class=p >);</span>
+    <span class=p >}</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: 'ac398e22d285c089fd209b82bade7adf', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=tools"><span class=label >tools</span></a><br/> 创建时间: 2019.10.22<br/> 上次修改: 2019.10.22<br/> 字数统计: 7882 字 / 约 31 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#_1">对拍,多组数据自动生成器</a><ul> <li><a href="#_2">使用平台</a> <li><a href="#_3">注意事项</a> <li><a href="#_4">对拍</a><ul> <li><a href="#_5">注释版</a> <li><a href="#_6">复制版</a> </ul> <li><a href="#_7">多组数据自动生成器</a><ul> <li><a href="#_8">详细注释版</a> <li><a href="#_9">直接复制版</a> </ul> </ul> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2019-10-22/maker&pai.md" id=nano-link >maker&pai.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

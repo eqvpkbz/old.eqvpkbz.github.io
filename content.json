@@ -1,0 +1,650 @@
+{
+  "2019-10-23测试总结": {
+    "meta": {
+      "create": "2019.10.23",
+      "description": "数论",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.23",
+      "tags": [
+        "TEST"
+      ],
+      "template": "template",
+      "title": "2019-10-23测试总结",
+      "top": "0"
+    },
+    "text": "2019-10-23测试总结\\n考到自闭了，是真的令人无F**K说\\n$a$\\n题目大意\\n\\n一个三维坐标图，有$m$个点不能走，从$(0,0,0)$到$(n,n,n)$的路径方案数\\n给定$n,m,$不能走的点的坐标，求方案数对$(1e9 + 7)$的余数\\n\\n数论题\\n不难推出无障碍时从$(0,0,0)$到$(n,n,n)$的路径方案数为\\n$$\\\\dbinom{2n}{n} * \\\\dbinom{3n}{n} = \\\\frac{(3n)!}{n!*n!*n!}$$\\n然后可以推广到:\\n无障碍时从$(0,0,0)$到$(x,y,z)$的路径方案数为\\n$$\\\\frac{(x + y + z)!}{x!*y!*z!}$$\\n再推广一下有障碍时的情况\\n设$f_i$表示不经过障碍时的到达第$i$个障碍的路径条数，第i个障碍点的坐标为$(x_i,y_i,z_i)$\\n然后可以递推求解得:\\n$$f_i = \\\\frac{(x_i + y_i + z_i)!}{x_i!*y_i!*z_i!} - \\\\sum\\\\limits_{x_j \\\\leqslant x_i,y_j \\\\leqslant y_i,z_j \\\\leqslant z_i}{} f_j*\\\\frac{(x_i - x_j +y_i - y_j +z_i - z_j)!}{(x_i - x_j)!*(y_i - y_j)!*(z_i - z_j)!}$$\\n然后就可以$O(m^2)$递推了\\n$b$\\n我不会\\n$c$\\n我还是不会",
+    "url": "blog/2019-10-23/2019.10.23_test.html"
+  },
+  "2019-10-24测试总结": {
+    "meta": {
+      "create": "2019.10.24",
+      "description": "dp,博弈论",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.24",
+      "tags": [
+        "TEST"
+      ],
+      "template": "template",
+      "title": "2019-10-24测试总结",
+      "top": "0"
+    },
+    "text": "2019-10-24测试总结\\n$merge$\\n题目大意\\n\\n有$n(1 \\\\leqslant n \\\\leqslant 300)$个只有$1$个数字的集合呈环形排列，并集操作$S \\\\bigcup T$会产生$|S| * |T|$的收益，其中$|S|$表示集合$S$的元素个数，现在给定这$n$个数字，第i个数字为$a_i$($1 \\\\leqslant a_i \\\\leqslant n$)，求合并到只剩下最后一个数字的时候能获得的最大的收益之和\\n\\n环形区间$dp$水题\\n首先一个区间所合并之后的元素个数是固定的，所以可以$O(n ^ 3)$预处理一遍\\n然后就是直接环形区间$dp$即可\\n但是注意是环形的所以控制区间的位置要注意细节\\n最后就是我考场上写的$map$但是可以直接开$bool$数组，活活炸掉$50$分\\n然后我也没有查找长度为$n$的区间最大值而是直接输出$f[1][n]$\\n然后我的区间处理也有问题\\n所以就爆$0$了\\n更正后的代码:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40#include<cstdio>\\n#include<algorithm>\\nusing namespace std;\\n#define file(SSS) freopen(SSS\\ .in\\ ,\\ r\\ ,stdin),freopen(SSS\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n\\n#define MAXN 605\\nint n,a[MAXN][MAXN],dp[MAXN][MAXN];\\nint t[MAXN];\\nbool e[MAXN][MAXN][MAXN >> 1];\\nint main()\\n{\\n    file(\\ merge\\ );\\n\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        scanf(\\ % d\\ ,&t[i]),t[i + n] = t[i];\\n        a[i][i] = 1,a[i + n][i + n] = 1,e[i + n][i + n][t[i]] = 1;\\n    }\\n\\n    for(int len = 1;len < n;len ++)\\n    for(int i = 1;i <= 2 * n - 1 - len;i ++)\\n    for(int k = i;k <= i + len;k ++)\\n        if(!e[i][i + len][t[k]]) e[i][i + len][t[k]] = 1,a[i][i + len] ++;\\n\\n    for(int len = 1;len < n;len ++)\\n    for(int i = 1;i <= 2 * n - 1 - len;i ++)\\n    for(int k = i;k < i + len;k ++)\\n    dp[i][i + len] = max(dp[i][i + len],\\n    dp[i][k] + dp[k + 1][i + len] + a[i][k] * a[k + 1][i + len]);\\n\\n    int Max = 0;\\n    for(int i = 1;i < n;i ++)\\n        if(dp[i][i + n - 1] > Max) Max = dp[i][i + n - 1];\\n    printf(\\ % d\\ ,Max);\\n\\n    file_close;\\n    return 0;\\n}\\n\\n\\n\\n$climb$\\n题目大意\\n\\n有$n(n \\\\leqslant 10^5)$个操作，目标高度$L$，第$i$个操作可以使高度升高$a_i$，并在升高后下降$b_i$，每次操作最多使用$1$次,同时每次操作之后的高度都不能低于$\\\\sum\\\\limits_{j = 1}^{i} c_j$，$a_i,b_i,c_i$满足$0 \\\\leqslant a_i,b_i,c_i \\\\leqslant 10^9$,任何时候，当高度满足高度$h >= L$时，操作结束，求最少操作数\\n\\n贪心思路\\n首先先看当前高度下最大的$a_i$是否满足$a_i \\\\geqslant L - h$，如果满足就可以直接结束操作\\n否则看当前高度$h += a_i - b_i$，且在$a_i - b_i == a_j - b_j$时，先做$a_i$小的操作，以保证当前高度在下一次能够用最大的$a_i$更新\\n贪心的正确性\\n我们主要是考虑在选定了最大的$a_i - b_i$之后，是不是会浪费掉一个比较大的$a_i$\\n然后发现在找贪心的正确性的时候发现了贪心的错误\\nHack数据\\n1\\n2\\n3\\n4\\n5\\n6\\n73 10\\n5 2\\n7 3\\n1 1\\n1\\n1\\n1\\n\\n\\n\\n显然原来的选择策略变成了错误的\\n然后就发现标程从300被卡成了290\\n还是放一下考场上的代码：\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51\\n52\\n53\\n54\\n55\\n56\\n57\\n58\\n59\\n60\\n61#include<cstdio>\\n#include<queue>\\nusing namespace std;\\n#define file(SSS) freopen(SSS\\ .in\\ ,\\ r\\ ,stdin),freopen(SSS\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n\\n#define MAXN 100005\\nint n,l;\\nstruct MED1\\n{\\n    int a,b,r,num;\\n    bool operator < (const MED1 &c) const\\n    {\\n        if(r == c.r) return a > c.a;\\n        else return r < c.r;\\n    }\\n}m1[MAXN];\\nstruct MED2\\n{\\n    int a,num;\\n    bool operator < (const MED2 &c) const {return a < c.a;}\\n}m2[MAXN];\\nbool vis[MAXN];\\nint sum[MAXN];\\npriority_queue<MED1> p;\\npriority_queue<MED2> q;\\nint main()\\n{\\n    file(\\ climb\\ );\\n    scanf(\\ % d% d\\ ,&n,&l);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        scanf(\\ % d% d\\ ,&m1[i].a,&m1[i].b);\\n        m1[i].r = m1[i].a - m1[i].b,m1[i].num = i;\\n        m2[i].a = m1[i].a,m2[i].num = i;\\n        p.push(m1[i]),q.push(m2[i]);\\n    }\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        int x;scanf(\\ % d\\ ,&x);\\n        sum[i] = sum[i - 1] + x;\\n    }\\n    int h = 0,cnt = 0;\\n    bool flag = 0;\\n    while(h < l)\\n    {\\n        MED2 temp = q.top();\\n        while(vis[temp.num] && !q.empty()) q.pop(),temp = q.top();\\n        if(q.empty()){flag = 1;break;}\\n        if(h + temp.a >= l){cnt ++;break;}\\n        MED1 TEMP = p.top();\\n        while(vis[TEMP.num]) p.pop(),TEMP = p.top();\\n        vis[TEMP.num] = 1;\\n        h += TEMP.r;\\n        if(h <= sum[++cnt]){flag = 1;break;}\\n    }\\n    if(!flag) printf(\\ % d\\ ,cnt);\\n    else puts(\\ -1\\ );\\n    file_close;\\n    return 0;\\n}\\n\\n\\n\\n$coin$\\n高级博弈论，不会",
+    "url": "blog/2019-10-24/2019.10.24_test.html"
+  },
+  "2019-10-25测试总结": {
+    "meta": {
+      "create": "2019.10.25",
+      "description": "KMP,BIT",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.25",
+      "tags": [
+        "TEST"
+      ],
+      "template": "template",
+      "title": "2019-10-25测试总结",
+      "top": "0"
+    },
+    "text": "2019-10-25测试总结\\n$chess$\\n\\n$Dove$ 喜爱下跳棋,在传统的跳棋基础之上,$Dove$ 又延伸出了许多别的玩法。$Dove$以一个一维数轴为棋盘下跳棋,总共会移动棋子$n − 1$次。因为讨厌没有规律,所以$Dove$每次只会恰好把棋子向右移动$k$个格子。$Cicada$送给了$Dove$一个长度为 $n$ 的数列 $\\\\{ a \\\\}$,为了表示感谢,$Dove$ 打算以 $Cicada$ 送给他的序列 $\\\\{ a \\\\}$ 为基础下跳棋。具体的,$Dove$ 将会把棋子从编号为 $a_1$ 的格子出发,在第 $i$次移动后,把棋子移动到编号为 $a_{i+1}$ 的格子。显然 $Cicada$ 送给他的 $\\\\{ a \\\\}$ 有可能不满足$Dove$ 要求的条件,$Dove$ 想知道,最少需要修改多少个 $a_i$ 的值,才能使得这个数列 $\\\\{ a \\\\}$ 是满足 $Dove$ 需要的移动棋子的要求的\\n\\n首先因为序列$\\\\{ a \\\\}$是从$a_1$开始的一个公差为$k$的等差数列，所以令每个数字$a_i$为$a_i = k(i - 1) + b$，然后就可以得到$b = a_i - k(i - 1)$，然后把$a_1$作为出现次数最多的$b$值来开始构造等差数列即可做到\\n然后考场上的时候没有开long long，20分没了\\n然后用的是数组下标而不是map，又因为$b$可以是负数，所以全部运行时错误了\\n要是这是CSP-S的考场上犯的错误，可能就再也没有能力走下去了吧\\n正确代码:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25#include<cstdio>\\n#include<map>\\n#include<algorithm>\\nusing namespace std;\\n#define file(SSS) freopen(SSS\\ .in\\ ,\\ r\\ ,stdin),freopen(SSS\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n#define MAXN 1000005\\n#define int long long\\nmap<int,int> vis;\\nint n,k,a[MAXN],b[MAXN],cnt = 0;\\nsigned main()\\n{\\n    file(\\ chess\\ );\\n    scanf(\\ % lld% lld\\ ,&n,&k);\\n    int MAX = 0;\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        scanf(\\ % lld\\ ,&a[i]),a[i] -= k * (i - 1);\\n        vis[a[i]] ++;\\n        MAX = max(MAX,vis[a[i]]);\\n    }\\n    printf(\\ % lld\\ ,n - MAX);\\n    file_close;\\n    return 0;\\n}\\n\\n\\n\\n$substring$\\n\\n作为一个熟练的算法竞赛选手,$Cicada$喜爱研究字符串问题。特别的,他尤其喜爱研究字符串中的子串问题。某日,$Cicada$在研究这样一道题目。首先对于一个字符串$S$,我们定义其第$l$个字符到第$r$个字符构成的子串为$S_{l,r}$ 。同时我们定义函数$f(S, l, r)$表示将字符串 $S$ 的第 $l$ 到第 $r$个字符删去后构成的字符串,$g(S, m, t)$表示将 $t$ 插入 $s$ 的第 $m$ 个字符之后构成的字符串。$Cicada$ 想知道,对于一个给定的长度为 $n$ 的字符串 $s$,有多少个三元组 $(l, r, m)$,满足$S = g(f(S, l, r), m, S_{l,r} )$\\n\\n考场上想的是$KMP$的部分操作\\n然后不知道为什么脑子抽了，计算全部重复的结果的时候用的$O(n)$的算法\\n但是可以是$O(1)$的平方和式子的\\n于是就只有第$14,15$两个测试点的分\\n最后不知道怎么去重，所以不会\\n对于子串$(l, r)$,我们找出他的最短完整循环节$t$,即$S_{l,r} = t^m$ ,即$S_{l,r}$可以表示为$m$个$t$前后拼接。\\n那么所有可以选取的$r_1$就是循环节的分界点。我们只需要对于每个子串确定他的循环\\n节即可。\\n这个问题是经典问题,可以选择哈希或者$KMP$来解决。\\n时间复杂度 $O(n^2)$,期望得分100pts\\n$permutation$\\n\\n作为一个熟练的算法竞赛选手,$Dove$ 尤其喜爱研究排列问题。特别的,他尤其喜爱研究排列的标号问题。我们定义一个长度为 $n$ 的排列 $\\\\{ a \\\\}$ 的标号为把所有长度为 $n$ 的排列按字典序递增排序后这个排列的下标。一天,$Cicada$ 送给了 $Dove$ 一个长度为 $n$ 的排列,但是这个排列有一些位置的具体数字丢失了。特别的,对于第 $i$ 个位置,我们用 $a_i = 0$ 来表示这个位置的数值受到了丢失,否则表示这个位置的数值没有丢失。如果一个排列满足抹去若干数值后(即把一些位置的值置为 $0$)和给定的排列相同,那么我们称这个排列是合法的。$Dove$ 非常好奇,所有合法的排列的标号和是多少,因为还要学高考,所以 $Dove$ 只关心答案对 $10^9 + 7$ 取模的结果\\n\\n不会正解，直接康托展开\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51\\n52\\n53\\n54\\n55#include<cstdio>\\n#include<algorithm>\\n#include<cstring>\\nusing namespace std;\\n#define file(SSS) freopen(SSS\\ .in\\ ,\\ r\\ ,stdin),freopen(SSS\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n#define MAXN 300005\\n#define ull unsigned long long\\n#define Mod 1000000007\\nint n,a[MAXN],b[MAXN], c[MAXN];\\null ANS = 0;\\nint cnt = 0,q[MAXN],pos[MAXN];\\nbool vis[MAXN];\\ninline int calc()\\n{\\n    int fac = 1,ans = 1;\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        int s = 0;\\n        for(int j = b[n - i + 1];j > 0;j -= j & -j ) \\n            s += c[j];\\n        ans = ( ans + 1ll * fac * s ) %  Mod, fac = 1ll * fac * i %  Mod;\\n        for(int j = b[n - i + 1];j <= n;j += j & -j ) ++ c[j];\\n    } \\n    memset(c,0,sizeof(c));\\n    return ans;\\n}\\nvoid dfs(int now)\\n{\\n    if(now == cnt){ANS += calc();return ;}\\n    for(int i = 0;i < cnt;i ++)\\n        if(!vis[q[i]])\\n        {\\n            b[pos[now]] = q[i],vis[q[i]] = 1;\\n            dfs(now + 1);\\n            vis[q[i]] = 0,b[pos[now]] = 0;\\n        }\\n    return ;\\n}\\nint main()\\n{\\n    file(\\ permutation\\ );\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        scanf(\\ % d\\ ,&b[i]),vis[b[i]] = 1;\\n        if(!b[i]) pos[cnt ++] = i;\\n    }\\n    cnt = 0;\\n    for(int i = 1;i <= n;i ++) if(!vis[i]) q[cnt ++] = i;\\n    dfs(0);\\n    printf(\\ % llu\\ ,ANS);\\n    file_close;\\n    return 0;\\n}\\n\\n\\n\\n然后此题的本质是:\\n求\\n$$\\\\sum\\\\limits_{s \\\\in S}\\\\sum\\\\limits_{i = 0}^{n - 1}(s_i - \\\\sum\\\\limits_{j = 0}^{i - 1}[s_j < s_i]) * (n - i - 1)!$$\\n枚举 $i$,利用 $BIT$ 来维护 $j$ 即可。\\n时间复杂度 $O(n log n)$,期望得分100pts",
+    "url": "blog/2019-10-25/2019.10.25_test.html"
+  },
+  "2019-10-26测试总结": {
+    "meta": {
+      "create": "2019.10.26",
+      "description": "二叉树结构，dp，折半搜索",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.26",
+      "tags": [
+        "TEST"
+      ],
+      "template": "template",
+      "title": "2019-10-26测试总结",
+      "top": "0"
+    },
+    "text": "2019-10-26测试总结\\n$tournament$\\n\\n作为一个熟练的算法竞赛选手,$Dove$非常喜爱打比赛。近期 $Dove$ 被邀请参加「算法带师」比赛。这个比赛的目的选拔出水平最高的算法竞赛选手,比赛以这样的流程进行:比赛总共有$2^n$个人参加,对于第 $i$ 个人,他的能力评分为$a_i \\\\in [1, 2^n ]$,且保证任意两个人的能力评分不同。在两个人的比拼中,能力评分较高的那个人获胜。比赛一共将进行 $n$ 场,对于第 $i$ 场比赛,相邻两个人进行比拼,获胜者将进入下一轮比赛,每场比赛中保证所有人的相对位置保持一致。对于每个人来说,我们定义他参加比赛的愉悦度为他参与并获胜的比赛数目,$Dove$想知道,对于能力评分为 $i$ 的人来说,如果允许他和任意一个人交换位置,那么他能获得的愉悦度的最大值是多少\\n\\n考场上没想出来\\n中间上厕所的时候稍稍想了一下，任何一个数字换了位置的愉悦度的最大值都大于等于比它小的数字的不换位置的愉悦度\\n然后自认为复杂度是错的，于是就指望着枚举 + 线段树能过然后理所当然的挂了\\n考完出来发现人均$A$了$T1???$\\nnmdwsm\\n正确思想: 就是我上厕所想的和我考场上真正打了的部分的结合体\\n需要线段树然后$DFS$，考虑维护一个最大值和次大值，并不需要排序(然而std排了序)，再结合之前的思想就$A$了\\n我调了两个小时的线段树发现在update和query的时候把查询的区间端点改了\\n标程:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40#include<cstdio>\\n#include<algorithm>\\nusing namespace std;\\n#define file(SSS) freopen(SSS\\ .in\\ ,\\ r\\ ,stdin),freopen(SSS\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n\\n#define ll long long\\n#define MAXN 300005\\nint n,m,cnt,a[MAXN],ans[MAXN];\\nstruct SegmentTree{int deep;ll MAX,Max;}t[MAXN << 2];\\nvoid build(int d,int i,int l,int r)\\n{\\n    t[i].deep = d;if(l == r){t[i].MAX = a[l],t[i].Max = 0;return ;}\\n    int mid = (l+r)>>1;build(d-1,i<<1,l,mid),build(d-1,(i << 1) + 1,mid+1,r);\\n    t[i].MAX = max(t[i<<1].MAX,t[(i << 1) + 1].MAX);\\n    t[i].Max = max(t[i << 1].Max,t[(i << 1) + 1].Max);\\n    t[i].Max = max(t[i].Max,min(t[i << 1].MAX,t[(i << 1) + 1].MAX));\\n    return ;\\n}\\nvoid solve()\\n{\\n    for(int i=1;i<=(m << 1) - 1;i++)\\n    {\\n        while(cnt > t[i].Max && cnt)\\n            ans[cnt --]=t[i].deep;\\n        if(cnt==1) return ;\\n    }\\n    return ;\\n}\\nint main()\\n{\\n    file(\\ tournament\\ );\\n    scanf(\\ % d\\ ,&n),cnt = m = 1 << n;\\n    for(int i=1;i<=m;i++) scanf(\\ % d\\ ,&a[i]);\\n    build(n,1,1,m),solve();\\n    for(int i=1;i<=m;i++)\\n        printf(\\ % d \\ ,ans[i]);\\n    file_close;\\n    return 0;\\n}\\n\\n\\n\\n$run$\\n\\n作为一个熟练的算法竞赛选手,$Cicada$ 跑的比谁都快 $(?)$。$Cicada$和 $Dove$ 所在的高中最近要举办一个运动会,作为好朋友,$Cicada$ 和 $Dove$ 一块参加了接力跑项目。接力跑项目一共有 $n + 1$ 个人参加,其中 $Dove$ 作为最后一个接棒人,并不参与实际的跑步,所以总共有 $n$ 个人可能参与跑步,接力棒最多会被交接 $n$ 次,每个人都有一定的身高,对于第 $i$ 个人,他的身高为 $h_i$ 。特别的,一个人的接力棒并不是一定要传给相邻的人,当经过一个人时,他可以自行选择是将接力棒传递给这个人还是继续走向下一个人。但是,如果当前持棒人的身高小于当前接棒人的身高时,那么他就必须交接接力棒。因为一些奥妙重重的原因,参加接力跑的所有人的速度都是相近的,并且任意相邻两个人之间的距离也是相近的。所以我们定义一个时间单位为接力棒从一个人手里传到下一个人手里在路上需要经历的时间。同时,对于每个人来说,他参加接力跑有一定的厌烦度,对于第 $i$ 个人,他的厌烦度为 $c_i$ ,如果第 $i$ 个人被传递了接力棒,那么整场比赛的无聊度就会增加 $c_i$,特别的,$Cicada$ 作为第一个人,是组织者,他的厌烦度是 $0$。为了让比赛尽可能好看,$Cicada$ 向指定一个传棒方案,使得正常比赛的无聊度与消耗时间的和尽可能低。因为 $Cicada$ 还要肝 $DDL$,所以这个锅就甩给你了。\\n\\n$dp$题\\n考场上没仔细看(一直在调T1)\\n现在还没搞懂，所以就贴一下出题人的代码和题解\\n令$f_i$表示传到第 $i$ 个人的最小花费,我们维护一个单调队列,可以发现此时单调队列的长度期望是 $log n$ 级别的,并且可以发现有效的转移只会发生在队列里,暴力转移即可,这个相比线段树的 $log$ 常数较小,可以通过$10^6$,观察到每次转移实际上是在队列里分前缀和后缀转移,而我们每次加入新元素弹出旧元素的时候恰好会访问到边界。因此我们维护一个前缀最小值来辅助转移即可,时间复杂度为 $O(n)$\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51\\n52\\n53\\n54\\n55\\n56\\n57\\n58\\n59\\n60\\n61\\n62\\n63\\n64\\n65\\n66#include <bits/stdc++.h>\\n\\n#define up(__i,__start,__end) for (int __i = (__start); __i <= (__end); __i++)\\n#define down(__i, __start,__end) for (int __i = (__start); __i >= (__end); __i--)\\n#define fi first\\n#define se second\\n#define bin(__o) (1 << (__o))\\n#define bug(x) std::cerr<<\\ [ \\ <<(#x)<<\\ :  \\ <<x<<\\  ]\\ <<std::endl\\n#define bugline std::cerr<<\\ Passing:  \\ <<__LINE__<<std::endl\\n#define bugm(...) fprintf(stderr, __VA_ARGS__)\\n\\ntypedef long long ll;\\ntypedef unsigned long long ull;\\ntypedef double db;\\n\\ntemplate<typename T> inline T max(T a, T b) {return a > b ? a : b;}\\ntemplate<typename T> inline T min(T a, T b) {return a < b ? a : b;}\\ntemplate<typename T> inline bool cmax(T &a, T b) {return a < b ? a = b, 1 : 0;}\\ntemplate<typename T> inline bool cmin(T &a, T b) {return a > b ? a = b, 1 : 0;}\\n\\nconst int maxn = 1e6 + 5;\\n\\nint n, h[maxn], c[maxn], q[maxn], top;\\n\\nll pre[maxn], f[maxn];\\n\\ninline void push(int o) {\\n    q[++top] = o;\\n    pre[top] = min(pre[top - 1], h[o] + f[o]);\\n}\\n\\n#define FILE \\ run\\ \\n\\ninline int read() {\\n    char ch = getchar(); int x = 0, f = 1;\\n    while ('0' > ch || ch > '9') {if (ch == '-') f = -1; ch = getchar(); }\\n    while ('0' <= ch && ch <= '9') {x = x * 10 + ch - '0'; ch = getchar(); }\\n    return x * f;\\n}\\n\\nint main() {\\n\\n    freopen(FILE\\ .in\\ , \\ r\\ , stdin);\\n    freopen(FILE\\ .out\\ , \\ w\\ , stdout);\\n\\n    scanf(\\ % d\\ , &n);\\n    up (i, 1, n) h[i] = read();\\n    up (i, 2, n) c[i] = read();\\n    pre[0] = 1e18;\\n    f[1] = 0;\\n    push(1);\\n    up (i, 2, n) {\\n        f[i] = 1e18;\\n        while (top >= 1 && h[i] > h[q[top]]) {\\n            cmin(f[i], f[q[top]] + h[i] - h[q[top]] + c[i]);\\n            top--;\\n        }\\n        cmin(f[i], pre[top] - h[i] + c[i]);\\n        push(i);\\n    }\\n    ll ans = 1e18;\\n    up (i, 1, top) cmin(ans, f[q[i]] + n);\\n    printf(\\ % lld\\\\n\\ , ans);\\n\\n    return 0;\\n}\\n\\n\\n\\n$magnet$\\n没人$A$(包括一个点超时得90分的std)\\n\\n给定一个长度为 $n$ 的序列,对于每个位置,询问所有数和他的异或值中 $1$ 的数量\\n\\n现在都还是不会\\n把出题人的题解和代码放上来吧\\n不妨假设 $m$ 是偶数,如果 $m$ 是奇数我们将 $m + 1$ 即可,这不会影响我们的计算,另取 $h = \\\\frac{m}{2}$ \\n我们考虑动态维护一个函数$f(pp, qq, c)$,表示当前数集中所有前 $h$ 位的状态为 $pp$,后$h$ 位与 $qq$ 的异或和中 $1$ 的数量为 $c$ 的数的个数。\\n对于 $i$,假设我们现在以及维护了前 $i − 1$ 个数的 $f$,那么我们只需要暴力枚举 $a_i$ 前 $h$位的所有可能的状态即可。考虑如何更新 $f$,因为前 $h$ 位的状态是固定的,因此我们只需要枚举后 $h$ 位的状态即可,这个复杂度与询问时一致的。$m$复杂度$O(n2^{\\\\frac{m}{2}})$,期望得分 100pts。\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51#include <bits/stdc++.h>\\n\\n#define up(__i,__start,__end) for (int __i = (__start); __i <= (__end); __i++)\\n#define down(__i, __start,__end) for (int __i = (__start); __i >= (__end); __i--)\\n#define fi first\\n#define se second\\n#define bin(__o) (1 << (__o))\\n#define bug(x) std::cerr<<\\ [ \\ <<(#x)<<\\ :  \\ <<x<<\\  ]\\ <<std::endl\\n#define bugline std::cerr<<\\ Passing:  \\ <<__LINE__<<std::endl\\n#define chkloop assert(false)\\n#define bugm(__x) std::cerr<<(#__x)<<std::endl\\n\\ntypedef long long ll;\\ntypedef unsigned long long ull;\\ntypedef double db;\\n\\ntemplate<typename T> inline T max(T a, T b) {return a > b ? a : b;}\\ntemplate<typename T> inline T min(T a, T b) {return a < b ? a : b;}\\ntemplate<typename T> inline bool cmax(T &a, T b) {return a < b ? a = b, 1 : 0;}\\ntemplate<typename T> inline bool cmin(T &a, T b) {return a > b ? a = b, 1 : 0;}\\n\\nconst int maxn = 2e5 + 5;\\nconst int maxs = (1 << 16);\\n\\nint n, m, a[maxn], f[maxs >> 8][maxs >> 8][9], bc[maxs], ans[17], hash = 0;\\n\\n#define FILE \\ magnet\\ \\n\\nint main() {\\n\\n    freopen(FILE\\ .in\\ , \\ r\\ , stdin);\\n    freopen(FILE\\ .out\\ , \\ w\\ , stdout);\\n\\n    scanf(\\ % d% d\\ , &n, &m);  \\n    int mm = m;\\n    m += m %  2;\\n    int all = 1 << m, hf = all >> (m / 2);\\n    up (ss, 1, all - 1) bc[ss] = bc[ss >> 1] + (ss & 1);\\n    up (i, 1, n) scanf(\\ % d\\ , &a[i]);\\n    up (i, 1, n) {\\n        std::memset(ans, 0, sizeof(ans));\\n        int app = a[i] >> (m / 2), aqq = a[i] & (hf - 1), m2 = m / 2;\\n        up (pp, 0, hf - 1) up (cnt, 0, m2) ans[bc[pp ^ app] + cnt] += f[pp][aqq][cnt];  \\n        up (qq, 0, hf - 1) f[app][qq][bc[qq ^ aqq]]++;\\n        up (j, 0, mm) hash ^= (ans[j] + i + j);\\n    }\\n    printf(\\ % d\\\\n\\ , hash);\\n\\n    return 0;\\n\\n}\\n\\n",
+    "url": "blog/2019-10-26/2019.10.26_test.html"
+  },
+  "2019-10-30测试总结": {
+    "meta": {
+      "create": "2019.10.30",
+      "description": "图论转区间操作妙妙题",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.30",
+      "tags": [
+        "TEST"
+      ],
+      "template": "template",
+      "title": "2019-10-30测试总结",
+      "top": "0"
+    },
+    "text": "2019-10-30测试总结\\n前言\\n最近的状态是不是又变差了啊\\n老是提不起搞OI的精神，导致现在的测试总结还有3篇没有写完\\n加油努力一点吧\\n还有以后就不放题目了\\n本来就不是给别人看的哇\\n$X$\\n一开始的时候把题意理解成了强连通分量???\\n其实就是$K_n$\\n然后先是一遍加边，暴力找子集，加点剪枝，再$O(n ^ 2)$判环，$n \\\\leqslant 18$还是能过的\\n然后看一边部分分中的$y_i = 0$比较好打就直接打了\\n考试交上去发现数组开大了，全部RE\\n果然想要多拿点分这个思想是不现实的\\n正解很妙很妙\\n先是把题目中的加边条件看作是两个区间之间的操作，对应的，就可以贪心地做一波了\\n很好的图论题转换为区间题\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28#include<cstdio>\\n#include<algorithm>\\n#include<cstdlib>\\nusing namespace std;\\n#define file(SSS) freopen(SSS\\ .in\\ ,\\ r\\ ,stdin),freopen(SSS\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\nconst int Maxn = 200009;\\nconst long long INF = 2147483647;\\nstruct seg {int l, r;}a[Maxn];\\nint n,x,y;\\nbool cmp(const seg u, const seg v){return u.r < v.r;}\\nint main() \\n{\\n    file(\\ x\\ );\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        scanf(\\ % d% d\\ ,&x,&y);\\n        a[i] = (seg){x - y, x + y};\\n    }\\n    sort(a + 1, a + n + 1,cmp);\\n    int ans = 0, lef = -INF;\\n    for(int i = 1;i <= n;i ++)\\n        if (lef < a[i].l) lef = a[i].r, ++ ans;\\n    printf(\\ % d\\ ,ans);\\n    file_close;\\n    return 0;\\n}\\n\\n",
+    "url": "blog/2019-10-30/2019.10.30_test.html"
+  },
+  "2019-11-4测试总结": {
+    "meta": {
+      "create": "2019.11.4",
+      "description": "二分答案等等",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.4",
+      "tags": [
+        "TEST"
+      ],
+      "template": "template",
+      "title": "2019-11-4测试总结",
+      "top": "0"
+    },
+    "text": "2019-11-4测试总结\\n$liqi$\\n没想到二分\\n以后还是多想想二分，其实二分还是很有用的\\n那么就是二分操作的天数，然后写一个check()来判断能否达到\\n然后每次就是把前mid天的操作区间排序，直接扫过去\\n复杂度显然是$O(log_2m * m * log_2m)$ = $O(m * (log_2m)^2)$\\n并不是一个紧的上界，所以能过$m = 1e5$\\n$zhexue$",
+    "url": "blog/2019-11-4/2019.11.4_test.html"
+  },
+  "CSP2019游记": {
+    "meta": {
+      "create": "2019.11.15",
+      "description": "被省三劝退役了",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.18",
+      "tags": [
+        "tourist"
+      ],
+      "template": "template",
+      "title": "CSP2019游记",
+      "top": "1"
+    },
+    "text": "CSP2019游记\\nDay -1\\n去试机了，键盘是附中大机房一毛一样的键盘，而且还要更加顺滑一些\\n手打了一个zkw + dijkstra然后就被李总赶走了\\n模板没打完，我要完了\\nDay 0\\n\\n在学校里面打模板\\n发现好几道题目都是没开long long或者没有取模导致样例都不过\\n感觉状态其实也没有自己想的那么好\\nDay 1\\n心态可能有点超级爆炸吧\\nT1\\n可能出题人还是照顾了一下考生吧?\\n$n \\\\leqslant 64$\\n拿到T1看到数据范围就知道要开unsigned long long，HNOI2018D1T1的教训还是记得的(因为没开unsigned long long丢了10分)\\n然后看完题就知道了$O(n)$的做法，还算是一道简单的签到题吧\\n所以我开了unsigned long long写左移为什么被提醒超出type's width？？？\\n其实是因为(1 << n)的时候1是作为int值来进行运算的\\n然后我用快速幂为什么得出结果都是0直到算$n = 32$才好???\\n这是怎么溢出的啊QAQ，明明全程开的unsigned long long\\n下考之后想起可能是函数返回值用的int?\\n然后心态炸裂了,就直接莽了高精度\\n最后看到源代码140行，当场就觉得T1考这样是怎么说???\\n最后用掉了1h，起身上厕所去，然后用了5 min(有麓山的在上厕所不能进去)\\nUPD on Day2: Day1T1似乎高精乘写挂了\\nT2\\n一开始的时候看到了子串，所以以为是从叶节点到根节点的括号串，所以就有多个括号串\\n用了一个栈维护一下，然后树上操作就好了\\n写完发现自己错了，然后将(())与()的情况分开讨论了一下，发现微调还是可以做的\\n然后就统计了一下(())单个嵌套的次数，并且按照一个括号串来处理\\n最后发现自己没有考虑括号串连续不连续的问题，改了一下，更新了之前的文件交了上去\\n然后考试结束前30min发现题意理解错了，怪不得对拍怎么都不出问题，样例怎么都过不去\\n所以就发现实际上是一个前缀，然后认为前缀就可以直接维护一个dp在线操作就好\\n结果就成功的爆零了，稍微微调了一下发现可以过小样例，所以就直接交了\\n提交时间: 2019.11.16 11:59:51,现在想想还是有点后怕\\nT3\\n不会，上来直接莽一个暴力，就是枚举每一条边的顺序\\n链和菊花图的部分分没想，不过其实应该是可做的\\n但是我发现暴力都是错的啊$!!!!!$然后我心态就真的炸了\\n最后发现暴力里面交换之后还是不对，必须要再维护一个值来进行交换\\n所以改了一手，测试样例发现: 原先对的部分错了，原先错的部分对了\\n我真的自闭了啊啊啊啊啊啊\\n然后就去一直刚T2了，我第一次觉得自己可以被T1玩得这么没心态\\n后面下了考场之后似乎可以考虑在某个部分分下思考贪心就做得出来\\n人都给它整自闭了\\n后记\\n下午还觉得自己T1还算比较稳的，应该能过吧\\n然后晚饭过后有一个朋友过来跟我讲我Day1怎么爆零了(对话如下)\\n1\\n2\\n3\\n4\\n5\\n6\\n7\\n8B: 您今天是怎么考的啊\\nA: 没打好吧，可能Day1真就爆零了，被T1搞自闭了\\nB: 那要是我的话就不止是自闭了\\nA: 您怎么知道我成绩的？您测了我代码？\\nB: 是的，本来没打算说的\\nA: 那我真自闭了\\nB: 原来你还没有自测啊\\nB: 我错了，我真的错了\\n\\n\\n\\n于是乎，我晚上在家里哭了两场，要不是有家父安抚还有自己的心态还算可以的话，第二天可能就在考场上直接哭了吧\\nDay 2\\n翻盘可能失败，因为不知道盘是什么样子\\n\\nT1\\n看起来像是昨天下考之后看的悬线法dp?\\n不会，打个暴力找找规律，发现在a[i][j] < 2的时候爆搜比较好做？\\n其实可以直接把a[i][j]变成多个菜品就好？\\n然后敲了暴力之后觉得T2更可做，做T2去了\\nT2\\ndp\\n随便敲敲找出$O(n ^ 3)$的$dp$转移式\\n一开始的时候以为贪心就能过，然后调了30min，然后发现不能做，就直接上了dp\\n然后似乎可以套两层优化到一个比较好的复杂度？\\nT3\\n似乎可以针对每个点来思考对于这个点来说有多少条边可以在删除之后使得这个点成为这个子树的重心\\n然后想了想，似乎是可以线性转移的？\\n但是没时间了，心态就很爆炸了\\nCSP后记\\n今年考得的确超出了大部分人的预期了吧\\n回家之后又哭了一场，真是心态不好\\n回到机房之后高二学长都安慰说还有一年\\n但是还是很可惜啊，不然就可以有250+了\\n现在当务之急的还是要把文化课补上来\\n其实他们也没学多少东西的说",
+    "url": "blog/2019-11-15/CSP_tourist.html"
+  },
+  "CSP游记": {
+    "meta": {
+      "create": "2019.11.15",
+      "description": "CCF改革第一代",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.18",
+      "tags": [
+        "tourist"
+      ],
+      "template": "template",
+      "title": "CSP游记",
+      "top": "1"
+    },
+    "text": "CSP游记\\nDay -1\\n去试机了，键盘是附中大机房一毛一样的键盘，而且还要更加顺滑一些\\n手打了一个zkw + dijkstra然后就被李总赶走了\\n模板没打完，我要完了\\nDay 0\\n\\n在学校里面打模板\\n发现好几道题目都是没开long long或者没有取模导致样例都不过\\n感觉状态其实也没有自己想的那么好\\nDay 1\\n心态可能有点超级爆炸吧\\nT1\\n可能出题人还是照顾了一下考生吧?\\n$n \\\\leqslant 64$\\n拿到T1看到数据范围就知道要开unsigned long long，HNOI2018D1T1的教训还是记得的(因为没开unsigned long long丢了10分)\\n然后看完题就知道了$O(n)$的做法，还算是一道简单的签到题吧\\n所以我开了unsigned long long写左移为什么被提醒超出type's width？？？\\n其实是因为(1 << n)的时候1是作为int值来进行运算的\\n然后我用快速幂为什么得出结果都是0直到算$n = 32$才好???\\n这是怎么溢出的啊QAQ，明明全程开的unsigned long long\\n下考之后想起可能是函数返回值用的int?\\n然后心态炸裂了,就直接莽了高精度\\n最后看到源代码140行，当场就觉得T1考这样是怎么说???\\n最后用掉了1h，起身上厕所去，然后用了5 min(有麓山的在上厕所不能进去)\\nUPD on Day2: Day1T1似乎高精乘写挂了\\nT2\\n一开始的时候看到了子串，所以以为是从叶节点到根节点的括号串，所以就有多个括号串\\n用了一个栈维护一下，然后树上操作就好了\\n写完发现自己错了，然后将(())与()的情况分开讨论了一下，发现微调还是可以做的\\n然后就统计了一下(())单个嵌套的次数，并且按照一个括号串来处理\\n最后发现自己没有考虑括号串连续不连续的问题，改了一下，更新了之前的文件交了上去\\n然后考试结束前30min发现题意理解错了，怪不得对拍怎么都不出问题，样例怎么都过不去\\n所以就发现实际上是一个前缀，然后认为前缀就可以直接维护一个dp在线操作就好\\n结果就成功的爆零了，稍微微调了一下发现可以过小样例，所以就直接交了\\n提交时间: 2019.11.16 11:59:51,现在想想还是有点后怕\\nT3\\n不会，上来直接莽一个暴力，就是枚举每一条边的顺序\\n链和菊花图的部分分没想，不过其实应该是可做的\\n但是我发现暴力都是错的啊$!!!!!$然后我心态就真的炸了\\n最后发现暴力里面交换之后还是不对，必须要再维护一个值来进行交换\\n所以改了一手，测试样例发现: 原先对的部分错了，原先错的部分对了\\n我真的自闭了啊啊啊啊啊啊\\n然后就去一直刚T2了，我第一次觉得自己可以被T1玩得这么没心态\\n后面下了考场之后似乎可以考虑在某个部分分下思考贪心就做得出来\\n人都给它整自闭了\\n后记\\n下午还觉得自己T1还算比较稳的，应该能过吧\\n然后晚饭过后有一个朋友过来跟我讲我Day1怎么爆零了(对话如下)\\n1\\n2\\n3\\n4\\n5\\n6\\n7\\n8B: 您今天是怎么考的啊\\nA: 没打好吧，可能Day1真就爆零了，被T1搞自闭了\\nB: 那要是我的话就不止是自闭了\\nA: 您怎么知道我成绩的？您测了我代码？\\nB: 是的，本来没打算说的\\nA: 那我真自闭了\\nB: 原来你还没有自测啊\\nB: 我错了，我真的错了\\n\\n\\n\\n于是乎，我晚上在家里哭了两场，要不是有家父安抚还有自己的心态还算可以的话，第二天可能就在考场上直接哭了吧\\nDay 2\\n翻盘可能失败，因为不知道盘是什么样子\\n\\nT1\\n看起来像是昨天下考之后看的悬线法dp?\\n不会，打个暴力找找规律，发现在a[i][j] < 2的时候爆搜比较好做？\\n其实可以直接把a[i][j]变成多个菜品就好？\\n然后敲了暴力之后觉得T2更可做，做T2去了\\nT2\\ndp\\n随便敲敲找出$O(n ^ 3)$的$dp$转移式\\n一开始的时候以为贪心就能过，然后调了30min，然后发现不能做，就直接上了dp\\n然后似乎可以套两层优化到一个比较好的复杂度？\\nT3\\n似乎可以针对每个点来思考对于这个点来说有多少条边可以在删除之后使得这个点成为这个子树的重心\\n然后想了想，似乎是可以线性转移的？\\n但是没时间了，心态就很爆炸了\\nCSP后记\\n今年考得的确超出了大部分人的预期了吧\\n回家之后又哭了一场，真是心态不好\\n回到机房之后高二学长都安慰说还有一年\\n但是还是很可惜啊，不然就可以有250+了\\n现在当务之急的还是要把文化课补上来\\n其实他们也没学多少东西的说",
+    "url": "blog/2019-11-15/CSP_tourist.html"
+  },
+  "Home Page": {
+    "meta": {
+      "create": "2019.10.4",
+      "description": "",
+      "index": true,
+      "location": ".",
+      "modified": "2020.2.7",
+      "tags": [
+        "Home"
+      ],
+      "template": "template",
+      "title": "Home Page",
+      "top": "0"
+    },
+    "text": "欢迎来到 Eqvpkbz’s Site!\\n博客里多关于OI,各位随意翻阅\\n水平不高，文章有错误烦请各位及时提出\\n最近更新\\nTDList\\n任务清单\\n阅读全文\\n博客搭建教程搭建个人博客全过程阅读全文\\nCSP2019游记被省三劝退役了阅读全文\\nzsh插件推荐zsh的一些提高生产力的插件阅读全文\\nmanjaro系统初探manjaro系统安装及初始化全过程阅读全文\\n代码起手式代码模板阅读全文\\nvimrcvim的配置阅读全文\\n数论学习数论相关的东西阅读全文\\nOI中犯过的错误应该是OIers比较常犯的阅读全文\\n2019-11-4测试总结二分答案等等阅读全文\\n查看全部",
+    "url": "index.html"
+  },
+  "Linux初探": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "Linux相关",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "Linux"
+      ],
+      "template": "template",
+      "title": "Linux初探",
+      "top": "0"
+    },
+    "text": "Linux初探\\n原先的$Ubuntu$系统实在是长得太丑了，所以我们可以考虑换一下系统的主题\\n图标主题\\n系统主题\\n然后是终端，比较推荐$zsh$",
+    "url": "blog/2019-10-20/Linux.html"
+  },
+  "OI中犯过的错误": {
+    "meta": {
+      "create": "2019.11.4",
+      "description": "应该是OIers比较常犯的",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.4",
+      "tags": [
+        "No Tag"
+      ],
+      "template": "template",
+      "title": "OI中犯过的错误",
+      "top": "0"
+    },
+    "text": "OI中犯过的错误\\n\\n数组开小了 $* 1$\\n数组开大了 $* 2$\\n文件名打错了 $* 1$\\n函数传参传错了 $* 1$ \\n原文件未另存直接在原文件上改进算法 $* 1$\\n",
+    "url": "blog/2019-11-4/all-mistakes-in-OI.html"
+  },
+  "ST表": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "需要预处理的数据结构",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "Data_structure"
+      ],
+      "template": "template",
+      "title": "ST表",
+      "top": "0"
+    },
+    "text": "ST表\\nIntroduction\\n很好的用二进制来优化了$RMQ$中的操作\\nBody\\n定义一个数组$f[i][j]$表示数列中$[i,2 ^ j - 1]$这一段区间的极值\\n可得 \\n$$f[i][j] = max(f[i][j-1],f[i+2^{j-1}][j-1])$$\\n先说一下这个的正确性,因为我们知道\\n$$f[i][j] = max\\\\{f[i,i+2^j-1]\\\\}$$\\n且\\n$$[i,i+2^j-1] = [i,i+2^{j-1}-1],[i+2^{j-1},i+2^j-1]$$\\n其实也就是从中间分开，分成两个相等的区间\\n那么f[i][0]又是什么呢？\\n它就是每个数组对应的值\\n因为\\n$$f[i][0] = max\\\\{f[i,i+2^j-1]\\\\}$$\\n$$2^0 = 1$$\\n所以\\n$$f[i][0] = max\\\\{f[i,i]\\\\}$$\\n所以这个时候所有的f[i][0]都是当前节点的值\\n所以也就比较好理解了\\n然后还有一个比较重要的问题: 循环边界\\n首先我们知道$i+2^j-1 \\\\leqslant n$\\n所以因为是先枚举j，再枚举的i，所以这个时候就可以作为i的边界\\n那么$j$的边界呢？\\n$$\\\\because i+2^j-1\\\\leqslant n$$\\n所以当$i$最小为$1$时 \\n$$2^j \\\\leqslant n $$\\n也就是\\n$j\\\\leqslant \\\\log_2{n}$\\n好了，那么下面就是主程序\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28#include<cstdio>\\n#include<cmath>\\n#include<algorithm>\\nusing namespace std;\\n#define maxn 1000005\\nint f[maxn][21];\\nint ask(int l,int r)\\n{\\n    int k=log2(r-l+1); \\n    return max(f[l][k],f[r-(1<<k)+1][k]);\\n}\\nint main()\\n{\\n    int n,m;\\n    scanf(\\ % d % d\\ ,&n,&m);\\n    for(int i=1;i<=n;i++) scanf(\\ % d\\ ,&f[i][0]);\\n    int Max_j = log2(n);\\n    for(int j=1;j<=Max_j;j++)\\n        for(int i=1;i+(1<<j)-1<=n;i++)\\n            f[i][j]=max(f[i][j-1],f[i+(1<<(j-1))][j-1]); \\n    for(int i=1;i<=m;i++)\\n    {\\n        int l,r;\\n        scanf(\\ % d % d\\ ,&l,&r);\\n        printf(\\ % d\\\\n\\ ,ask(l,r));\\n    }\\n    return 0;\\n}\\n\\n\\n\\nConclusion\\nST表方便便捷，支持$O(1)$查询，比较适合在不变的序列上查找最值\\nUpdate - 2018.9.15\\n比较重要的一点是循环的顺序，如果i和j的位置没有搞好的话那么将会出很大的锅\\n今天考试的时候才发现这里有循环顺序错误啥的",
+    "url": "blog/2019-10-20/ST_Table.html"
+  },
+  "TDList": {
+    "meta": {
+      "create": "2019.10.5",
+      "description": "任务清单",
+      "index": true,
+      "location": ".",
+      "modified": "2020.1.30",
+      "tags": [
+        "plan"
+      ],
+      "template": "template",
+      "title": "TDList",
+      "top": "233"
+    },
+    "text": "To Do List\\nBefore CSP-S ROUND1\\n\\n\\n[x] 主定理\\n\\n\\n[ ] 排列组合\\n\\n\\n[x] 期望\\n\\n\\n[x] 康托展开\\n\\n\\nBefore CSP-S ROUND2\\n\\n\\n[ ] 妙妙的性质\\n\\n\\n[ ] const 传参\\n\\n\\n[ ] 树状数组第K大\\n\\n\\n[ ] Kruskal重构树\\n\\n\\n[ ] 主席树\\n\\n\\n[ ] cdq分治\\n\\n\\n[ ] 树状数组求逆序对\\n\\n\\n[ ] 整体二分\\n\\n\\n[ ] 组合数学 - 相关文章\\n\\n\\n[ ] 线性求逆元\\n\\n\\n杂项\\n\\n\\n[x] 读入、输出优化\\n\\n\\n[ ] 复杂度\\n\\n\\n[x] 离散化\\n\\n\\n[ ] 分数规划\\n\\n\\n[ ] 随机化 \\n\\n\\n[ ] 随机函数\\n\\n\\n[x] 爬山算法\\n\\n\\n[ ] 模拟退火\\n\\n\\n[ ] 悬线法\\n\\n\\n[ ] 计算理论基础\\n\\n\\n[ ] 字节顺序\\n\\n\\n[ ] Stern-Brocot 树与 Farey 序列\\n\\n\\n[ ] 格雷码\\n\\n\\n[x] 表达式求值\\n\\n\\n[x] 前缀和\\n\\n\\n[x] 差分\\n\\n\\nAlgorithm\\n\\n\\n[ ] Sort\\n\\n\\n[ ] Radix_sort\\n\\n\\n[x] Quick_sort\\n\\n\\n[x] Merge_sort\\n\\n\\n[x] Heap_sort\\n\\n\\n[ ] Count_sort\\n\\n\\n[ ] Shell_sort\\n\\n\\n[ ] Search(记得剪枝)\\n\\n\\n[x] DFS\\n\\n\\n[x] BFS\\n\\n\\n[ ] 双向搜索\\n\\n\\n[ ] 启发式搜索\\n\\n\\n[ ] A*\\n\\n\\n[ ] 迭代加深搜索\\n\\n\\n[ ] IDA*\\n\\n\\n[x] 回溯法\\n\\n\\n[ ] Dancing Links\\n\\n\\n[ ] Dynamic Planning\\n\\n\\n[x] 背包 DP\\n\\n\\n[x] 区间 DP\\n\\n\\n[ ] DAG 上的 DP\\n\\n\\n[x] 树形 DP\\n\\n\\n[ ] 基环树 DP\\n\\n\\n[x] 状压 DP\\n\\n\\n[ ] 数位 DP\\n\\n\\n[ ] 插头 DP\\n\\n\\n[ ] 计数 DP\\n\\n\\n[ ] DP 优化 \\n\\n\\n[ ] 二进制分组解多重背包\\n\\n\\n[ ] 单调队列/单调栈优化\\n\\n\\n[ ] 斜率优化\\n\\n\\n[ ] 四边形不等式优化\\n\\n\\n[ ] 状态设计优化\\n\\n\\n\\n\\n[ ] 离线算法\\n\\n\\n[ ] CDQ 分治\\n\\n\\n[ ] 整体二分\\n\\n\\n[ ] 莫队算法\\n\\n\\nMath\\n\\n\\n[x] 进制\\n\\n\\n[x] 位运算\\n\\n\\n[x] 高精度\\n\\n\\n[x] 快速幂\\n\\n\\n[x] 整除及其性质 \\n\\n\\n[x] 素数\\n\\n\\n[x] 最大公约数\\n\\n\\n[x] 欧拉函数\\n\\n\\n[x] 筛法\\n\\n\\n[x] 欧拉筛\\n\\n\\n[x] 埃氏筛\\n\\n\\n\\n\\n[x] 欧拉定理 & 费马小定理\\n\\n\\n[ ] 类欧几里德算法\\n\\n\\n[ ] 同余方程相关 \\n\\n\\n[x] 裴蜀定理\\n\\n\\n[x] 乘法逆元\\n\\n\\n[x] 线性同余方程\\n\\n\\n[x] 中国剩余定理\\n\\n\\n[ ] 扩展中国剩余定理\\n\\n\\n[ ] BSGS\\n\\n\\n[ ] 原根\\n\\n\\n[ ] 线性代数 \\n\\n\\n[x] 矩阵\\n\\n\\n[ ] 高斯消元\\n\\n\\n[ ] 线性基\\n\\n\\n[ ] 复数\\n\\n\\n[ ] 分段打表\\n\\n\\n[ ] 牛顿迭代法\\n\\n\\n[ ] 数论函数相关 \\n\\n\\n[ ] 莫比乌斯反演\\n\\n\\n[ ] 杜教筛\\n\\n\\n[ ] Min_25 筛\\n\\n\\n[ ] 多项式 \\n\\n\\n[ ] 拉格朗日插值\\n\\n\\n[ ] 快速傅里叶变换\\n\\n\\n[ ] 快速数论变换\\n\\n\\n[ ] 快速沃尔什变换\\n\\n\\n[ ] 多项式求逆\\n\\n\\n[ ] 多项式开方\\n\\n\\n[ ] 多项式除法|取模\\n\\n\\n[ ] 多项式对数函数|指数函数\\n\\n\\n[ ] 多项式牛顿迭代\\n\\n\\n[ ] 多项式多点求值|快速插值\\n\\n\\n[ ] 多项式三角函数\\n\\n\\n[ ] 多项式反三角函数\\n\\n\\n[ ] 组合数学 \\n\\n\\n[ ] 排列组合\\n\\n\\n[ ] 卡特兰数\\n\\n\\n[ ] 斯特林数\\n\\n\\n[x] 康托展开\\n\\n\\n[ ] 容斥原理\\n\\n\\n[x] 抽屉原理\\n\\n\\n[ ] 常系数齐次线性递推\\n\\n\\n[ ] 概率 & 期望\\n\\n\\n[ ] 斐波那契数列\\n\\n\\n[ ] 置换群\\n\\n\\n[ ] 数值积分\\n\\n\\n[ ] 线性规划\\n\\n\\n[ ] 单纯形\\n\\n\\n[ ] 博弈论\\n\\n\\n[ ] 卢卡斯定理\\n\\n\\n[ ] 扩展卢卡斯定理\\n\\n\\n[ ] 数学杂项\\n\\n\\nString\\n\\n\\n[x] 哈希\\n\\n\\n[x] 前缀函数与 KMP 算法\\n\\n\\n[ ] Z 函数（扩展 KMP）\\n\\n\\n[ ] 字典树 (Trie)\\n\\n\\n[ ] 回文自动机\\n\\n\\n[ ] 后缀数组 (SA)\\n\\n\\n[ ] AC 自动机\\n\\n\\n[ ] 后缀自动机 (SAM)\\n\\n\\n[ ] 后缀树\\n\\n\\n[ ] Manacher\\n\\n\\n[ ] 最小表示法\\n\\n\\n[ ] Lyndon 分解\\n\\n\\nGraph\\n\\n\\n[x] DFS（图论）\\n\\n\\n[x] BFS（图论）\\n\\n\\n[ ] 树上问题 \\n\\n\\n[x] 树基础\\n\\n\\n[x] 最近公共祖先\\n\\n\\n[ ] 树的其他问题\\n\\n\\n[ ] 树哈希\\n\\n\\n[x] 树链剖分\\n\\n\\n[ ] 树分治\\n\\n\\n[ ] 动态树分治\\n\\n\\n[ ] 虚树\\n\\n\\n[ ] 树上启发式合并\\n\\n\\n[ ] 矩阵树定理\\n\\n\\n[ ] 有向无环图\\n\\n\\n[ ] 拓扑排序\\n\\n\\n[ ] 最小生成树\\n\\n\\n[ ] 最小树形图\\n\\n\\nData Structure\\n\\n\\n[ ] ZKW线段树\\n\\n\\n[x] 栈\\n\\n\\n[x] 队列\\n\\n\\n[x] 链表\\n\\n\\n[ ] 哈希表\\n\\n\\n[x] 并查集\\n\\n\\n[ ] 堆 \\n\\n\\n[x] 二叉堆\\n\\n\\n[ ] 配对堆\\n\\n\\n[ ] 左偏树\\n\\n\\n[ ] Radix_heap\\n\\n\\n[ ] Fibnacci_heap\\n\\n\\n[ ] 块状数据结构 \\n\\n\\n[ ] 树分块\\n\\n\\n[ ] 块状链表\\n\\n\\n[ ] 块状数组\\n\\n\\n[ ] Sqrt Tree\\n\\n\\n[x] 单调栈\\n\\n\\n[x] 单调队列\\n\\n\\n[x] ST 表\\n\\n\\n[x] 树状数组\\n\\n\\n[x] 线段树\\n\\n\\n[ ] 线段树 & 区间历史最值\\n\\n\\n[x] 二维线段树/树状数组\\n\\n\\n[ ] 划分树\\n\\n\\n[ ] 二叉搜索树\\n\\n\\n[ ] 平衡树\\n\\n\\n[ ] Treap\\n\\n\\n[ ] FHQ_Treap\\n\\n\\n[x] Splay\\n\\n\\n[ ] WBLT\\n\\n\\n[ ] Size Balanced Tree\\n\\n\\n[ ] AVL 树\\n\\n\\n[ ] 替罪羊树\\n\\n\\n[ ] 笛卡尔树\\n\\n\\n[ ] 可持久化数据结构 \\n\\n\\n[ ] 可持久化线段树\\n\\n\\n[ ] 可持久化块状数组\\n\\n\\n[ ] 可持久化平衡树\\n\\n\\n[ ] 可持久化字典树\\n\\n\\n[ ] 可持久化可并堆\\n\\n\\n[ ] 树套树 \\n\\n\\n[ ] 线段树套线段树\\n\\n\\n[ ] 平衡树套线段树\\n\\n\\n[ ] 线段树套平衡树\\n\\n\\n[ ] 树状数组套主席树\\n\\n\\n[ ] K-D Tree\\n\\n\\n[ ] 珂朵莉树\\n\\n\\n[ ] 动态树\\n\\n\\n[ ] Link Cut Tree\\n\\n\\n[ ] Euler Tour Tree\\n\\n\\n[ ] Top Tree\\n\\n\\n[ ] 析合树\\n\\n\\n[x] 最短路\\n\\n\\n[ ] 差分约束\\n\\n\\n[ ] k 短路\\n\\n\\n[ ] 连通性相关 \\n\\n\\n[x] 强连通分量\\n\\n\\n[ ] 双连通分量\\n\\n\\n[x] 割点和桥\\n\\n\\n[ ] 2-SAT\\n\\n\\n[ ] 欧拉图\\n\\n\\n[ ] 哈密顿图\\n\\n\\n[ ] 二分图\\n\\n\\n[ ] 最小环\\n\\n\\n[ ] 平面图\\n\\n\\n[ ] 图的着色\\n\\n\\n[ ] 网络流 \\n\\n\\n[ ] 拆点\\n\\n\\n[ ] 最大流\\n\\n\\n[ ] 最小割\\n\\n\\n[ ] 费用流\\n\\n\\n[ ] 上下界网络流\\n\\n\\n[ ] Prufer 序列\\n\\n\\n[ ] 图论杂项\\n\\n\\n计算几何\\n\\n\\n[ ] 计算几何部分简介\\n\\n\\n[ ] 二维计算几何基础\\n\\n\\n[ ] 三维计算几何基础\\n\\n\\n[ ] 距离\\n\\n\\n[ ] Pick 定理\\n\\n\\n[ ] 三角剖分\\n\\n\\n[ ] 凸包\\n\\n\\n[x] 扫描线\\n\\n\\n[ ] 旋转卡壳\\n\\n\\n[ ] 半平面交\\n\\n\\n[ ] 平面最近点对\\n\\n\\n[ ] 随机增量法\\n\\n\\n[ ] 计算几何杂项\\n\\n",
+    "url": "blog/2019-10-5/todo.html"
+  },
+  "Windows系统初探": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "windows系统相关",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "windows"
+      ],
+      "template": "template",
+      "title": "Windows系统初探",
+      "top": "0"
+    },
+    "text": "Windows系统初探\\n首先肯定是$Windows10$的激活之类的，在此推荐云萌Windows激活工具\\n然后再是$Office$，去官网上面就有下Office 2019专业增强版\\n再是$Office$的激活，在此强烈推荐Office Tool Plus\\n然后$dell$的笔记本可以去装一个$Support Assist$\\n然后就是一个$OIer$应该有的配置\\n$Windows$下的$Lemon$，推荐Lemon Plus\\nMingw相关的包，推荐直接去官网下Mingw\\n编辑器我觉得Vscode还不错\\n然后提到Markdown还是说一下Markdown的图床相关 - Picgo",
+    "url": "blog/2019-10-20/windows-system.html"
+  },
+  "[题解]LuoguP1006传纸条": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "一道比较好的dp题",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "solution",
+        "dp"
+      ],
+      "template": "template",
+      "title": "[题解]LuoguP1006传纸条",
+      "top": "0"
+    },
+    "text": "[题解]LuoguP1006传纸条\\n本题题面见 LuoguP1006\\n其实可以将纸条的两次传递看作是一次传递两张纸条，且路径不能相交\\n找规律\\n\\n对比上图我们不难发现:\\n当第一张纸条与第二张纸条传递了同样多的次数时在同一条直线上(本就应该如此)，但是可以推论出此条直线的斜率是1\\n因为每次移动只能让纸条的横坐标或者是纵坐标增加一个单位，而不管怎么移，两种选择都会在一条斜率为1的直线上，如下图所示\\n\\n同时，因为每次移动是在一条直线上向下推进，所以只有可能是相同步数后两张纸条在同一斜率为1的直线上\\n建立状态转移方程\\n用$f(i,j,k)$表示这一步的横纵坐标之和为$i$(步数)，第一张纸条纵坐标为$j$，第二张纸条纵坐标为$k$(因为路径不重合，所以$j \\\\ne k$，不妨令$j < k$) \\n则有每个状态可以从以下4种情况转移而来：\\n\\n第一张纸条从上面转移过来，第二张纸条从上面转移过来\\n\\n$$f(i,j,k)=max(f(i,j,k),f(i-1,j-1,k-1)+a[j][i-j]+a[k][i-k])$$\\n\\n第一张纸条从上面转移过来，第二张纸条从左边转移过来\\n\\n$$f(i,j,k)=max(f(i,j,k),f(i-1,j-1,k)+a[j][i-j]+a[k][i-k])$$\\n\\n第一张纸条从左边转移过来，第二张纸条从上面转移过来\\n\\n$$f(i,j,k)=max(f(i,j,k),f(i-1,j,k-1)+a[j][i-j]+a[k][i-k])$$\\n\\n第一张纸条从左边转移过来，第二张纸条从左边转移过来\\n\\n$$f(i,j,k)=max(f(i,j,k),f(i-1,j,k)+a[j][i-j]+a[k][i-k])$$\\n不难看出里面都将$f(i,j,k)$与转移之前的作了比较，而且都有$a[j][i-j]$与$a[k][i-k]$\\n同时注意状态转移方程的条件:\\n没有越界，而且纸条没有重合,由于一开始数组中都是0，不进行越界判断也无妨，但是纸条重合的判断必须有，即只有$k - 1 > j$时才能从第3种情况转移过来\\n一点小优化\\n注意到四种状态转移都有$f(i - 1)$这一维，所以可以搞一个滚动数组减小空间复杂度,需要注意的就是由于状态都是由更小的$j$或$k$转移而来，$j$和$k$都需要倒序枚举，防止状态在转移之前被修改。\\n代码构造\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44#include <cstdio>\\n#include <algorithm>\\nusing namespace std;\\n#define maxn 205\\nint n,m,f[maxn][maxn],a[maxn][maxn];\\ninline int min(int a,int b){return a < b ? a : b;}\\nint main()\\n{\\n    #ifndef ONLINE_JUDGE\\n        freopen(\\ main.in\\ ,\\ r\\ ,stdin);\\n        freopen(\\ main.out\\ ,\\ w\\ ,stdout);\\n    #endif\\n\\n    scanf(\\ % d % d\\ ,&n,&m);\\n    for(int i = 1;i <= n;i ++)\\n        for(int j = 1;j <= m;j ++)\\n            scanf(\\ % d\\ ,&a[i][j]);\\n\\n    f[1][2] = a[1][2] + a[2][1];\\n\\n    for(int i = 4;i < n + m;i ++)\\n    {\\n        int Min1 = min(i - 2,n),Min2 = min(i - 1,n);\\n\\n        for(int j = Min1;j >= 1;j --)\\n        {\\n            for(int k = Min2;k > j;k --)\\n            {\\n                if(j > 1) f[j][k] = max(f[j][k],f[j - 1][k]);\\n                if(j > 1 && k > 1) f[j][k] = max(f[j][k],f[j - 1][k - 1]);\\n                if(k - 1 > j) f[j][k] = max(f[j][k],f[j][k - 1]);\\n                f[j][k] += a[j][i - j] + a[k][i - k];\\n            }\\n        }\\n    }\\n    printf(\\ % d\\ ,f[n - 1][n]);\\n\\n    #ifndef ONLINE_JUDGE\\n        fclose(stdin);\\n        fclose(stdout);\\n    #endif\\n\\n    return 0;\\n}\\n\\n\\n\\n致谢\\n受Dalao的题解的影响而写出的题解，因为一开始觉得比较晦涩难懂，所以就重写了一篇给自己一个总结",
+    "url": "blog/2019-10-20/LuoguP1006.html"
+  },
+  "[题解]LuoguP1280尼克的任务": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "一道比较好的dp题",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "solution",
+        "dp"
+      ],
+      "template": "template",
+      "title": "[题解]LuoguP1280尼克的任务",
+      "top": "0"
+    },
+    "text": "LuoguP1280尼克的任务\\n状态转移方程\\n易发现当$f[i]$所代表的是$i ~ n$的最大空余时间时，可以倒着转移状态\\n即有\\n无任务时 \\n$$f[i] = f[i + 1] + 1;$$\\n有任务时\\n$$f[i] = max{f[i],f[i + a[num].len]}$$\\ncode\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41/*\\nf[i] => 从 i 到 n 时刻的最大空余时间\\n易推得:\\nf[i] = f[i + 1] + 1; //无任务时\\nf[i] = max{f[i],f[i + a[num].len]} // 有任务时分别枚举取最大值\\n*/\\n\\n#include<cstdio>  \\n#include<algorithm>  \\nusing namespace std;\\n#define maxn 10005\\nint n,k,cnt[maxn],num = 1,f[maxn];// 从第一个任务开始枚举，所以num = 1;\\nstruct work\\n{\\n    int start,len;// 开始时间和延续时长\\n}a[maxn];\\ninline bool cmp(work a,work b){return a.start > b.start;} // 自定义cmp,根据开始时间排序\\nint main()\\n{\\n    scanf(\\ % d % d\\ ,&n,&k);\\n    for(int i = 1;i <= k;i ++)  \\n    {  \\n        scanf(\\ % d % d\\ ,&a[i].start,&a[i].len);\\n        cnt[a[i].start] ++; // 在该时间开始的任务数量 + 1\\n    }\\n    sort(a + 1,a + k + 1,cmp); // 根据开始的时间排序\\n    for(int i = n;i >= 1;i --) // 倒序搜索\\n    {\\n        if(!cnt[i]) f[i] = f[i + 1] + 1; //无任务时\\n        else // 有任务时\\n        {\\n            for(int j = 1;j <= cnt[i];j++)  // 枚举任务数量\\n            {\\n                if(f[i + a[num].len] > f[i]) f[i] = f[i + a[num].len];\\n                num ++; // 枚举下一个任务\\n            }\\n        }\\n    }\\n    printf(\\ % d\\ ,f[1]);// 输出1 - n的最大空闲时间\\n    return 0;\\n}\\n\\n",
+    "url": "blog/2019-10-20/LuoguP1280.html"
+  },
+  "manjaro系统初探": {
+    "meta": {
+      "create": "2020.1.29",
+      "description": "manjaro系统安装及初始化全过程",
+      "index": true,
+      "location": ".",
+      "modified": "2020.2.7",
+      "tags": [
+        "Linux"
+      ],
+      "template": "template",
+      "title": "manjaro系统初探",
+      "top": "0"
+    },
+    "text": "manjaro系统初探\\n其实manjaro各方面都挺香的\\n我觉得可以吊打ubuntu\\n好的，接下来记录一下安装的过程\\n首先和ubuntu的刻录软件一样，用的是rufus\\n刻录好之后安装就行\\n更换国内源\\n1\\n2\\n3sudo pacman -Syy\\nsudo pacman-mirrors -i -c China -m rank  #选清华源即可\\nsudo pacman -Syyu\\n\\n\\n\\n添加Arch的国内源\\n1\\n2sudo pacman -S vim\\nsudo vim /etc/pacman.conf\\n\\n\\n\\n在文件末尾添加\\n1\\n2\\n3[archlinuxcn]\\nSigLevel = Optional TrustedOnly\\nServer = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch\\n\\n\\n\\n然后\\n1sudo pacman -Syy && sudo pacman -S archlinuxcn-keyring\\n\\n\\n\\n安装git\\n1\\n2\\n3sudo pacman -S git\\ngit config --global user.name \\ Eqvpkbz\\ \\ngit config --global user.email \\ 2581505024@qq.com\\ \\n\\n\\n\\n安装zsh\\n1\\n2sudo pacman -S zsh\\nsh -c \\ $(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\\ \\n\\n\\n\\n输入法\\n1\\n2\\n3sudo pacman -S yay fcitx-sogoupinyin fcitx-im fcitx-configtool\\nsudo pacman -S fcitx-skin-material yay\\nyay -S fcitx-qt4\\n\\n\\n\\n设置中文输入法环境变量，编辑~/.xprofile文件，增加下面几行(如果文件不存在，则新建)\\n1\\n2\\n3export GTK_IM_MODULE=fcitx\\nexport QT_IM_MODULE=fcitx\\nexport XMODIFIERS=\\ @im=fcitx\\ \\n\\n\\n\\n打开fcitx配置-附加组件, 取消选定经典皮肤\\n常用软件安装\\n1\\n2\\n3\\n4\\n5\\n6\\n7\\n8sudo pacman -S screenfetch\\nsudo pacman -S deepin-picker deepin-screen-recorder deepin-screenshot deepin-system-monitor\\nsudo pacman -S gdb gcc make cmake clang nodejs npm maven\\nsudo pacman -S pycharm-professional visual-studio-code-bin\\nsudo pacman -S google-chrome unrar unzip p7zip\\nsudo pacman -S wps-office pencil gimp netease-cloud-music\\nsudo pacman -S aria2 filezilla albert net-tools\\nyay -S tree typora lemon-lime\\n\\n\\n\\n安装中文字体\\n1\\n2\\n3\\n4\\n5\\n6sudo pacman -S wqy-zenhei\\nsudo pacman -S wqy-bitmapfont\\nsudo pacman -S wqy-microhei\\nsudo pacman -S ttf-wps-fonts\\nsudo pacman -S adobe-source-han-sans-cn-fonts\\nsudo pacman -S adobe-source-han-serif-cn-fonts\\n\\n\\n\\nSkype\\n1\\n2sudo pacman -S gnome-keyring\\nyay -S skype\\n\\n\\n\\n然后登录skype的时候，输完密码会提示创建密钥环，此时不输任何密码，直接继续(不加密操作，可以让后面登录不用输密码)\\n值得一提的是KDE Wallet不能取消，不然每次网络密码要重输\\nTIM\\n安装TIM\\n1\\n2\\n3sudo pacman -S gnome-settings-daemon\\nsudo  cp  /etc/xdg/autostart/org.gnome.SettingsDaemon.XSettings.desktop   ~/.config/autostart\\nyay -S deepin-wine-tim \\n\\n\\n\\n然后安装即可\\n修改内置IE浏览器\\n因为deepin-wine内部似乎还打包了一个ie浏览器，但是什么内容都显示不出来\\n所以我们可以把ie浏览器改成系统的浏览器，比如google-chrome\\n\\n找到iexplore.exe的位置，一般在/home/用户名/.deepinwine/Deepin-TIM/drive_c/Program Files/Internet Explorer/，在此处打开终端\\n\\n先备份\\n1mv iexplore.exe iexplore.exe.backup\\n\\n\\n\\n\\n找到自己正在用的浏览器的位置，创建软连接\\n\\n1ln -s $(which google-chrome-stable) iexplore.exe\\n\\n\\n\\n个性化\\nKDE的konsole可以自定义终端背景\\nUbuntu弱爆了!!!\\n终端主题",
+    "url": "blog/2020-1-29/manjaro_test.html"
+  },
+  "vimrc": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "vim的配置",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.12",
+      "tags": [
+        "vim"
+      ],
+      "template": "template",
+      "title": "vimrc",
+      "top": "0"
+    },
+    "text": "vimrc\\nFor manjaro:\\n1sudo pacman -S gedit xsel\\n\\n\\n\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51\\n52\\n53\\n54\\n55\\n56\\n57\\n58if has(\\ syntax\\ )\\n  syntax on\\nendif\\n\\nset     nocompatible    \\ 去掉有关vi一致性模式，避免以前版本的bug和局限\\nset     ai!             \\ 设置自动缩进\\nset     tabstop=4       \\ 设置TAB为4格\\nset     shiftwidth=4    \\ 设定 << 和 >> 命令移动时的宽度为 4\\nset     softtabstop=4   \\ 使得按退格键时可以一次删掉 4 个空格\\nset     autoindent      \\ 设置自动缩进\\nset     smarttab        \\ 在行和段开始处使用制表符\\nset     nu              \\ 显示行号\\nset     mouse=a         \\ 激活鼠标\\nset     cursorline      \\ 突出显示该行\\nset     nobackup        \\ 覆盖文件时不备份\\ncolor   desert          \\ 设置颜色主题为DESERT\\nset     ruler           \\ 设置显示行号\\nset     autoread        \\ 设置自动读取文件\\nset     autowrite       \\ 在切换buffer时自动保存当前文件\\nset     autochdir       \\ 自动切换当前目录为当前文件所在的目录\\nset     incsearch       \\ 输入搜索内容时就显示搜索结果\\nset     hlsearch        \\ 搜索时高亮显示被找到的文本\\nset     showcmd         \\ 命令模式下，在底部显示，当前键入的指令\\nset     showmatch       \\ 插入括号时，短暂地跳转到匹配的对应括号\\nset     matchtime=1     \\ 短暂跳转到匹配括号的时间\\nset     hidden          \\ 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存\\nset     smartindent     \\ 开启新行时使用智能自动缩进\\nset     guioptions-=T   \\ 隐藏工具栏\\nset     guioptions-=m   \\ 隐藏菜单栏\\nset     noerrorbells    \\ 不让vim发出讨厌的滴滴声 \\nset     t_Co=256        \\ 启用256色\\nset     undofile        \\ 保留撤销历史\\nset     history=1000    \\ Vim 需要记住多少次历史操作\\nfiletype plugin on      \\ 根据文件类型加载对应的插件\\nfiletype indent on      \\ 开启文件类型检查，并且载入与该类型对应的缩进规则\\n\\nmap <F5> <Esc>:w<CR> :!gedit %  <CR>\\nimap <F5> <Esc>:w<CR> :!gedit %  <CR>   \\ 按F5使用gedit打开\\n\\nmap <F6> <Esc>:w<CR> :!code %  <CR>\\nimap <F6> <Esc>:w<CR> :!code %  <CR>   \\ 按F6使用code打开(需安装VScode)\\n\\nmap <F9> <Esc>:w<CR> :!g++ %  -g -Wall -Wextra -o % <  && ./% < <CR>   \\nimap <F9> <Esc>:w<CR> :!g++ %  -g -Wall -Wextra -o % <  && ./% < <CR>   \\ 按F9编译运行\\n\\nfunc! YankToClipboard()\\n    exec \\ w\\ \\n    exec \\ !cat %  |xsel --clipboard\\ \\nendfunc\\n\\nmap <F8> :call YankToClipboard() <CR>\\nimap <F8> :call YankToClipboard() <CR> \\ 按F8将整个文件的内容拷贝到剪贴版内(需安装xsel)\\n\\nautocmd BufNewFile *.cpp 0r ~/.vim/template/cppconfig.cpp\\n\\nif filereadable(\\ /etc/vim/vimrc.local\\ )\\n  source /etc/vim/vimrc.local\\nendif\\n\\n",
+    "url": "blog/2019-10-20/vimrc.html"
+  },
+  "zsh插件推荐": {
+    "meta": {
+      "create": "2020.2.7",
+      "description": "zsh的一些提高生产力的插件",
+      "index": true,
+      "location": ".",
+      "modified": "2020.2.7",
+      "tags": [
+        "No Tag"
+      ],
+      "template": "template",
+      "title": "zsh插件推荐",
+      "top": "0"
+    },
+    "text": "zsh插件推荐\\n自带可开启: history, extract, web-search\\nautojump\\n1\\n2\\n3\\n4git clone git://github.com/joelthelion/autojump.git\\ncd /autojump\\n./install.py\\nvim ~/.zshrc\\n\\n\\n\\n把以下代码加到尾部\\n1[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && . ~/.autojump/etc/profile.d/autojump.sh\\n\\n\\n\\nzsh-autosuggestion\\n1git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions\\n\\n\\n\\nzsh-syntax-highlighting\\n1git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting\\n\\n\\n\\n开启插件\\n打开~/.zshrc\\n找到plugins\\n改为\\n1\\n2\\n3\\n4\\n5\\n6\\n7\\n8plugins=(\\n    git\\n    history\\n    extract\\n    web-search\\n    zsh-autosuggestions\\n    zsh-syntax-highlighting\\n)\\n\\n\\n\\n即可",
+    "url": "blog/2020-2-7/zsh.html"
+  },
+  "代码起手式": {
+    "meta": {
+      "create": "2020.1.31",
+      "description": "代码模板",
+      "index": true,
+      "location": ".",
+      "modified": "2020.1.31",
+      "tags": [
+        "No Tag"
+      ],
+      "template": "template",
+      "title": "代码起手式",
+      "top": "0"
+    },
+    "text": " 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51\\n52\\n53\\n54\\n55\\n56\\n57\\n58\\n59\\n60\\n61\\n62\\n63\\n64\\n65\\n66\\n67#include<cctype>\\n#include<cstdio>\\n#include<cmath>\\nusing namespace std;\\n\\n#define debug(...) fprintf(stderr,__VA_ARGS__)\\n#define DEBUG printf(\\ Passing [% s] in LINE % lld\\\\n \\ ,__FUNCTION__,__LINE__)\\n#define Debug debug(\\ Passing [% s] in LINE % lld\\\\n \\ ,__FUNCTION__,__LINE__)\\n#define file(FILENAME) freopen(#FILENAME\\ .in\\ ,\\ r\\ ,stdin),freopen(#FILENAME\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n\\ntypedef long long ll;\\ntypedef long double ldb;\\n\\n#define MAXBUF 2097152\\n#define FLUSHSIZE 1966080\\n#define Finline __inline__ __attribute__ ((always_inline))\\nchar READ_BUF[MAXBUF],*READ_P1=READ_BUF,*READ_P2=READ_BUF;\\nFinline int getc(){return READ_P1==READ_P2&&(READ_P2=(READ_P1=READ_BUF)+fread(READ_BUF,1,MAXBUF,stdin),READ_P1==READ_P2)?EOF:*READ_P1++;}\\nstatic inline ll read()\\n{\\n    ll num=0;char c,sf=1;\\n    while(isspace(c=getc()));if(c=='-') sf=-1,c=getc();\\n    while(num=num*10+c-48,isdigit(c=getc()));\\n    return num*sf;\\n}\\nstatic inline ldb read_dec()\\n{\\n    ldb num=0,decs=1;char c,sf=1;\\n    while(isspace(c=getc()));if(c=='-') sf=-1,c=getc();\\n    while(num=num*10+c-48,isdigit(c = getc()));\\n    if(c!='.') return num*sf;c=getc();\\n    while(num+=(decs*=0.1)*(c-48),isdigit(c=getc()));\\n    return num*sf;\\n}\\nchar WRITE_BUF[MAXBUF],WRITE_BUFFER[20];int WRITE_P1,WRITE_P2=-1;\\nstatic inline void flush(){fwrite(WRITE_BUF,1,WRITE_P2+1,stdout),WRITE_P2=-1;}\\nstatic inline void check(){if(WRITE_P2>FLUSHSIZE) flush();return ;}\\nstatic inline void write(ll x)\\n{\\n    if(x<0) WRITE_BUF[++WRITE_P2]=45,x=-x;\\n    do{WRITE_BUFFER[++WRITE_P1]=x% 10+48;}while(x/=10);\\n    do{WRITE_BUF[++WRITE_P2]=WRITE_BUFFER[WRITE_P1];}while(--WRITE_P1);\\n    WRITE_BUF[++WRITE_P2]='\\\\n';\\n}\\nstatic inline void write_dec(ldb x,int len)\\n{\\n    if(x<0) WRITE_BUF[++WRITE_P2]=45,x=-x;ll integral=floor(x);x-=integral;\\n    do{WRITE_BUFFER[++WRITE_P1]=integral% 10+48;}while(integral/=10);\\n    do{WRITE_BUF[++WRITE_P2]=WRITE_BUFFER[WRITE_P1];}while(--WRITE_P1);\\n    WRITE_BUF[++WRITE_P2]='.';\\n    do{x*=10,integral=floor(x),x-=integral,WRITE_BUF[++WRITE_P2]=integral+48;}while(--len);\\n    WRITE_BUF[++WRITE_P2]='\\\\n';\\n}\\nint main()\\n{\\n#ifndef ONLINE_JUDGE\\n    file();\\n#endif\\n\\n\\n\\n#ifndef ONLINE_JUDGE\\n    file_close;\\n#endif\\n    return 0;\\n}\\n\\n",
+    "url": "blog/2020-1-31/code_model.html"
+  },
+  "位运算初探": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "一些位运算可以很妙妙的用",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "二进制"
+      ],
+      "template": "template",
+      "title": "位运算初探",
+      "top": "0"
+    },
+    "text": "位运算初探\\n有关位运算的相关操作\\n交换两个变量的值\\n1\\n2\\n3a ^= b;\\nb ^= a;\\na ^= b;\\n\\n\\n\\n就是无第三方变量且不使用指针的情况下交换两个变量的值\\n但是没什么必要吧\\n二进制相关\\n确定一个数字的二进制的第一个$1$在什么位置\\n1#define lowbit(x) ((x) & (-x))\\n\\n\\n\\n1\\n2\\n3\\n4\\n5Input: x = 32\\nOutput: 32\\n\\nInput: x = 31\\nOutput: 1\\n\\n\\n\\n计算一个数字的二进制中有多少个$1$\\n1\\n2\\n3\\n4\\n5\\n6int x,cnt  = 0;\\nwhile(x)\\n{\\n    cnt ++;\\n    x -= lowbit(x);\\n}\\n\\n\\n\\n取二进制的最后一位\\n1int last = x & 1;\\n\\n\\n\\n可以用来判断奇偶性\\n真题:\\nCF上的一道Div2的C题\\n此题被OFN和YYZ一眼秒\\n考虑两个$01$串的不同位置的个数是奇数还是偶数\\n其实只要算出两个串中$1$的个数就好了，我们令两个$01$串分别是$A$串和$B$串，$1$的个数分别是$lena$和$lenb$，令两个串中都是$1$的位置个数有$cnt$个，最后不同的位置个数有$ans$个，则有$ans = lena + lenb - cnt * 2$;稍稍对其进行一个奇偶性的分析，我们可以讨论得到\\n$lena$为奇数，$lenb$为奇数时，因为$lena + lenb$一定是偶数，又因为$cnt * 2$是偶数，所以$ans$一定会是偶数\\n$lena$为奇数，$lenb$为偶数时，因为$lena + lenb$一定是奇数，又因为$cnt * 2$是偶数，所以$ans$一定会是奇数\\n$lena$为偶数，$lenb$为奇数时，因为$lena + lenb$一定是奇数，又因为$cnt * 2$是偶数，所以$ans$一定会是奇数\\n$lena$为偶数，$lenb$为偶数时，因为$lena + lenb$一定时偶数，又因为$cnt * 2$是偶数，所以$ans$一定会是偶数\\n然后我们考虑异或这个操作，使得最后方便操作，其实我们可以直接用最后一位来算，然后与$B$串进行异或\\n最后我们在做的时后可以用一个前缀和使复杂度在$O(n)$\\n不知道为什么这题有FFT的标签",
+    "url": "blog/2019-10-20/bit.html"
+  },
+  "关于": {
+    "meta": {
+      "create": "2019.10.4",
+      "description": "",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.5",
+      "tags": [
+        "About"
+      ],
+      "template": "template",
+      "title": "关于",
+      "top": "0"
+    },
+    "text": "关于\\nEqvpkbz 来自 HNDXZDXX→HNSDFZBCSYZX→CSLSGJSYXX→Unknown。\\n本站点\\n采用了riteme大爷的博客生成器，Markdown的渲染相当不错\\nGithub源码\\nriteme大爷的网站\\n友链\\n欢迎互换友链\\n想换友链的可以直接在评论里留言\\n联系我\\n我的邮箱：2581505024@qq.com\\n我的 GitHub：https://github.com/eqvpkbz\\n我的知乎：https://www.zhihu.com/people/eqvpkbz",
+    "url": "about.html"
+  },
+  "初探splay": {
+    "meta": {
+      "create": "2019.11.3",
+      "description": "平衡树学习",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.3",
+      "tags": [
+        "Data Structure"
+      ],
+      "template": "template",
+      "title": "初探splay",
+      "top": "0"
+    },
+    "text": "初探splay\\n  1\\n  2\\n  3\\n  4\\n  5\\n  6\\n  7\\n  8\\n  9\\n 10\\n 11\\n 12\\n 13\\n 14\\n 15\\n 16\\n 17\\n 18\\n 19\\n 20\\n 21\\n 22\\n 23\\n 24\\n 25\\n 26\\n 27\\n 28\\n 29\\n 30\\n 31\\n 32\\n 33\\n 34\\n 35\\n 36\\n 37\\n 38\\n 39\\n 40\\n 41\\n 42\\n 43\\n 44\\n 45\\n 46\\n 47\\n 48\\n 49\\n 50\\n 51\\n 52\\n 53\\n 54\\n 55\\n 56\\n 57\\n 58\\n 59\\n 60\\n 61\\n 62\\n 63\\n 64\\n 65\\n 66\\n 67\\n 68\\n 69\\n 70\\n 71\\n 72\\n 73\\n 74\\n 75\\n 76\\n 77\\n 78\\n 79\\n 80\\n 81\\n 82\\n 83\\n 84\\n 85\\n 86\\n 87\\n 88\\n 89\\n 90\\n 91\\n 92\\n 93\\n 94\\n 95\\n 96\\n 97\\n 98\\n 99\\n100\\n101\\n102\\n103\\n104\\n105\\n106\\n107\\n108\\n109\\n110\\n111\\n112\\n113\\n114\\n115\\n116\\n117\\n118\\n119\\n120\\n121\\n122\\n123\\n124\\n125\\n126\\n127\\n128\\n129\\n130\\n131\\n132\\n133\\n134\\n135\\n136\\n137\\n138\\n139\\n140\\n141\\n142\\n143\\n144\\n145\\n146\\n147\\n148\\n149\\n150\\n151\\n152\\n153\\n154\\n155\\n156\\n157\\n158\\n159\\n160\\n161\\n162\\n163\\n164\\n165\\n166\\n167\\n168\\n169\\n170\\n171\\n172\\n173\\n174\\n175\\n176\\n177\\n178\\n179\\n180\\n181\\n182\\n183\\n184\\n185\\n186\\n187\\n188\\n189\\n190\\n191\\n192\\n193\\n194\\n195\\n196#include<cctype>\\n#include<cstdio>\\nusing namespace std;\\n\\n#define debug(...) fprintf(stderr,__VA_ARGS__)\\n#define DEBUG printf(\\ Passing [% s] in LINE % lld\\\\n\\ ,__FUNCTION__,__LINE__)\\n#define Debug debug(\\ Passing [% s] in LINE % lld\\\\n\\ ,__FUNCTION__,__LINE__)\\n#define file(FILE_NAME) freopen(FILE_NAME\\ .in\\ ,\\ r\\ ,stdin),freopen(FILE_NAME\\ .out\\ ,\\ w\\ ,stdout)\\n#define file_close fclose(stdin),fclose(stdout)\\n\\n#define MAXBUF 2097152\\n#define FLUSHSIZE 1966080\\n#define Finline __inline__ __attribute__ ((always_inline))\\nchar BUF[MAXBUF],*P1=BUF,*P2=BUF;\\nFinline int getc(){return P1==P2&&(P2=(P1=BUF)+fread(BUF,1,MAXBUF,stdin),P1==P2)?EOF:*P1++;}\\ninline int read()\\n{\\n    int ret = 0,f = 0;char ch = getc();\\n    while(!isdigit (ch)){if(ch == '-') f = 1;ch = getc();}\\n    while(isdigit (ch)){ret = ret * 10 + ch - 48;ch = getc();}\\n    return f?-ret:ret;\\n}\\nchar buf[MAXBUF],print_buf[20];int p,p2=-1;\\ninline void flush(){fwrite(buf,1,p2+1,stdout),p2=-1;}\\ninline void write(int x)\\n{\\n    if(p2 > FLUSHSIZE) flush();\\n    if(x<0) buf[++ p2]=45,x = -x;\\n    do{print_buf[++ p] = x %  10 + 48;}while(x/=10);\\n    do{buf[++p2] = print_buf[p];}while(--p);\\n    buf[++p2]='\\\\n';\\n}\\n\\nconst int N = 100005;\\nint rt, tot, fa[N], ch[N][2], val[N], cnt[N], sz[N];\\nstruct SPLAY\\n{\\n    inline void maintain(int x){sz[x] = sz[ch[x][0]] + sz[ch[x][1]] + cnt[x];}\\n    inline bool get(int x){return x == ch[fa[x]][1];}\\n    inline void clear(int x){ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;}\\n    inline void rotate(int x)\\n    {\\n        int y = fa[x], z = fa[y], chk = get(x);\\n\\n        ch[y][chk] = ch[x][chk ^ 1];\\n        fa[ch[x][chk ^ 1]] = y;\\n\\n        ch[x][chk ^ 1] = y;\\n        fa[y] = x,fa[x] = z;\\n\\n        if(z) ch[z][y == ch[z][1]] = x;\\n        maintain(x),maintain(y);\\n    }\\n    void splay(int x)\\n    {\\n        for(int f = fa[x]; f = fa[x] ,f ; rotate(x))\\n            if(fa[f]) rotate(get(x) == get(f) ? f : x);\\n        rt = x;\\n    }\\n    void insert(int k)\\n    {\\n        if(!rt) //splay is empty\\n        {\\n            val[++ tot] = k,cnt[tot] ++;//set point\\n            rt = tot,maintain(rt);//set root\\n            return;\\n        }\\n        int cur = rt, f = 0;//insert from rt\\n        while(1)\\n        {\\n            if (val[cur] == k) //find out a point whose value is k\\n            {\\n                cnt[cur] ++;//size ++\\n                maintain(cur),maintain(f);//update\\n                splay(cur);//rotate to root\\n                break;\\n            }\\n            f = cur,cur = ch[cur][val[cur] < k];//find left / right subtree\\n            if(!cur)// find a empty position to insert\\n            {\\n                val[++ tot] = k,cnt[tot]++;\\n                fa[tot] = f,ch[f][val[f] < k] = tot;\\n                maintain(tot),maintain(f);//update\\n                splay(tot);\\n                break;\\n            }\\n        }\\n    }\\n    int rk(int k) //find k's rank\\n    {\\n        int res = 0, cur = rt;\\n        while(1)\\n        {\\n            if(k < val[cur]) cur = ch[cur][0];//find left subtree\\n            else //find right subtree\\n            {\\n                res += sz[ch[cur][0]];//add left subtree's size\\n                if(k == val[cur])//find out element\\n                {\\n                    splay(cur);//rotate to root\\n                    return res + 1;//return rank\\n                }\\n                res += cnt[cur];//add current point value\\n                cur = ch[cur][1];//find right subtree\\n            }\\n        }\\n    }\\n    int kth(int k)\\n    {\\n        int cur = rt;\\n        while(1)\\n        {\\n            if(ch[cur][0] && k <= sz[ch[cur][0]])\\n                cur = ch[cur][0]; //find left subtree\\n            else\\n            {\\n                k -= cnt[cur] + sz[ch[cur][0]]; //find right subtree\\n                if(k <= 0) return val[cur];//return current point value\\n                cur = ch[cur][1];//find right subtree\\n            }\\n        }\\n    }\\n    int pre()//find root's predecessor\\n    {\\n        int cur = ch[rt][0];//find left subtree\\n        while(ch[cur][1]) cur = ch[cur][1];//find right subtree\\n        return cur;\\n    }\\n    int nxt()\\n    {\\n        int cur = ch[rt][1];//find right subtree\\n        while (ch[cur][0]) cur = ch[cur][0];//find left subtree\\n        return cur;\\n    }\\n    void del(int k)\\n    {\\n        rk(k);\\n        if(cnt[rt] > 1) //have many same point\\n        {\\n            cnt[rt]--;//delete one and update\\n            maintain(rt);\\n            return;\\n        }\\n        if(!ch[rt][0] && !ch[rt][1]) //have no left / right son\\n        {\\n            clear(rt);//delete\\n            rt = 0;\\n            return;\\n        }\\n        if(!ch[rt][0]) //only have right son\\n        {\\n            int cur = rt;\\n            rt = ch[rt][1];\\n            fa[rt] = 0;\\n            clear(cur);\\n            return;\\n        }\\n        if(!ch[rt][1]) //only have left son\\n        {\\n            int cur = rt;\\n            rt = ch[rt][0];\\n            fa[rt] = 0;\\n            clear(cur);\\n            return;\\n        }\\n        int x = pre(), cur = rt;\\n        splay(x),fa[ch[cur][1]] = x;//right son's father is x's predecessor\\n        ch[x][1] = ch[cur][1];//x's predecessor 's right son is x's right son\\n        clear(cur),maintain(rt);\\n    }\\n}tree;\\n\\nint main()\\n{\\n    #ifndef ONLINE_JUDGE\\n        file(\\ splay\\ );\\n    #endif\\n\\n    int n = read(), opt, x;\\n    for(int i = 0;i < n;i ++)\\n    {\\n        opt = read(),x = read();\\n        if(opt == 1) tree.insert(x);\\n        else if(opt == 2) tree.del(x);\\n        else if(opt == 3) write(tree.rk(x));\\n        else if(opt == 4) write(tree.kth(x));\\n        else if(opt == 5) tree.insert(x),write(val[tree.pre()]), tree.del(x);\\n        else tree.insert(x), write(val[tree.nxt()]),tree.del(x);\\n    }\\n    flush();\\n\\n    #ifndef ONLINE_JUDGE\\n        file_close;\\n    #endif\\n    return 0;\\n}\\n\\n",
+    "url": "blog/2019-11-3/splay.html"
+  },
+  "博客搭建教程": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "搭建个人博客全过程",
+      "index": true,
+      "location": ".",
+      "modified": "2020.1.30",
+      "tags": [
+        "Blog"
+      ],
+      "template": "template",
+      "title": "博客搭建教程",
+      "top": "233"
+    },
+    "text": "博客相关\\n博客是在riteme大佬的博客生成器的基础上，加以添加功能的\\n然后发现有些部分还是要手动的觉得不太方便于是就用常用语言C++处理了一下，现在可以自动生成index.md和posts.md了\\n如何自己搭一个这样的博客\\n搭载平台: $Linux$\\n原作者项目地址: here\\n我的项目地址: here\\n配置环境\\n首先先安装最新的python 3$(>= 3.7)$\\n然后要用pip3安装下列东西:\\n1\\n2\\n3\\n4\\n5Python Markdown (要求版本 == 2.6.11)\\nPygments (用于提供代码高亮)\\ncss-html-js-minify (压缩 HTML 源码)\\nBeautiful Soup 4\\nlxml / html5lib\\n\\n\\n\\n安装的命令行\\n1\\n2\\n3\\n4\\n5pip3 install Markdown==2.6.11 --user\\npip3 install css-html-js-minify --user\\npip3 install beautifulsoup4 --user\\npip3 install Pygments --user\\npip3 install html5lib --user\\n\\n\\n\\n可以考虑安装lxml，因为原来的riteme是用的lxml，我用的是html5lib\\n1\\n2\\n3sudo apt-get install libxml2-dev libxslt-dev\\nsudo apt-get install python3-lxml \\npip3 install lxml\\n\\n\\n\\n拉取源码\\n1git clone https://github.com/eqvpkbz/eqvpkbz.github.io.git\\n\\n\\n\\n然后把.gitignore文件去掉，新建一个github的仓库\\n个性化\\nHTML的模板在templates/下，请自行修改\\n然后还有favicon.png用来做logo\\nsearch.html也需要自己修改，因为有特定的标签所以生成时不会再生成\\n博客的文章在blog/里面\\n然后还有index.md,posts.md,links.md,about.md需要修改\\nupdate.cpp里面上传的方式可以按照情况更改，见Here\\n小操作\\n要写一篇新的文章:\\n1python3 pagegen.py -n \\ file_name\\  -t\\n\\n\\n\\n需要生成全站文章\\n1python3 sitegen.py\\n\\n\\n\\n生成index.md和posts.md\\n1\\n2g++ maker.cpp -o maker\\n./maker\\n\\n\\n\\n生成全站文章并推送到github上\\n1\\n2g++ update.cpp -o update\\n./update\\n\\n",
+    "url": "blog/2019-10-20/about_blog.html"
+  },
+  "博客相关": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "有疑问的可以看看",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "Blog"
+      ],
+      "template": "template",
+      "title": "博客相关",
+      "top": "233"
+    },
+    "text": "博客相关\\n博客是在riteme大佬的博客生成器的基础上，加以添加功能的\\n然后发现有些部分还是要手动的觉得不太方便于是就用常用语言C++处理了一下，现在可以自动生成index.md和posts.md了\\n如何自己搭一个这样的博客\\n搭载平台: $Linux$\\n原作者项目地址: here\\n我的项目地址: here\\n配置环境\\n首先先安装最新的python 3$(>= 3.7)$\\n然后要用pip3安装下列东西:\\n1\\n2\\n3\\n4\\n5Python Markdown (要求版本 == 2.6.11)\\nPygments (用于提供代码高亮)\\ncss-html-js-minify (压缩 HTML 源码)\\nBeautiful Soup 4\\nlxml / html5lib\\n\\n\\n\\n安装的命令行\\n1\\n2\\n3\\n4\\n5pip3 install Markdown==2.6.11 --user\\npip3 install css-html-js-minify --user\\npip3 install beautifulsoup4 --user\\npip3 install Pygments --user\\npip3 install html5lib --user\\n\\n\\n\\n可以考虑安装lxml，因为原来的riteme是用的lxml，我用的是html5lib\\n1\\n2\\n3sudo apt-get install libxml2-dev libxslt-dev\\nsudo apt-get install python3-lxml \\npip3 install lxml\\n\\n\\n\\n拉取源码\\n1git --clone https://github.com/eqvpkbz/eqvpkbz.github.io.git\\n\\n\\n\\n然后把.gitignore文件去掉，新建一个github的仓库\\n个性化\\nHTML的模板在templates/下，请自行修改\\n然后还有favicon.png用来做logo\\nsearch.html也需要自己修改，因为有特定的标签所以生成时不会再生成\\n博客的文章在blog/里面\\n然后还有index.md,posts.md,links.md,about.md需要修改\\nupdate.cpp里面上传的方式可以按照情况更改，见Here\\n小操作\\n要写一篇新的文章:\\n1python3 pagegen.py -n \\ file_name\\  -t\\n\\n\\n\\n需要生成全站文章\\n1python3 sitegen.py\\n\\n\\n\\n生成index.md和posts.md\\n1\\n2g++ maker.cpp -o maker\\n./maker\\n\\n\\n\\n生成全站文章并推送到github上\\n1\\n2g++ update.cpp -o update\\n./update\\n\\n",
+    "url": "blog/2019-10-20/about_blog.html"
+  },
+  "友链": {
+    "meta": {
+      "create": "2019.10.4",
+      "description": "",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.5",
+      "tags": [
+        "Friend Links"
+      ],
+      "template": "template",
+      "title": "友链",
+      "top": "0"
+    },
+    "text": "友情链接\\n欢迎各位大神来互换友链~~~\\n\\n\\n\\nNickname\\nAddress\\n\\n\\n\\n\\nriteme\\nriteme’s site\\n\\n\\nsparklener\\nsparklener\\n\\n\\nruanxingzhi\\nruanx.pw\\n\\n\\nHaogram\\nhaogram.hol.es\\n\\n\\nHJWJBSR\\nhjwjbsr.is-programmer.com\\n\\n\\nremoon\\nremoon\\n\\n\\nCreeper_LKF\\nCreeper_LKF\\n\\n\\nTwilight_\\nTwilight_Sx\\n\\n\\nww3113306\\nww3113306\\n\\n\\nLiang_Shine_Sky\\nLiang_Shine_Sky\\n\\n\\nJianuo_Zhu\\nJianuo_Zhu\\n\\n\\nMital\\nMital\\n\\n\\nJizhou\\nJizhou\\n\\n\\nTBR\\nTBR\\n\\n\\nMicDZ\\nwww.micdz.cn\\n\\n\\nMr.Rabbit\\nwww.ianime.co\\n\\n\\nLinyxus\\nblog.linyxus.xyz\\n\\n\\nmemset0\\nmemset0.cn\\n\\n\\nxehoth\\nblog.xehoth.cc\\n\\n\\nCMXRYNP\\ncmxrynp.github.io\\n\\n\\nSiyuan\\nSiyuan\\n\\n\\n17shou_VIP\\n17shou_VIP\\n\\n\\nM_sea\\nM_sea\\n\\n\\nrqy\\nrqy\\n\\n\\nMenci\\nMenci\\n\\n\\nyyb\\nyyb\\n\\n\\nPink Rabbit\\nPink Rabbit\\n\\n\\nwjyyy\\nwjyyy\\n\\n\\nouuan\\nouuan\\n\\n\\nxht37\\nxht37\\n\\n\\nlk\\nlk\\n\\n\\nEternalalexander\\neternalalexander\\n\\n\\n",
+    "url": "links.html"
+  },
+  "吐槽": {
+    "meta": {
+      "create": "2019.10.5",
+      "description": "最近的一些事情的看法",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.5",
+      "tags": [
+        "experience"
+      ],
+      "template": "template",
+      "title": "吐槽",
+      "top": "0"
+    },
+    "text": "吐槽\\n麓山的内网看起来很方便的样子?\\n直接ftp://操作一波\\n但是下下来的东西并没有修改权限\\n所以…\\n1sudo chmod -R 775 folder/\\n\\n\\n\\n就可以了",
+    "url": "blog/2019-10-5/BB.html"
+  },
+  "图论初探": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "图论相关的知识",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "graph"
+      ],
+      "template": "template",
+      "title": "图论初探",
+      "top": "0"
+    },
+    "text": "图论初探\\n图论的约定和表述\\n给定图$G \\\\ = \\\\ (V,E)$，以图的结点数$|V|$与边的条数$|E|$作为输入的规模，同时，仅当在渐近符号(如大$O$表示或大$\\\\Theta$表示)中，符号$V$表示$|V|$，符号$E$表示$|E|$，比如我们说算法的时间复杂度为$O(VE)$，同时，用$G.V$表示图$G$的结点集，用$G.E$表示图$G$的边集合\\n图论的表示\\n对于$G \\\\ = \\\\ (V,E)$可以用三种方式来表示\\n邻接链表\\n邻接矩阵\\n链式前向星\\n基本图算法\\n广度优先算法$(BFS)$\\n复杂度$O(V + E)$\\n最短路径\\n广度优先树\\n深度优先搜索$(DFS)$\\n拓扑排序",
+    "url": "blog/2019-10-20/graph.html"
+  },
+  "所有文章": {
+    "meta": {
+      "create": "2019.10.4",
+      "description": "",
+      "index": true,
+      "location": ".",
+      "modified": "2020.2.7",
+      "tags": [
+        "Posts"
+      ],
+      "template": "template",
+      "title": "所有文章",
+      "top": "0"
+    },
+    "text": "所有文章\\n2020\\n2020-1\\n\\nTDList\\n: 任务清单\\n\\n2020-2\\n\\nzsh插件推荐: zsh的一些提高生产力的插件\\nmanjaro系统初探: manjaro系统安装及初始化全过程\\n代码起手式: 代码模板\\n博客搭建教程: 搭建个人博客全过程\\n\\n2019\\n2019-11\\n\\nCSP2019游记: 被省三劝退役了\\nvimrc: vim的配置\\n数论学习: 数论相关的东西\\nOI中犯过的错误: 应该是OIers比较常犯的\\n2019-11-4测试总结: 二分答案等等\\n初探splay: 平衡树学习\\n\\n2019-10\\n\\n2019-10-30测试总结: 图论转区间操作妙妙题\\n矩阵快速幂重学: 可用于求递推式\\n2019-10-26测试总结: 二叉树结构，dp，折半搜索\\n2019-10-25测试总结: KMP,BIT\\n2019-10-24测试总结: dp,博弈论\\n2019-10-23测试总结: 数论\\n数据生成器,对拍,多数据自动生成器: 十分有用的东西\\n树状数组实现线段树部分功能: 能够实现区间查询和区间修改的树状数组\\nWindows系统初探: windows系统相关\\n随机数初探: 探究随机数的科学用法\\n图论初探: 图论相关的知识\\n位运算初探: 一些位运算可以很妙妙的用\\n状压dp初探: 换种方式来dp\\nST表: 需要预处理的数据结构\\n[题解]LuoguP1280尼克的任务: 一道比较好的dp题\\n[题解]LuoguP1006传纸条: 一道比较好的dp题\\nLinux初探: Linux相关\\n浅析LIS & LCS: 希望能给部分OIer指点迷津\\n测试: 检验Markdown生成情况\\n吐槽: 最近的一些事情的看法\\n",
+    "url": "posts.html"
+  },
+  "数据生成器,对拍,多数据自动生成器": {
+    "meta": {
+      "create": "2019.10.22",
+      "description": "十分有用的东西",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.22",
+      "tags": [
+        "tools"
+      ],
+      "template": "template",
+      "title": "数据生成器,对拍,多数据自动生成器",
+      "top": "0"
+    },
+    "text": "对拍,多组数据自动生成器\\n使用平台\\nLinux,gcc,g++编译器\\n注意事项\\n记得标程，数据生成器和暴力别出问题了\\n另外数据生成器中的随机数改天会去看看的目前来看还是在鸽着的\\n对拍\\n注释版\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43#include<cstdio>\\n#include<cstdlib>\\n#include<sys/time.h>\\nusing namespace std;\\n#define DEFAULT_NUM 100\\n#define sec 1000000\\nint main()\\n{\\n    system(\\ g++ maker.cpp -o maker\\ );\\n    system(\\ g++ std.cpp -o std\\ );\\n    system(\\ g++ brute.cpp -o brute\\ );\\n    for(int i = 1;i <= DEFAULT_NUM;i ++)\\n    {\\n        struct timeval STD_START,STD_END,MAKER_START,MAKER_END,BRUTE_START,BRUTE_END; //计算时间所需要的结构体\\n\\n        gettimeofday(&MAKER_START,NULL);\\n        system(\\ ./maker > in\\ );\\n        gettimeofday(&MAKER_END,NULL);\\n        long double MAKER_TIME = sec * (MAKER_END.tv_sec-MAKER_START.tv_sec) + MAKER_END.tv_usec - MAKER_START.tv_usec;\\n        printf(\\ Make data % d : used % .2Lfus\\\\n\\ , i, MAKER_TIME); //造数据的程序计时\\n\\n        gettimeofday(&STD_START,NULL);\\n        system(\\ ./std < in > sout\\ );\\n        gettimeofday(&STD_END,NULL);\\n        long double STD_TIME = sec * (STD_END.tv_sec-STD_START.tv_sec) + STD_END.tv_usec - STD_START.tv_usec;\\n        printf(\\ Run std in data % d : use % .2Lfus\\\\n\\ , i, STD_TIME); //标程计时\\n\\n        gettimeofday(&BRUTE_START,NULL);\\n        system(\\ ./brute < in > bout\\ );\\n        gettimeofday(&BRUTE_END,NULL);\\n        long double BRUTE_TIME = sec * (BRUTE_END.tv_sec-BRUTE_START.tv_sec) + BRUTE_END.tv_usec - BRUTE_START.tv_usec;\\n        printf(\\ Run brute in data % d : use % .2Lfus\\\\n\\ , i, BRUTE_TIME);//暴力计时\\n\\n        if(system(\\ diff -Bb sout bout\\ ))\\n        {\\n            puts(\\ GG\\ );\\n            exit(0);\\n        }\\n        printf(\\ Passed % d ......\\\\n\\ ,i);\\n        if(MAKER_TIME + STD_TIME + BRUTE_TIME < sec) system(\\ sleep 1\\ ); //如果时间超过1s就可以直接进行下一组数据\\n    }\\n    return 0;\\n}\\n\\n\\n\\n复制版\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43#include<cstdio>\\n#include<cstdlib>\\n#include<sys/time.h>\\nusing namespace std;\\n#define DEFAULT_NUM 100\\n#define sec 1000000\\nint main()\\n{\\n    system(\\ g++ maker.cpp -o maker\\ );\\n    system(\\ g++ std.cpp -o std\\ );\\n    system(\\ g++ brute.cpp -o brute\\ );\\n    for(int i = 1;i <= DEFAULT_NUM;i ++)\\n    {\\n        struct timeval STD_START,STD_END,MAKER_START,MAKER_END,BRUTE_START,BRUTE_END;\\n\\n        gettimeofday(&MAKER_START,NULL);\\n        system(\\ ./maker > in\\ );\\n        gettimeofday(&MAKER_END,NULL);\\n        long double MAKER_TIME = sec * (MAKER_END.tv_sec-MAKER_START.tv_sec) + MAKER_END.tv_usec - MAKER_START.tv_usec;\\n        printf(\\ Make data % d : used % .2Lfus\\\\n\\ , i, MAKER_TIME);\\n\\n        gettimeofday(&STD_START,NULL);\\n        system(\\ ./std < in > sout\\ );\\n        gettimeofday(&STD_END,NULL);\\n        long double STD_TIME = sec * (STD_END.tv_sec-STD_START.tv_sec) + STD_END.tv_usec - STD_START.tv_usec;\\n        printf(\\ Run std in data % d : use % .2Lfus\\\\n\\ , i, STD_TIME);\\n\\n        gettimeofday(&BRUTE_START,NULL);\\n        system(\\ ./brute < in > bout\\ );\\n        gettimeofday(&BRUTE_END,NULL);\\n        long double BRUTE_TIME = sec * (BRUTE_END.tv_sec-BRUTE_START.tv_sec) + BRUTE_END.tv_usec - BRUTE_START.tv_usec;\\n        printf(\\ Run brute in data % d : use % .2Lfus\\\\n\\ , i, BRUTE_TIME);\\n\\n        if(system(\\ diff -Bb sout bout\\ ))\\n        {\\n            puts(\\ GG\\ );\\n            exit(0);\\n        }\\n        printf(\\ Passed % d ......\\\\n\\ ,i);\\n        if(MAKER_TIME + STD_TIME + BRUTE_TIME < sec) system(\\ sleep 1\\ );\\n    }\\n    return 0;\\n}\\n\\n\\n\\n多组数据自动生成器\\n详细注释版\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51\\n52#include<cstdio>\\n#include<ctime>\\n#include<string>\\n#include<cstdlib>\\n#include<sstream>\\n#include<unistd.h>\\n#include<sys/time.h>\\nusing namespace std;\\n\\nstring I, ord1, ord2;\\nstringstream tmp;\\nstring name = \\ seg\\ ;\\n#define sec 1000000\\n//sec就是一秒对应的微秒数\\nint l, r;\\n\\nint main() \\n{\\n    system(\\ g++ std.cpp -o std\\ ); //编译标程\\n    printf(\\ please type the first l and r\\\\n\\ );\\n    while(scanf(\\ % d% d\\ , &l, &r) == 2) //输入数据的文件下标范围\\n    {\\n        system(\\ g++ maker.cpp -o maker\\ );//为了方便改了maker之后直接造数据\\n        for(int i = l; i <= r; i ++) \\n        {\\n            tmp.clear(),tmp << i,tmp >> I; //将下标i倒序处理以便用来做文件名\\n            string ord1 = \\ ./maker > \\  + name + I + \\ .in\\ ;\\n            string ord2 = \\ ./std < \\  + name + I + \\ .in > \\  + name + I + \\ .out\\ ;\\n            struct timeval STD_START,STD_END,MAKER_START,MAKER_END; //计算时间所需要的结构体\\n\\n            gettimeofday(&MAKER_START,NULL);\\n            system(ord1.data());\\n            gettimeofday(&MAKER_END,NULL);\\n            long double MAKER_TIME = sec * (MAKER_END.tv_sec-MAKER_START.tv_sec) + MAKER_END.tv_usec - MAKER_START.tv_usec;\\n            printf(\\ Make data % d : used % .2Lfus\\\\n\\ , i, MAKER_TIME); //造数据的程序计时\\n\\n            gettimeofday(&STD_START,NULL);\\n            system(ord2.data());\\n            gettimeofday(&STD_END,NULL);\\n            long double STD_TIME = sec * (STD_END.tv_sec-STD_START.tv_sec) + STD_END.tv_usec - STD_START.tv_usec; //标程计时\\n            printf(\\ Run std in data % d : use % .2Lfus\\\\n\\ , i, STD_TIME);\\n\\n            if(MAKER_TIME + STD_TIME < sec) system(\\ sleep 1\\ ); //如果时间超过1s就可以直接进行下一组数据\\n            for(int j = 1; j <= 10; j ++)\\n                puts(\\ ................\\ );\\n            printf(\\ Finish Make Data % d\\\\n\\\\n\\\\n\\ , i);\\n        }\\n        printf(\\ Data % d to % d is finish\\\\n\\ , l, r);\\n        printf(\\ please change maker.cpp and then type next l and r\\\\n\\\\n\\ );\\n    }\\n    return 0;\\n}\\n\\n\\n\\n直接复制版\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49\\n50\\n51#include<cstdio>\\n#include<ctime>\\n#include<string>\\n#include<cstdlib>\\n#include<sstream>\\n#include<unistd.h>\\n#include<sys/time.h>\\nusing namespace std;\\n\\nstring I, ord1, ord2;\\nstringstream tmp;\\nstring name = \\ seg\\ ;\\n#define sec 1000000\\nint l, r;\\n\\nint main() \\n{\\n    system(\\ g++ std.cpp -o std\\ );\\n    printf(\\ please type the first l and r\\\\n\\ );\\n    while(scanf(\\ % d% d\\ , &l, &r) == 2) \\n    {\\n        system(\\ g++ maker.cpp -o maker\\ );\\n        for(int i = l; i <= r; i ++) \\n        {\\n            tmp.clear(),tmp << i,tmp >> I;\\n            string ord1 = \\ ./maker > \\  + name + I + \\ .in\\ ;\\n            string ord2 = \\ ./std < \\  + name + I + \\ .in > \\  + name + I + \\ .out\\ ;\\n            struct timeval STD_START,STD_END,MAKER_START,MAKER_END;\\n\\n            gettimeofday(&MAKER_START,NULL);\\n            system(ord1.data());\\n            gettimeofday(&MAKER_END,NULL);\\n            long double MAKER_TIME = sec * (MAKER_END.tv_sec-MAKER_START.tv_sec) + MAKER_END.tv_usec - MAKER_START.tv_usec;\\n            printf(\\ Make data % d : used % .2Lfus\\\\n\\ , i, MAKER_TIME);\\n\\n            gettimeofday(&STD_START,NULL);\\n            system(ord2.data());\\n            gettimeofday(&STD_END,NULL);\\n            long double STD_TIME = sec * (STD_END.tv_sec-STD_START.tv_sec) + STD_END.tv_usec - STD_START.tv_usec;\\n            printf(\\ Run std in data % d : use % .2Lfus\\\\n\\ , i, STD_TIME);\\n\\n            if(MAKER_TIME + STD_TIME < sec) system(\\ sleep 1\\ );\\n            for(int j = 1; j <= 10; j ++)\\n                puts(\\ ................\\ );\\n            printf(\\ Finish Make Data % d\\\\n\\\\n\\\\n\\ , i);\\n        }\\n        printf(\\ Data % d to % d is finish\\\\n\\ , l, r);\\n        printf(\\ please change maker.cpp and then type next l and r\\\\n\\\\n\\ );\\n    }\\n    return 0;\\n}\\n\\n",
+    "url": "blog/2019-10-22/maker&pai.html"
+  },
+  "数论": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "数论相关的东西",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.8",
+      "tags": [
+        "math"
+      ],
+      "template": "template",
+      "title": "数论",
+      "top": "0"
+    },
+    "text": "更新一些关于数论的知识点\\n具体数学\\n数学归纳法\\n格式:\\n\\n证明当$n$的值为初值时的式子成立 (基础$(basic)$)\\n假设当$n = k$时原式成立，即有 : ....\\n则当$n = k + 1$时，论证式子恒成立 (归纳$(induction)$)\\n\\n\\ne.g. 1：\\n\\n数学归纳法证明等差数列存在$a_n = a_1 + (n - 1)d$\\n\\n当$n = 2$时,$a_2 = a_1 + d$,满足定义式: $a_n = a_{n - 1} + d$\\n假设$n = k$时,$a_k = a_1 + (k - 1)d$成立，则$n = k + 1$时,$a_{k + 1} = a_k + d = a_1 + (k - 1)d + d = a_1 + kd$\\n所以当$n \\\\geqslant 2$时,$a_n = a_1 + (n - 1)d$ $\\\\qquad \\\\blacksquare$\\n\\ne.g. 2:\\n\\n数学归纳法证明平面上的$n$条直线最多界定的区域个数$Ln = \\\\dfrac{n(n + 1)}{2} + 1 , n \\\\geqslant 0$\\n\\n存在递推式:\\n$L_0 = 1$\\n$L_n = L_{n - 1} + n,n > 0$\\n当$n = 1$时，$L_1 = 1 + 1 = L_0 + 1$,满足递推式\\n假设$n = k$时，$L_k = \\\\dfrac{k(k + 1)}{2} + 1$成立，则$n = k + 1$时，$L_{k + 1} = \\\\dfrac{k(k + 1)}{2} + 1 + (k + 1)=\\\\dfrac{(k + 1)(k + 2)}{2} + 1$\\n所以当$n \\\\geqslant 1$时，$Ln = \\\\dfrac{n(n + 1)}{2} + 1 , n \\\\geqslant 0$ $\\\\qquad \\\\blacksquare$",
+    "url": "blog/2019-10-20/math.html"
+  },
+  "数论学习": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "数论相关的东西",
+      "index": true,
+      "location": ".",
+      "modified": "2019.11.8",
+      "tags": [
+        "math"
+      ],
+      "template": "template",
+      "title": "数论学习",
+      "top": "0"
+    },
+    "text": "数论学习\\n更新一些关于数论的知识点\\n具体数学\\n数学归纳法\\n格式:\\n\\n证明当$n$的值为初值时的式子成立 (基础$(basic)$)\\n假设当$n = k$时原式成立，即有 : ....\\n则当$n = k + 1$时，论证式子恒成立 (归纳$(induction)$)\\n\\n\\ne.g. 1：\\n\\n数学归纳法证明等差数列存在$a_n = a_1 + (n - 1)d$\\n\\n当$n = 2$时,$a_2 = a_1 + d$,满足定义式: $a_n = a_{n - 1} + d$\\n假设$n = k$时,$a_k = a_1 + (k - 1)d$成立，则$n = k + 1$时,$a_{k + 1} = a_k + d = a_1 + (k - 1)d + d = a_1 + kd$\\n所以当$n \\\\geqslant 2$时,$a_n = a_1 + (n - 1)d$ $\\\\qquad \\\\blacksquare$\\n\\ne.g. 2:\\n\\n数学归纳法证明平面上的$n$条直线最多界定的区域个数$Ln = \\\\dfrac{n(n + 1)}{2} + 1 , n \\\\geqslant 0$\\n\\n存在递推式:\\n$L_0 = 1$\\n$L_n = L_{n - 1} + n,n > 0$\\n当$n = 1$时，$L_1 = 1 + 1 = L_0 + 1$,满足递推式\\n假设$n = k$时，$L_k = \\\\dfrac{k(k + 1)}{2} + 1$成立，则$n = k + 1$时，$L_{k + 1} = \\\\dfrac{k(k + 1)}{2} + 1 + (k + 1)=\\\\dfrac{(k + 1)(k + 2)}{2} + 1$\\n所以当$n \\\\geqslant 1$时，$Ln = \\\\dfrac{n(n + 1)}{2} + 1 , n \\\\geqslant 0$ $\\\\qquad \\\\blacksquare$",
+    "url": "blog/2019-10-20/math.html"
+  },
+  "树状数组实现线段树部分功能": {
+    "meta": {
+      "create": "2019.10.21",
+      "description": "能够实现区间查询和区间修改的树状数组",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.21",
+      "tags": [
+        "Data Structure"
+      ],
+      "template": "template",
+      "title": "树状数组实现线段树部分功能",
+      "top": "0"
+    },
+    "text": "树状数组实现线段树部分功能\\n\\nP3372 【模板】线段树 1\\n要求实现一个数据结构支持区间查询和区间修改\\n\\n改装后的树状数组\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47#include<cstdio>\\nusing namespace std;\\n#define MAXN 100010\\nint n,m;long long tree1[MAXN],tree2[MAXN],k,K,pre = 0,now,Left,Right;\\ninline void update(int left,int right,long long w)\\n{\\n    Left = left * w,Right = right * w;\\n    for(int i = left;i <= n;i += i & -i) tree1[i] += w,tree2[i] += Left;\\n    for(int i = right;i <= n;i += i & -i) tree1[i] -= w,tree2[i] -= Right;\\n}\\ninline long long query(int left,int right) // 查询\\n{\\n    long long ans = 0;\\n    for(int i = right - 1;i >= 1;i -= i & -i) ans += tree1[i] * right - tree2[i];\\n    for(int i = left - 1;i >= 1;i -= i & -i) ans -= tree1[i] * left - tree2[i];\\n    return ans; // sum[right] - sum[left - 1]\\n}\\nint main()\\n{\\n\\n    scanf(\\ % d% d\\ ,&n,&m);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        scanf(\\ % lld\\ ,&now);\\n        k = now - pre,pre = now,K = k * i,\\n        tree1[i] += k,tree2[i] += K; \\n        for(int j = i + (i & -i);j <= n;j += j & -j) // 因为l == r所以可以直接build\\n            tree1[j] += k,tree2[j] += K;\\n    }\\n    while(m--)\\n    {\\n        int opt;scanf(\\ % d\\ ,&opt);\\n        if(opt == 1)\\n        {\\n            int x,y;\\n            scanf(\\ % d% d% lld\\ ,&x,&y,&k);\\n            update(x,y + 1,k);\\n        }\\n        else\\n        {\\n            int x,y;\\n            scanf(\\ % d% d\\ ,&x,&y);\\n            printf(\\ % lld\\\\n\\ ,query(x,y + 1));\\n        }\\n    }\\n    return 0;\\n}\\n\\n\\n\\n$tree1$表示差分数组,$tree2$表示差分数组 * 对应序号\\n由代码中的定义可得\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11tree1[1] = a[1];\\ntree1[2] = a[2] - a[1] + a[1];\\ntree1[3] = a[3] - a[2];\\ntree1[4] = a[4] - a[3] + a[3] - a[2] + a[2] - a[1] + a[1];\\ntree1[5] = a[5] - a[4];\\n\\ntree2[1] = a[1] * 1;\\ntree2[2] = (a[2] - a[1]) * 2 + a[1] * 1;\\ntree2[3] = (a[3] - a[2]) * 3;\\ntree2[4] = (a[4] - a[3]) * 4 + (a[3] - a[2]) * 3 + (a[2] - a[1]) * 2 + a[1] * 1;\\ntree2[5] = (a[5] - a[4]) * 5;\\n\\n\\n\\n化简得:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17tree1[1] = a[1];\\ntree1[2] = a[2];\\ntree1[3] = a[3] - a[2];\\ntree1[4] = a[4];\\ntree1[5] = a[5] - a[4];\\n\\ntree2[1] = a[1];\\ntree2[2] = a[2] * 2 - a[1];\\ntree2[3] = a[3] * 3 - a[2] * 3;\\ntree2[4] = a[4] * 4 - a[3] - a[2] - a[1];\\ntree2[5] = a[5] * 5 - a[4] * 5;\\n\\ntree2[1] = tree1[1] * 1;\\ntree2[2] = tree1[2] * 2 - tree1[1];\\ntree2[3] = tree1[3] * 3;\\ntree2[4] = tree1[4] * 4 - tree1[3] - tree1[2] * 2 - tree1[1];\\ntree2[5] = tree1[5] * 5;\\n\\n\\n\\n$n = 3$时有$\\\\sum\\\\limits_{i=1}^{n}a_i = tree1[1] + tree1[2] + （tree1[3] + tree1[2])$\\n1\\n2\\n3\\n4\\n5\\n6\\n7tree1[1] + tree1[2] + tree1[3] + tree1[2]\\n= tree1[1] + 2 * tree1[2] + tree1[3]\\n= 4 * (tree1[2] + tree1[3]) - 2 * tree1[2] - 3 * tree1[3] + tree1[1]\\n= 4 * (tree1[2] + tree1[3]) - 2 * tree1[2] + tree1[1] - 3 * tree1[3]\\n= 4 * (tree1[2] + tree1[3]) - tree2[2] - tree2[3]\\n= 4 * (tree1[2] + tree1[3]) - (tree2[2] + tree2[3])\\n= (n + 1) * (tree1[n] + tree1[n - lowbit(n)] + ...) - (tree2[n] + tree2[n - lowbit(n)] + ...)\\n\\n\\n\\n现在已经见到了其中所蕴含的端倪",
+    "url": "blog/2019-10-21/bit-instead-of-seg.html"
+  },
+  "浅析LIS & LCS": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "希望能给部分OIer指点迷津",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "dp"
+      ],
+      "template": "template",
+      "title": "浅析LIS & LCS",
+      "top": "0"
+    },
+    "text": "浅析$LIS \\\\& LCS$\\n$LIS$(最长上升子序列)\\n求长度\\n$dp$ - $O(n ^ 2)$\\n动态规划的做法\\n令$f[i]$表示以第$i$个元素结尾的$LIS$长度\\n则有: $f[i] = max(f[i],f[j] + 1),(a[j] < a[i],j < i)$\\n通过枚举$f[i]$与$f[j]$来不断转移状态，然后不断枚举更新最大值\\n$Code$:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19#include<cstdio>\\nusing namespace std;\\n#define maxn 10005\\nint f[maxn],a[maxn];\\nint main()\\n{\\n    int n,Max = 0;\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++) scanf(\\ % d\\ ,&a[i]);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        f[i]  = 1;\\n        for(int j = 1;j < i;j ++) \\n            if(a[j] < a[i] && f[i] < f[j] + 1) f[i] = f[j] + 1;\\n    }\\n    for(int i = 1;i <= n;i ++) if(f[i] > Max) Max = f[i];\\n    printf(\\ % d\\ ,Max);\\n    return 0;\\n}\\n\\n\\n\\n该算法可以求出具体的最长上升子序列，但是在只要求最长上升子序列长度时，我们通常可以考虑更优的$O(n \\\\ log_2 \\\\ n)$的做法\\n$dp$+树状数组$O(n \\\\ log_2 \\\\ n)$\\n注意到我们在状态转移的时候要枚举$f[j]$的最大值来转移，我们可以考虑使用数据结构来维护从而优化一下，只要是支持单点修改和区间最值查询的数据结构都可以这么做，分块$(O(n \\\\sqrt n))$和树状数组$(O(n \\\\ log_2 \\\\ n))$，线段树$(O(n \\\\ log_2 \\\\ n))$之类的都行，但是因为树状数组比较好写，所以我们只讲解树状数组的写法\\n1. 先按权值排序，排序之后再查询序号前最大的$f[j]$来转移，但是有一点要注意，我们求的是LIS，是严格上升的，所以我们遇到重复的权值的时候应该要放在最后一次性处理，不然后面的重复了的$f[]$就能够用前面相同的元素来转移，导致最后的答案是错误的\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40#include <cstdio>\\n#include <algorithm>\\nusing namespace std;\\n#define maxn 1000007\\nint n,Dp[maxn],Ans,Max[maxn];\\nstruct Node{int w,i;}A[maxn];\\n#define lowbit(x) ((x) & (-x))\\ninline bool cmp(Node A , Node B){return A.w < B.w;}\\ninline void Update(int Pos , int w) \\n{\\n    for(int i = Pos;i <= n; i += lowbit(i)) \\n        Max[i] = max(Max[i] , w);\\n}\\ninline int Query(int Pos) \\n{\\n    int Ret = 0;\\n    for(int i = Pos ; i ; i -= lowbit(i)) \\n        Ret = max(Ret , Max[i]);\\n    return Ret;\\n}\\nint main() \\n{\\n    scanf(\\ % d\\  , &n);\\n    for(int i = 1;i <= n;i ++) scanf(\\ % d\\  , &A[i].w) , A[i].i = i;\\n    sort(A + 1 , A + 1 + n ,cmp);\\n    int Last = 1;//为了处理权值相同时的情况\\n    for(int i = 1;i <= n;i ++) //确保权值的大小关系正确\\n    {\\n        if(A[i].w != A[i - 1].w && i - 1) //处理前面权值相同的情况\\n        {\\n            for(int j = Last;j <= i - 1;j ++) Update(A[j].i , Dp[j]); \\n            //如果不是到了最后再更新的话,后面重复的就会用前面重复的值来更新\\n            Last = i;//处理完转移过来\\n        }\\n        Dp[i] = Query(A[i].i) + 1;//转移\\n        Ans = max(Ans , Dp[i]);\\n    }\\n    printf(\\ % d\\  , Ans);\\n    return 0;\\n}\\n\\n\\n\\n\\n维护$f[]$这个数组，但是用权值作为数组下标，然后不需要$sort$，顺序枚举就可以了，关于值的大小我们可以直接查找(树状数组)，注意到范围很大时，我们可以进行离散化\\n\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32#include <cstdio>\\n#include <algorithm>\\nusing namespace std;\\n#define maxn 1000007\\nint n,ans,f[maxn];\\nstruct Node{int val,num;}z[maxn]; \\n#define lowbit(x) ((x) & (-x))\\ninline void modify(int x,int y)\\n{\\n    for(;x < maxn ;x += lowbit(x))\\n        f[x] = max(f[x],y);\\n    return ;\\n}\\ninline int query(int x)\\n{\\n    int res = 0;\\n    for(;x;x -= lowbit(x)) res = max(res,f[x]);\\n    return res;\\n} \\nint main()\\n{\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++) scanf(\\ % d\\ ,&z[i].val);\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        int Max = query(z[i].val - 1);\\n        modify(z[i].val , ++ Max);\\n        ans = max(ans,Max);\\n    }\\n    printf(\\ % d\\ ,ans);\\n    return 0;\\n}\\n\\n\\n\\n贪心+二分$O(n \\\\ log_2 \\\\ n)$\\n贪心的做法\\n维护一个单调栈，然后根据栈定元素元素和当前元素作比较来选择最优策略，定义$stack[]$为单调栈，栈顶元素为$stack[top]$，当前序列的第$i$个元素为$a[i]$\\n\\n如果$stack[top] < a[i]$ 那么满足单调，可以直接压入栈中\\n如果$stack[top] \\\\geqslant a[i]$ 那么这个时候插入就不满足单调了，那么我们考虑在单调栈中进行二分查找，然后找到第一个$stack[j] \\\\geqslant a[i]$进行替换即可\\n\\n\\nQ:为什么进行替换这一贪心的策略是可行的?\\nA: 因为这样做并没有增长栈的长度，而且这么一接下去就可以有更好的方案，其实感性的理解就是一个在栈中不止一个序列，可以理解为两条或者更多，但是在替换之后的元素的压入可以应用到每一条序列中作出贡献，比如下面的这个例子\\n\\n$Input$:\\n1\\n25\\n1 4 2 5 3\\n\\n\\n\\n稍稍根据上面的贪心决策不难推出这样的一个过程:\\n\\nstack[1] = {1};\\nstack[2] = {1,4};\\nstack[2] = {1,2};\\nstack[3] = {1,2,5};\\nstack[3] = {1,2,3};\\n\\n看到第$3$步中的替换过程，$4$变成了$2$，其实$4$也存在{1,4,5}这样的最长上升子序列，但是如果后面还有数字就没有$2$更优，在我们替换过后，$4$其实也在参与，但是因为我们发现的更加优越的$2$，所以$4$的贡献肯定比$2$的贡献要小，可以直接替换掉\\n$Warning$\\n该$O(n \\\\ log_2 \\\\ n)$算法其实不能求出具体的最长上升子序列，因为中间在替换的过程中就已经把原有的顺序给打乱了，对于替换掉的元素，不知道是否能够对于后面的最长上升子序列作出价值，所以是不可以的\\n$Code$:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20#include<cstdio>\\n#include<iostream>\\n#include<algorithm>\\nusing namespace std;\\n#define maxn 100005\\nint a[maxn],d[maxn];\\nint main() \\n{\\n    int n,len = 1;\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++) scanf(\\ % d\\ ,&a[i]);\\n    d[1] = a[1];\\n    for(int i = 2; i <= n; i ++)\\n    {\\n        if(d[len] < a[i]) d[++ len] = a[i];\\n        else *lower_bound(d + 1 , d + 1 + len , a[i]) = a[i];\\n    }\\n    printf(\\ % d\\ ,len);\\n    return 0;\\n}\\n\\n\\n\\n求具体$LIS$序列\\n此题$dp - O(n ^ 2)$中的思想可以应用，相应的，我们可以再加上一个树状数组来优化算法的时间复杂度到$O(n \\\\ log_2 \\\\ n)$，通过记录一个结尾对应的序列中的前驱来优化算法的空间复杂度至$O(n)$，然后就十分的可做了，因为树状数组有两种写法，作者在此只写出一种做法的解法，另外一种解法可以让读者自行思考，不过最好是离散化一下\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31\\n32\\n33\\n34\\n35\\n36\\n37\\n38\\n39\\n40\\n41\\n42\\n43\\n44\\n45\\n46\\n47\\n48\\n49#include <cstdio>\\n#include <algorithm>\\nusing namespace std;\\n#define maxn 1000007\\nint n,Dp[maxn],Ans,Max[maxn],Max_num[maxn],pre[maxn],num = 0,a[maxn];\\nstruct Node{int w,i;}A[maxn];\\n#define lowbit(x) ((x) & (-x))\\ninline bool cmp(Node A , Node B){return A.w < B.w;}\\ninline void Update(int Pos , int w,int Num) \\n{\\n    for(int i = Pos;i <= n; i += lowbit(i)) \\n        if(Max[i] < w) Max[i] = w,Max_num[i] = Pos;\\n    return ;\\n}\\ninline int Query(int Pos) \\n{\\n    int Ret = 0;num = 0;\\n    for(int i = Pos ; i ; i -= lowbit(i)) \\n        if(Ret < Max[i]) Ret = Max[i],num = Max_num[i];\\n    return Ret;\\n}\\ninline void Output(int first)\\n{\\n    if(!first) return ;\\n    else Output(pre[first]);\\n    printf(\\ % d \\ ,a[first]);\\n    return ;\\n}\\nint main() \\n{\\n    scanf(\\ % d\\  , &n);\\n    for(int i = 1;i <= n;i ++) scanf(\\ % d\\ ,&a[i]),A[i].w = a[i],A[i].i = i;\\n    sort(A + 1 , A + 1 + n ,cmp);\\n    int Last = 1,first = 0;\\n    for(int i = 1;i <= n;i ++)\\n    {\\n        if(A[i].w != A[i - 1].w && i - 1)\\n        {\\n            for(int j = Last;j <= i - 1;j ++) Update(A[j].i , Dp[j],j); \\n            Last = i;\\n        }\\n        Dp[i] = Query(A[i].i) + 1;\\n        pre[A[i].i] = num;\\n        if(Ans < Dp[i]) Ans = Dp[i],first = A[i].i;\\n    }\\n    printf(\\ % d\\\\n\\  , Ans);\\n    Output(first);\\n    return 0;\\n}\\n\\n\\n\\n$LCS$(最长公共子序列)\\n求长度\\n$O(nm)$\\n动态规划做法，其实原理很简单，就是看当前的位上是否匹配的问题，然后根据这个来转移状态\\n设有长度为$n$的串$S$与长度为$m$的串$T$，用$f[i,j]$表示$S$串前$i$个字符与$T$串前$j$个字符的$LCS$则有:\\n$f[i,j] = max(f[i - 1,j],f[i,j - 1],(f[i - 1,j - 1] + 1) * [S_i = T_j])$\\n也就是说，无论如何，一定有\\n$f[i,j] = max(f[i - 1,j],f[i,j - 1])$\\n讨论特殊情况:当$S_i = T_j$时\\n$f[i,j] = max(f[i,j],f[i - 1,j - 1] + 1)$\\n所以我们可以从这推出结果，然后$f[n,m]$就是最后的答案\\n因为$f[i]$总是会从$f[i - 1]$这一维度转移过来，所以我们可以考虑用滚动数组来优化空间复杂度\\n$Code$:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30\\n31#include<cstdio>\\n#include<cstring>\\n#include<iostream>\\nusing namespace std;\\n\\nconst int maxn = 5e3 + 7;\\n\\nint n,m,tmp;\\nchar a[maxn],b[maxn];\\nint f[2][maxn];\\n\\nint main()\\n{\\n    scanf(\\ % s\\ ,a + 1);\\n    n = strlen(a + 1);\\n    scanf(\\ % s\\ ,b + 1);\\n    m = strlen(b + 1);\\n    int now = 0;\\n    for(int i = 0;i <= n;i ++)\\n    {\\n        now ^= 1;\\n        for(int j = 1;j <= m;j ++)\\n        {\\n            f[now][j] = max(f[now ^ 1][j],f[now][j - 1]);\\n            tmp = f[now ^ 1][j - 1] + 1;\\n            if(a[i] == b[j] && f[now][j] < tmp) f[now][j] = tmp;\\n        }\\n    }\\n    printf(\\ % d\\ ,f[now][m]);\\n    return 0;\\n}\\n\\n\\n\\n$O(n \\\\ log_2 \\\\ n)$\\n其实我先讲$LIS$是有原因的，我们可以尝试着去探求这两个问题之间的联系\\n如果我可以通过把这个原来的序列转化为另外一个序列然后求$LIS$来得到$LCS$就好了，那么怎么去转换这两个问题呢?\\n我们不难发现，$LIS$是用来求最长上升子序列的，所以当一个序列是升序排序，另外一个序列乱序时，求两个序列的$LCS$其实就是在求乱序序列的$LIS$，因为有一个序列是升序的，所以一定存在乱序序列的最长上升子序列与升序序列的序列有最长公共子序列，所以就可以求出来了\\n所以我们在一开始输入$A$序列的时候就将它序列中的元素逐一编号，然后再在B序列给对应的元素编上在$A$序列中的编号，也就是$B$序列中元素在$A$序列中的位置\\n比如说\\n1\\n21 5 4 3 2\\n5 3 1 2 4\\n\\n\\n\\n编号之后就是\\n1\\n21 2 3 4 5\\n2 4 1 5 3\\n\\n\\n\\n然后去求改变后的$B$序列的$LIS$就好了，也就是答案2 4 5，长度为$3$\\n$Warning$\\n\\n\\n在两个序列有不同元素的时候，处理的时候要去掉不同的元素，否则$LIS$可能会包含另外一个序列没有的元素而导致答案错误\\n\\n\\n在两个序列中有重复的元素时，不能用该方法处理\\n\\n\\n比如说:\\n1\\n2abacc\\ncbabb\\n\\n\\n\\n我们可以发现这两个序列的$LCS$是ab或ba长度为2\\n但是在处理赋值的过程中有点小麻烦\\n1\\n2abacc\\ncbabb\\n\\n\\n\\n1\\n21 2 3 4 5\\n5 2 3 2 2\\n\\n\\n\\n我们发现在处理完的序列中有重复的数字，这是因为在第一次给$A$中的元素赋值的时候，我们对于重复的元素赋了两次值，于是就导致了序列中数字所对应的位置有多个，在处理过程中会覆盖掉\\n那你可能会说:我不覆盖掉不就是了\\n然后你这个$naive$的想法可能就会泡汤，因为在某些情况下，不管你怎么赋值，其实都不一定会是一个升序的序列，这个时候求另外一个序列的$LIS$就没有意义了，因为你本身的序列就不是升序，我求一遍升序就与另一个序列无关了\\n\\n该算法不能求出具体的$LCS$序列，所以如果题目要求出具体的子序列时不能使用该算法，原因同$LIS$的$n \\\\ log_2 \\\\ n$做法\\n\\n$Code$:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30#include<cstdio>\\n#include<iostream>\\n#include<algorithm>\\nusing namespace std;\\n#define maxn 100005\\nint a[maxn],b[maxn];\\nint d[maxn],stack[maxn],len = 0;\\nint main()\\n{\\n    int n;\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 0;i < n;i ++) \\n    {\\n        scanf(\\ % d\\ ,&a[i]);\\n        d[a[i]] = i + 1;\\n    }\\n    for(int i = 0;i < n;i ++) \\n    {\\n        scanf(\\ % d\\ ,&b[i]);\\n        b[i] = d[b[i]];\\n    }\\n    stack[1] = b[0],len = 1;\\n    for(int i = 0;i < n;i ++)\\n    {\\n        if(stack[len] < b[i]) stack[++ len] = b[i];\\n        else *upper_bound(stack + 1,stack + 1 + len,b[i]) = b[i];\\n    }\\n    printf(\\ % d\\ ,len);\\n    return 0;\\n}\\n\\n\\n\\n求具体$LCS$序列\\n我们可以考虑借鉴一下$LIS$的写法，记录前驱和最大值开头的数值，然后进行递归倒序输出，但是这个时候我们的$dp[]$不能用数据结构来优化，所以我们的算法是$O(nm)$的，具体代码请读者自行思考\\n$LCIS$(最长公共上升子序列)\\n我们可以结合上面的$LIS$和$LCS$的思想来思考这个问题\\n$LIS:$\\n令$f[i]$表示以第$i$个元素结尾的$LIS$长度\\n则有: $f[i] = max(f[i],f[j] + 1),(a[j] < a[i],j < i)$\\n$LCS:$\\n设有长度为$n$的串$S$与长度为$m$的串$T$，用$f[i,j]$表示$S$串前$i$个字符与$T$串前$j$个字符的$LCS$则有:\\n$f[i,j] = max(f[i - 1,j],f[i,j - 1],(f[i - 1,j - 1] + 1) * [S_i = T_j])$\\n稍加组合思考我们可以发现:\\n当$f[i,j]$表示$A$序列前$i$个元素和$B$序列前$j$个元素的$LCIS$，$t$表示$LCIS$的结尾元素位置，则有:\\n$f[i,j] = f[i - 1,j],A_i \\\\ne B_j$\\n$f[i,j] = max(f[i - 1,j],f[i - 1,t] + 1),A_i = B_j$\\n又发现$f[i]$这一维每次都是从$f[i - 1]$这一维转移过来，所以我们可以用滚动数组优化一下得到:\\n$f_i$代表序列$A$前$i$个元素与序列$B$的$LCIS$，$t$为结尾位置，有\\n$f_j = f_t + 1,A_i = B_j$\\n在计算$LCIS$的长度的过程中我们可以顺便记录前驱然后输出具体的序列，所以就可以用$O(nm)$的时间复杂度算出$LCIS$长度与$LCIS$的具体序列\\n$Code$:\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28\\n29\\n30#include<cstdio>\\nusing namespace std;\\n#define maxn 505\\nint a[maxn],b[maxn],f[maxn],pos[maxn];\\nvoid output(int x)\\n{\\n    if(!x) return;\\n    output(pos[x]);\\n    printf(\\ % d \\ ,b[x]);\\n}\\nint main() \\n{\\n    int n,m,Max = 0;\\n    scanf(\\ % d\\ ,&n);\\n    for(int i = 1;i <= n;i ++) scanf(\\ % d\\ ,&a[i]);\\n    scanf(\\ % d\\ ,&m);\\n    for(int i = 1;i <= m;i ++) scanf(\\ % d\\ ,&b[i]);\\n\\n    for(int i = 1,t = 0;i <= n;i ++,t = 0)\\n        for(int j = 1;j <= m;j ++) \\n        {\\n            if(a[i] == b[j]) f[j] = f[t] + 1,pos[j] = t;//f[j] 的结尾\\n            if(a[i] > b[j] && f[t] < f[j]) t = j;// 保证t在结尾位置\\n        }\\n    for(int i = 1;i <= m;i ++)\\n        if(f[i] > f[Max]) Max = i;\\n    printf(\\ % d\\\\n\\ ,f[Max]);\\n    output(Max);\\n    return 0;\\n}\\n\\n\\n\\n至此，我们已经讨论了$LIS$，$LCS$与$LCIS$三种基础的动态规划类型，算法与算法之间的联系可见一斑了\\n\\n致谢\\n\\n感谢洛谷上的部分优质题解，我从题解中找到了很多的思路，受教良多\\n$Liang$$Shine$$Sky$ 大佬的指点\\n",
+    "url": "blog/2019-10-20/LIS-LCS.html"
+  },
+  "测试": {
+    "meta": {
+      "create": "2019.10.4",
+      "description": "检验Markdown生成情况",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.5",
+      "tags": [
+        "test"
+      ],
+      "template": "template",
+      "title": "测试",
+      "top": "0"
+    },
+    "text": "pagegen.py的试炼\\n希望pagegen.py能正确工作。  \\n常规Markdown测试\\nh1\\nh2\\nh3\\nh4\\nh5\\nh6\\n上面是六级标题。  \\n\\n上面是六级标题。\\n这是一段引用  \\n\\n很好，inline-code和Hello, world：\\n1\\n2\\n3\\n4\\n5\\n6\\n7\\n8\\n9#include <iostream>\\n\\nusing namespace std;\\n\\nint main(int argc, char *argv[]) {\\n    cout << \\ Hello, world!\\  << endl;\\n\\n    return 0;\\n}\\n\\n\\n\\n别忘了Python：\\n1\\n2\\n3\\n4#!/usr/bin/env python3\\n\\nif __name__ == \\ __main__\\ :\\n    print(\\ Hello, world!\\ )\\n\\n\\n\\n1\\n2Tab也可以直接代码\\nYeah!!!\\n\\n\\n\\n重要的话说三遍\\n重要的话说三遍\\n重要的话说三遍\\n下划线是什么鬼\\n打表A题：\\n\\n\\n\\nNOI\\nA\\nB\\nA + B\\n\\n\\n\\n\\n1\\n1\\n2\\n3\\n\\n\\n2\\n2\\n2\\n4\\n\\n\\n3\\n5\\n5\\n10\\n\\n\\n4\\n3\\n4\\n7\\n\\n\\n\\n\\n\\n\\n列1\\n列2\\n列3\\n\\n\\n\\n\\n233333333333333\\n23333333\\n233\\n\\n\\n\\n我的GitHub: https://github.com/eqvpkbz\\nGitHub\\n我的E-mail: 2581505024@qq.com\\n脚注1？  \\nGFM breaks!\\n应该不在一行!\\n应该不在一行!!\\n应该不在一行!!!!!\\ndeleted\\ninserted\\n–smartpants—\\n“a“‘b‘“c“‘d‘“e”“’\\nMathjax测试: $e^{ix} = \\\\cos x + i\\\\sin x$\\n这个应该不得出问题......\\n$$ \\\\sum_{i = 1}^{\\\\infty} i = - {1 \\\\over 12} \\\\tag{1.1} $$\\n$$ a^2 + b^2 = c^2 \\\\Rightarrow \\\\triangle ABC\\\\text{是直角三角形} \\\\tag{1.2} $$\\n$$\\n\\\\begin{aligned}\\nX_k & = \\\\sum^{n - 1}_{j = 0} x_ke^{-2\\\\pi ijk/n} \\\\\\\\\\n    & = \\\\sum^{n - 1}_{j = 0} x_kw_n^{-jk}\\n\\\\end{aligned}\\n$$\\n$$\\n\\\\begin{aligned}\\nx_k & = \\\\frac1n\\\\sum^{n - 1}_{j = 0} X_ke^{2\\\\pi ijk/n} \\\\\\\\\\n    & = \\\\frac1n\\\\sum^{n - 1}_{j = 0} X_kw_n^{jk}\\n\\\\end{aligned}\\n$$\\n$$ $$$$ $ $\\n$\\\\ $空格\\n$ \\\\; $中空格\\n行内公式inline-math在此$ 233 \\\\neq 244 $233333\\n特殊语法测试\\nFBI Warning\\n肯定有BUG\\n\\nMarkdown in it\\nSTRONG, inline-code.\\n\\n中文\\nNot Supported…\\n乱搞\\n233444\\n\\n233\\n\\nGoodbye!\\n\\n\\n\\n\\n真的行吗...... ↩\\n\\n\\n",
+    "url": "blog/2019-10-4/test.html"
+  },
+  "状压dp初探": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "换种方式来dp",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "dp"
+      ],
+      "template": "template",
+      "title": "状压dp初探",
+      "top": "0"
+    },
+    "text": "状压dp初探\\n简而言之其实不过是把$01$的状态变成一个十进制的数字来存储，$n$最大$63$左右吧，再大一点unsigned long long似乎就要存不下了\\n但是这样的话有人就要提问了:\\n$Q$: 我们单次查询不是要把这个十进制的数字拆成二进制的数字然后在看单个位上的数字，这样单个的复杂度就是$O(lg \\\\ n)$的了，我们的算法的复杂度不一定过的去啊\\n$A$: (不知道在计算机中有二进制的位运算么)我们没有必要这么干，我们可以用计算机自带的位运算来解决这样的问题\\n$Q$:所以我们怎样去位运算呢?\\n$A$:这个其实稍加思考就能够写出来，具体看题面，不过作者还是从网上搜集到了一些好东西",
+    "url": "blog/2019-10-20/bit-dp.html"
+  },
+  "矩阵快速幂重学": {
+    "meta": {
+      "create": "2019.10.27",
+      "description": "可用于求递推式",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.27",
+      "tags": [
+        "algorithm"
+      ],
+      "template": "template",
+      "title": "矩阵快速幂重学",
+      "top": "0"
+    },
+    "text": "矩阵快速幂重学\\n快速幂\\n利用二进制的方式来进行实现\\n$2^0= 2^0$\\n$2^1 = 2^1$\\n$2^2=2^2$\\n$2^3 = 2^2*2$\\n$2^4  =2^4$\\n$2^5 = 2^4*2$\\n$2^6 = 2 ^ 4 * 2 ^ 2$\\n$2^7 = 2^4*2^2*2$\\n所以我们可以看出来的是\\n二进制位上我们现在只有当某一位是１的时候才乘\\n举个例子\\n$$2^{15} =2^{(1111)_2} = 2^{(1000)_2}*2^{(100)_2}*2^{(10)_2}*2^{(1)_2}=2^8*2^4*2^2*2^1 $$\\n$$2^{10} = 2 ^ {(1010)_2} = 2 ^ {(1000)_2} * 2 ^ {(10)_2} = 2 ^ 8 * 2 ^ 2$$\\n所以原来$O(b)$复杂度一下降低到了$O(logb)$\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11inline int pow(int a,int b)\\n{\\n    int r=1,base=a;\\n    while(b)\\n    {\\n        if(b&1) r*=base;//如果当前位是1，那么直接相乘\\n        base*=base;//不管是什么数字下一位都需要再乘一次(2的倍数)\\n        b>>=1;//移到下一位\\n    }\\n    return r;//返回结果\\n}\\n\\n\\n\\n矩阵乘法\\n定义矩阵乘法的运算方式是:\\n$$c_{ij} = \\\\quad\\\\sum_{k=1}^na_{ik} *b_{kj} $$\\n举个例子\\n$$\\\\begin{pmatrix}a_1&a_2&a_3\\n\\\\\\\\b_1&b_2&b_3\\\\end{pmatrix} \\\\begin{pmatrix}c_1\\\\\\\\c_2\\\\\\\\c_3\\\\end{pmatrix} = \\\\begin{pmatrix}a_1c_1+a_2c_2+a_3c_3\\\\\\\\b_1c_1+b_2c_2+b_3c_3\\\\end{pmatrix}$$\\n$$\\\\therefore \\\\begin{pmatrix}1&2&3\\n\\\\\\\\4&5&6\\\\end{pmatrix} \\\\begin{pmatrix}7\\\\\\\\8\\\\\\\\9\\\\end{pmatrix} = \\\\begin{pmatrix}1 * 7 + 2 * 8 + 3 * 9\\\\\\\\4 * 7 + 5 * 8 + 6 * 9\\\\end{pmatrix}$$\\n$$\\\\therefore \\\\begin{pmatrix}1&2&3\\n\\\\\\\\4&5&6\\\\end{pmatrix} \\\\begin{pmatrix}7\\\\\\\\8\\\\\\\\9\\\\end{pmatrix} = \\\\begin{pmatrix}50\\\\\\\\122\\\\end{pmatrix}$$\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18int n;//矩阵大小\\n\\nvoid Up(int &x, int y) { x = (x + y) %  mod; }//简单定义 += \\n\\nstruct Matrix\\n{\\n    int a[n][n];//矩阵\\n    friend Matrix operator *(const Matrix x, const Matrix y)//定义矩阵类型的乘法\\n    {\\n        Matrix c;//定义新的矩阵用来存储结果\\n        memset(c.a, 0, sizeof(c.a));//初始化\\n        for(int i = 0; i < n;i ++)//进行枚举\\n            for(int j = 0; j < n;j ++)\\n                for(int k = 0; k < n;k ++)\\n                    Up(c.a[i][j], x.a[i][k] * y.a[k][j] %  mod);//相乘 \\n        return c;//返回答案矩阵\\n    }\\n};\\n\\n\\n\\n如何利用矩阵乘法计算\\n在计算递推式的时候，我们可以把递推式构建成矩阵乘法的样子\\n比如形如下列递推式的递推式:\\n$$f(n) = a * f(n - 1) + b * f(n - 2)$$\\n我们可以考虑构造成:\\n$$\\\\begin{pmatrix}a&b\\\\\\\\1&0\\\\end{pmatrix} \\\\begin{pmatrix}f(n - 1)\\\\\\\\f(n - 2)\\\\end{pmatrix} = \\\\begin{pmatrix}f(n)\\\\\\\\f(n - 1)\\\\end{pmatrix}$$\\n然后就有:\\n$$\\\\begin{pmatrix}a&b\\\\\\\\1&0\\\\end{pmatrix} \\\\begin{pmatrix}f(n - 1)\\\\\\\\f(n - 2)\\\\end{pmatrix} = \\\\begin{pmatrix}f(n)\\\\\\\\f(n - 1)\\\\end{pmatrix}$$\\n$$\\\\because\\\\begin{pmatrix}a&b\\\\\\\\1&0\\\\end{pmatrix} \\\\begin{pmatrix}f(n - 2)\\\\\\\\f(n - 3)\\\\end{pmatrix} = \\\\begin{pmatrix}f(n - 1)\\\\\\\\f(n - 2)\\\\end{pmatrix}$$\\n$$\\\\therefore \\\\begin{pmatrix}a&b\\\\\\\\1&0\\\\end{pmatrix}^2 \\\\begin{pmatrix}f(n - 2)\\\\\\\\f(n - 3)\\\\end{pmatrix} = \\\\begin{pmatrix}f(n)\\\\\\\\f(n - 1)\\\\end{pmatrix}$$\\n$$\\\\begin{pmatrix}a&b\\\\\\\\1&0\\\\end{pmatrix}^3 \\\\begin{pmatrix}f(n - 3)\\\\\\\\f(n - 4)\\\\end{pmatrix} = \\\\begin{pmatrix}f(n)\\\\\\\\f(n - 1)\\\\end{pmatrix}$$\\n$$\\\\begin{pmatrix}a&b\\\\\\\\1&0\\\\end{pmatrix}^{n-1} \\\\begin{pmatrix}f(1)\\\\\\\\f(0)\\\\end{pmatrix} = \\\\begin{pmatrix}f(n)\\\\\\\\f(n - 1)\\\\end{pmatrix}$$\\n然后构造起来的道理是这样，但是真正的矩阵是什么样子的还得自己知道怎么推然后再去做\\n假如给你一个形如$f(n) = a * f(n - 1) + b * f(n - 2） + c * f(n - 3)$你要是不会推还是会GG的\\n然后因为有的时候$dp$的递推式也可以用矩阵来加速，所以用处很大\\n矩阵乘法快速幂\\n前一部分的模板\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17\\n18\\n19\\n20\\n21\\n22\\n23\\n24\\n25\\n26\\n27\\n28void Up(int &x, int y) { x = (x + y) %  mod; }//简单定义+=\\n\\nstruct Matrix\\n{\\n    int a[n][n];\\n    friend Matrix operator *(const Matrix x, const Matrix y)//定义矩阵乘法\\n    {\\n        Matrix c;\\n        memset(c.a, 0, sizeof(c.a));\\n        for(int i = 0; i < n; i ++)\\n            for(int j = 0; j < n; j ++)\\n                for(int k = 0; k < n; k ++)\\n                    Up(c.a[i][j], x.a[i][k] * y.a[k][j] %  mod); \\n        return c;\\n    }\\n};\\n\\nMatrix Qpow(Matrix x, int timer)//矩阵快速幂\\n{\\n    Matrix base;//定义结果矩阵\\n    for(int i = 0; i < n; i ++)\\n        for(int j = 0; j < n; j ++)\\n            base.a[i][j] = 0;\\n    for(int i = 0; i < n; i ++) base.a[i][i] = 1;\\n    for(; timer; timer >>= 1, x = x * x)\\n        if(timer & 1) base = base * x;\\n    return base;\\n}\\n\\n\\n\\nPROB\\n\\nLuogu P1962 斐波那契数列\\n",
+    "url": "blog/2019-10-27/matrix_qpow.html"
+  },
+  "随机数初探": {
+    "meta": {
+      "create": "2019.10.20",
+      "description": "探究随机数的科学用法",
+      "index": true,
+      "location": ".",
+      "modified": "2019.10.20",
+      "tags": [
+        "random"
+      ],
+      "template": "template",
+      "title": "随机数初探",
+      "top": "0"
+    },
+    "text": "随机数初探\\n在各种各样的考试中，我们经常会碰见各种各样的情况，诸如:\\n\\nwori，我明明打的是正解啊!\\nwori，我过了大样例啊!\\n\\n等等情况，这种情况您可能需要对拍这种方式来解决问题，但是也有人说:\\n\\nwori，我明明拍过了1e5组数据啊!!!\\n\\n那八成就是随机数或者暴力打挂了\\n本文主要讲述随机数的科学使用\\nRandom\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13#include<cstdio>\\n#include<ctime>\\n#include<cstdlib>\\nusing namespace std;\\ntypedef long long ll;\\ninline ll Rand(ll lef,ll rig){return rand() %  (rig - lef + 1) + lef;}\\nint main()\\n{\\n    srand(time(0));\\n    ll lef = 21474836488, rig = 21474836490;\\n    printf(\\ % lld\\ ,Rand(lef,rig));\\n    return 0;\\n}\\n\\n\\n\\ndefault_random_engine\\n 1\\n 2\\n 3\\n 4\\n 5\\n 6\\n 7\\n 8\\n 9\\n10\\n11\\n12\\n13\\n14\\n15\\n16\\n17#include <random>\\n#include <ctime>\\nusing namespace std;\\ntypedef long long ll;\\n\\nll Rand(const ll lef, const ll rig)\\n{\\n    static std::default_random_engine e(time(NULL));\\n    static std::uniform_int_distribution<ll> u(lef, rig);\\n    return u(e);\\n}\\nint main()\\n{\\n    ll lef = 21474836488,rig = 21474836490;\\n    printf(\\ % lld \\ ,Rand(lef, rig));\\n    return 0;\\n}\\n\\n\\n\\nmt19937\\n1\\n2\\n3\\n4\\n5\\n6\\n7\\n8#include<random>\\n#include<ctime>\\nstd::mt19937 rnd(time(0));\\nint main()\\n{\\n    printf(\\ % lld\\\\n\\ ,rnd());\\n    return 0;\\n}\\n\\n",
+    "url": "blog/2019-10-20/random.html"
+  }
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>矩阵快速幂重学 - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >矩阵快速幂重学</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=_1 >矩阵快速幂重学</h1> <h3 id=_2 >快速幂</h3> <p>利用二进制的方式来进行实现</p> <p><tex>$2^0= 2^0$</tex></p> <p><tex>$2^1 = 2^1$</tex></p> <p><tex>$2^2=2^2$</tex></p> <p><tex>$2^3 = 2^2*2$</tex></p> <p><tex>$2^4 =2^4$</tex></p> <p><tex>$2^5 = 2^4*2$</tex></p> <p><tex>$2^6 = 2 ^ 4 * 2 ^ 2$</tex></p> <p><tex>$2^7 = 2^4*2^2*2$</tex></p> <p>所以我们可以看出来的是</p> <p>二进制位上我们现在只有当某一位是１的时候才乘</p> <p>举个例子</p> <p><tex>$$2^{15} =2^{(1111)_2} = 2^{(1000)_2}*2^{(100)_2}*2^{(10)_2}*2^{(1)_2}=2^8*2^4*2^2*2^1 $$</tex></p> <p><tex>$$2^{10} = 2 ^ {(1010)_2} = 2 ^ {(1000)_2} * 2 ^ {(10)_2} = 2 ^ 8 * 2 ^ 2$$</tex></p> <p>所以原来<tex>$O(b)$</tex>复杂度一下降低到了<tex>$O(logb)$</tex></p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=kr >inline</span> <span class=kt >int</span> <span class=nf >pow</span><span class=p >(</span><span class=kt >int</span> <span class=n >a</span><span class=p >,</span><span class=kt >int</span> <span class=n >b</span><span class=p >)</span>
+<span class=p >{</span>
+    <span class=kt >int</span> <span class=n >r</span><span class=o >=</span><span class=mi >1</span><span class=p >,</span><span class=n >base</span><span class=o >=</span><span class=n >a</span><span class=p >;</span>
+    <span class=k >while</span><span class=p >(</span><span class=n >b</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >b</span><span class=o >&amp;</span><span class=mi >1</span><span class=p >)</span> <span class=n >r</span><span class=o >*=</span><span class=n >base</span><span class=p >;</span><span class=c1 >//如果当前位是1，那么直接相乘</span>
+        <span class=n >base</span><span class=o >*=</span><span class=n >base</span><span class=p >;</span><span class=c1 >//不管是什么数字下一位都需要再乘一次(2的倍数)</span>
+        <span class=n >b</span><span class=o >&gt;&gt;=</span><span class=mi >1</span><span class=p >;</span><span class=c1 >//移到下一位</span>
+    <span class=p >}</span>
+    <span class=k >return</span> <span class=n >r</span><span class=p >;</span><span class=c1 >//返回结果</span>
+<span class=p >}</span>
+</pre></div> </table> <h3 id=_3 >矩阵乘法</h3> <p>定义矩阵乘法的运算方式是:</p> <p><tex>$$c_{ij} = \quad\sum_{k=1}^na_{ik} *b_{kj} $$</tex></p> <p>举个例子</p> <p><tex>$$\begin{pmatrix}a_1&amp;a_2&amp;a_3 \\b_1&amp;b_2&amp;b_3\end{pmatrix} \begin{pmatrix}c_1\\c_2\\c_3\end{pmatrix} = \begin{pmatrix}a_1c_1+a_2c_2+a_3c_3\\b_1c_1+b_2c_2+b_3c_3\end{pmatrix}$$</tex></p> <p><tex>$$\therefore \begin{pmatrix}1&amp;2&amp;3 \\4&amp;5&amp;6\end{pmatrix} \begin{pmatrix}7\\8\\9\end{pmatrix} = \begin{pmatrix}1 * 7 + 2 * 8 + 3 * 9\\4 * 7 + 5 * 8 + 6 * 9\end{pmatrix}$$</tex></p> <p><tex>$$\therefore \begin{pmatrix}1&amp;2&amp;3 \\4&amp;5&amp;6\end{pmatrix} \begin{pmatrix}7\\8\\9\end{pmatrix} = \begin{pmatrix}50\\122\end{pmatrix}$$</tex></p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=kt >int</span> <span class=n >n</span><span class=p >;</span><span class=c1 >//矩阵大小</span>
+
+<span class=kt >void</span> <span class=nf >Up</span><span class=p >(</span><span class=kt >int</span> <span class=o >&amp;</span><span class=n >x</span><span class=p >,</span> <span class=kt >int</span> <span class=n >y</span><span class=p >)</span> <span class=p >{</span> <span class=n >x</span> <span class=o >=</span> <span class=p >(</span><span class=n >x</span> <span class=o >+</span> <span class=n >y</span><span class=p >)</span> <span class=o >%</span> <span class=n >mod</span><span class=p >;</span> <span class=p >}</span><span class=c1 >//简单定义 += </span>
+
+<span class=k >struct</span> <span class=n >Matrix</span>
+<span class=p >{</span>
+    <span class=kt >int</span> <span class=n >a</span><span class=p >[</span><span class=n >n</span><span class=p >][</span><span class=n >n</span><span class=p >];</span><span class=c1 >//矩阵</span>
+    <span class=k >friend</span> <span class=n >Matrix</span> <span class=k >operator</span> <span class=o >*</span><span class=p >(</span><span class=k >const</span> <span class=n >Matrix</span> <span class=n >x</span><span class=p >,</span> <span class=k >const</span> <span class=n >Matrix</span> <span class=n >y</span><span class=p >)</span><span class=c1 >//定义矩阵类型的乘法</span>
+    <span class=p >{</span>
+        <span class=n >Matrix</span> <span class=n >c</span><span class=p >;</span><span class=c1 >//定义新的矩阵用来存储结果</span>
+        <span class=n >memset</span><span class=p >(</span><span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >,</span> <span class=mi >0</span><span class=p >,</span> <span class=k >sizeof</span><span class=p >(</span><span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >));</span><span class=c1 >//初始化</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >i</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span><span class=c1 >//进行枚举</span>
+            <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >j</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span><span class=n >j</span> <span class=o >++</span><span class=p >)</span>
+                <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >k</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >k</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span><span class=n >k</span> <span class=o >++</span><span class=p >)</span>
+                    <span class=n >Up</span><span class=p >(</span><span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >j</span><span class=p >],</span> <span class=n >x</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >k</span><span class=p >]</span> <span class=o >*</span> <span class=n >y</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >k</span><span class=p >][</span><span class=n >j</span><span class=p >]</span> <span class=o >%</span> <span class=n >mod</span><span class=p >);</span><span class=c1 >//相乘 </span>
+        <span class=k >return</span> <span class=n >c</span><span class=p >;</span><span class=c1 >//返回答案矩阵</span>
+    <span class=p >}</span>
+<span class=p >};</span>
+</pre></div> </table> <h3 id=_4 >如何利用矩阵乘法计算</h3> <p>在计算递推式的时候，我们可以把递推式构建成矩阵乘法的样子</p> <p>比如形如下列递推式的递推式:</p> <p><tex>$$f(n) = a * f(n - 1) + b * f(n - 2)$$</tex></p> <p>我们可以考虑构造成:</p> <p><tex>$$\begin{pmatrix}a&amp;b\\1&amp;0\end{pmatrix} \begin{pmatrix}f(n - 1)\\f(n - 2)\end{pmatrix} = \begin{pmatrix}f(n)\\f(n - 1)\end{pmatrix}$$</tex></p> <p>然后就有:</p> <p><tex>$$\begin{pmatrix}a&amp;b\\1&amp;0\end{pmatrix} \begin{pmatrix}f(n - 1)\\f(n - 2)\end{pmatrix} = \begin{pmatrix}f(n)\\f(n - 1)\end{pmatrix}$$</tex></p> <p><tex>$$\because\begin{pmatrix}a&amp;b\\1&amp;0\end{pmatrix} \begin{pmatrix}f(n - 2)\\f(n - 3)\end{pmatrix} = \begin{pmatrix}f(n - 1)\\f(n - 2)\end{pmatrix}$$</tex></p> <p><tex>$$\therefore \begin{pmatrix}a&amp;b\\1&amp;0\end{pmatrix}^2 \begin{pmatrix}f(n - 2)\\f(n - 3)\end{pmatrix} = \begin{pmatrix}f(n)\\f(n - 1)\end{pmatrix}$$</tex></p> <p><tex>$$\begin{pmatrix}a&amp;b\\1&amp;0\end{pmatrix}^3 \begin{pmatrix}f(n - 3)\\f(n - 4)\end{pmatrix} = \begin{pmatrix}f(n)\\f(n - 1)\end{pmatrix}$$</tex></p> <p><tex>$$\begin{pmatrix}a&amp;b\\1&amp;0\end{pmatrix}^{n-1} \begin{pmatrix}f(1)\\f(0)\end{pmatrix} = \begin{pmatrix}f(n)\\f(n - 1)\end{pmatrix}$$</tex></p> <p>然后构造起来的道理是这样，但是真正的矩阵是什么样子的还得自己知道怎么推然后再去做</p> <p>假如给你一个形如<tex>$f(n) = a * f(n - 1) + b * f(n - 2） + c * f(n - 3)$</tex>你要是不会推还是会<code>GG</code>的</p> <p>然后因为有的时候<tex>$dp$</tex>的递推式也可以用矩阵来加速，所以用处很大</p> <h3 id=_5 >矩阵乘法快速幂</h3> <p>前一部分的模板</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=kt >void</span> <span class=nf >Up</span><span class=p >(</span><span class=kt >int</span> <span class=o >&amp;</span><span class=n >x</span><span class=p >,</span> <span class=kt >int</span> <span class=n >y</span><span class=p >)</span> <span class=p >{</span> <span class=n >x</span> <span class=o >=</span> <span class=p >(</span><span class=n >x</span> <span class=o >+</span> <span class=n >y</span><span class=p >)</span> <span class=o >%</span> <span class=n >mod</span><span class=p >;</span> <span class=p >}</span><span class=c1 >//简单定义+=</span>
+
+<span class=k >struct</span> <span class=n >Matrix</span>
+<span class=p >{</span>
+    <span class=kt >int</span> <span class=n >a</span><span class=p >[</span><span class=n >n</span><span class=p >][</span><span class=n >n</span><span class=p >];</span>
+    <span class=k >friend</span> <span class=n >Matrix</span> <span class=k >operator</span> <span class=o >*</span><span class=p >(</span><span class=k >const</span> <span class=n >Matrix</span> <span class=n >x</span><span class=p >,</span> <span class=k >const</span> <span class=n >Matrix</span> <span class=n >y</span><span class=p >)</span><span class=c1 >//定义矩阵乘法</span>
+    <span class=p >{</span>
+        <span class=n >Matrix</span> <span class=n >c</span><span class=p >;</span>
+        <span class=n >memset</span><span class=p >(</span><span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >,</span> <span class=mi >0</span><span class=p >,</span> <span class=k >sizeof</span><span class=p >(</span><span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >));</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >i</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span> <span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+            <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >j</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span> <span class=n >j</span> <span class=o >++</span><span class=p >)</span>
+                <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >k</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >k</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span> <span class=n >k</span> <span class=o >++</span><span class=p >)</span>
+                    <span class=n >Up</span><span class=p >(</span><span class=n >c</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >j</span><span class=p >],</span> <span class=n >x</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >k</span><span class=p >]</span> <span class=o >*</span> <span class=n >y</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >k</span><span class=p >][</span><span class=n >j</span><span class=p >]</span> <span class=o >%</span> <span class=n >mod</span><span class=p >);</span> 
+        <span class=k >return</span> <span class=n >c</span><span class=p >;</span>
+    <span class=p >}</span>
+<span class=p >};</span>
+
+<span class=n >Matrix</span> <span class=nf >Qpow</span><span class=p >(</span><span class=n >Matrix</span> <span class=n >x</span><span class=p >,</span> <span class=kt >int</span> <span class=n >timer</span><span class=p >)</span><span class=c1 >//矩阵快速幂</span>
+<span class=p >{</span>
+    <span class=n >Matrix</span> <span class=n >base</span><span class=p >;</span><span class=c1 >//定义结果矩阵</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >i</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span> <span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >j</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span> <span class=n >j</span> <span class=o >++</span><span class=p >)</span>
+            <span class=n >base</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >j</span><span class=p >]</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span> <span class=n >i</span> <span class=o >&lt;</span> <span class=n >n</span><span class=p >;</span> <span class=n >i</span> <span class=o >++</span><span class=p >)</span> <span class=n >base</span><span class=p >.</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >][</span><span class=n >i</span><span class=p >]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span>
+    <span class=k >for</span><span class=p >(;</span> <span class=n >timer</span><span class=p >;</span> <span class=n >timer</span> <span class=o >&gt;&gt;=</span> <span class=mi >1</span><span class=p >,</span> <span class=n >x</span> <span class=o >=</span> <span class=n >x</span> <span class=o >*</span> <span class=n >x</span><span class=p >)</span>
+        <span class=k >if</span><span class=p >(</span><span class=n >timer</span> <span class=o >&amp;</span> <span class=mi >1</span><span class=p >)</span> <span class=n >base</span> <span class=o >=</span> <span class=n >base</span> <span class=o >*</span> <span class=n >x</span><span class=p >;</span>
+    <span class=k >return</span> <span class=n >base</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h3 id=prob >PROB</h3> <ul> <li><a href="https://www.luogu.org/problemnew/show/P1962">Luogu P1962 斐波那契数列</a> </ul> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: 'c272b1c1b2d6298671e3abfcfae70486', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=algorithm"><span class=label >algorithm</span></a><br/> 创建时间: 2019.10.27<br/> 上次修改: 2019.10.27<br/> 字数统计: 3942 字 / 约 15 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#_1">矩阵快速幂重学</a><ul> <li><a href="#_2">快速幂</a> <li><a href="#_3">矩阵乘法</a> <li><a href="#_4">如何利用矩阵乘法计算</a> <li><a href="#_5">矩阵乘法快速幂</a> <li><a href="#prob">PROB</a> </ul> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2019-10-27/matrix_qpow.md" id=nano-link >matrix_qpow.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

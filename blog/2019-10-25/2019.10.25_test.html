@@ -1,0 +1,159 @@
+<!DOCTYPE html> <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <title>2019-10-25测试总结 - Eqvpkbz's site</title> <link rel="shortcut icon" href="/favicon.png" type="image/png"> <link rel=stylesheet  href="/styles/material-icons.css"> <link rel=stylesheet  href="/styles/material.min.css" > <link rel=stylesheet  href="/styles/gitment.css"> <link rel=stylesheet  href="/math-renderer/katex/katex.min.css"> <link rel=stylesheet  href="/styles/site.css"> <script src="/scripts/jquery.min.js"></script> <script src="/scripts/js-cookie.js"></script> <script src="/scripts/quicklink.umd.js"></script> <script defer src="/scripts/material.min.js"></script> <script src="/scripts/site.js"></script> <script src="/scripts/gitment.js"></script> <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"> <header class=mdl-layout__header > <div class=mdl-layout__header-row > <span class=mdl-layout-title >2019-10-25测试总结</span> <div class=mdl-layout-spacer ></div> <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right"> <label class="mdl-button mdl-js-button mdl-button--icon" for=fixed-header-drawer-exp ><i class=material-icons >search</i></label> <div class=mdl-textfield__expandable-holder > <form action="/search.html"><input type=text  class=mdl-textfield__input  placeholder="Search Here" name=q  id=fixed-header-drawer-exp  autocomplete=off  required></form> </div> </div> </div> </header> <div class=mdl-layout__drawer > <span class="mdl-layout-title drawer-title"> <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> Eqvpkbz's Site</a> </span> <nav class=mdl-navigation > <a class=mdl-navigation__link  href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a> <a class=mdl-navigation__link  href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a> <a class=mdl-navigation__link  href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a> <a class=mdl-navigation__link  href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a> <a class=mdl-navigation__link  href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a> <a class=mdl-navigation__link  href="https://github.com/eqvpkbz/eqvpkbz.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a> </nav> </div> <main class=mdl-layout__content > <div class=mdl-grid > <div class="mdl-cell main-cell"> <div class="article main-article" lang=en-US > <h1 id=2019-10-25 >2019-10-25测试总结</h1> <h3 id=chess ><tex>$chess$</tex></h3> <blockquote> <p><tex>$Dove$</tex> 喜爱下跳棋,在传统的跳棋基础之上,<tex>$Dove$</tex> 又延伸出了许多别的玩法。<tex>$Dove$</tex>以一个一维数轴为棋盘下跳棋,总共会移动棋子<tex>$n − 1$</tex>次。因为讨厌没有规律,所以<tex>$Dove$</tex>每次只会恰好把棋子向右移动<tex>$k$</tex>个格子。<tex>$Cicada$</tex>送给了<tex>$Dove$</tex>一个长度为 <tex>$n$</tex> 的数列 <tex>$\{ a \}$</tex>,为了表示感谢,<tex>$Dove$</tex> 打算以 <tex>$Cicada$</tex> 送给他的序列 <tex>$\{ a \}$</tex> 为基础下跳棋。具体的,<tex>$Dove$</tex> 将会把棋子从编号为 <tex>$a_1$</tex> 的格子出发,在第 <tex>$i$</tex>次移动后,把棋子移动到编号为 <tex>$a_{i+1}$</tex> 的格子。显然 <tex>$Cicada$</tex> 送给他的 <tex>$\{ a \}$</tex> 有可能不满足<tex>$Dove$</tex> 要求的条件,<tex>$Dove$</tex> 想知道,最少需要修改多少个 <tex>$a_i$</tex> 的值,才能使得这个数列 <tex>$\{ a \}$</tex> 是满足 <tex>$Dove$</tex> 需要的移动棋子的要求的</p> </blockquote> <p>首先因为序列<tex>$\{ a \}$</tex>是从<tex>$a_1$</tex>开始的一个公差为<tex>$k$</tex>的等差数列，所以令每个数字<tex>$a_i$</tex>为<tex>$a_i = k(i - 1) + b$</tex>，然后就可以得到<tex>$b = a_i - k(i - 1)$</tex>，然后把<tex>$a_1$</tex>作为出现次数最多的<tex>$b$</tex>值来开始构造等差数列即可做到</p> <p>然后考场上的时候没有开<code>long long</code>，<code>20</code>分没了</p> <p>然后用的是数组下标而不是<code>map</code>，又因为<tex>$b$</tex>可以是负数，所以全部运行时错误了</p> <p>要是这是<code>CSP-S</code>的考场上犯的错误，可能就再也没有能力走下去了吧</p> <p>正确代码:</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;map&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;algorithm&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=cp >#define file(SSS) freopen(SSS&quot;.in&quot;,&quot;r&quot;,stdin),freopen(SSS&quot;.out&quot;,&quot;w&quot;,stdout)</span>
+<span class=cp >#define file_close fclose(stdin),fclose(stdout)</span>
+<span class=cp >#define MAXN 1000005</span>
+<span class=cp >#define int long long</span>
+<span class=n >map</span><span class=o >&lt;</span><span class=kt >int</span><span class=p >,</span><span class=kt >int</span><span class=o >&gt;</span> <span class=n >vis</span><span class=p >;</span>
+<span class=kt >int</span> <span class=n >n</span><span class=p >,</span><span class=n >k</span><span class=p >,</span><span class=n >a</span><span class=p >[</span><span class=n >MAXN</span><span class=p >],</span><span class=n >b</span><span class=p >[</span><span class=n >MAXN</span><span class=p >],</span><span class=n >cnt</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+<span class=kt >signed</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >file</span><span class=p >(</span><span class=s >&quot;chess&quot;</span><span class=p >);</span>
+    <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%lld%lld&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >n</span><span class=p >,</span><span class=o >&amp;</span><span class=n >k</span><span class=p >);</span>
+    <span class=kt >int</span> <span class=n >MAX</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%lld&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >]),</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >]</span> <span class=o >-=</span> <span class=n >k</span> <span class=o >*</span> <span class=p >(</span><span class=n >i</span> <span class=o >-</span> <span class=mi >1</span><span class=p >);</span>
+        <span class=n >vis</span><span class=p >[</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >]]</span> <span class=o >++</span><span class=p >;</span>
+        <span class=n >MAX</span> <span class=o >=</span> <span class=n >max</span><span class=p >(</span><span class=n >MAX</span><span class=p >,</span><span class=n >vis</span><span class=p >[</span><span class=n >a</span><span class=p >[</span><span class=n >i</span><span class=p >]]);</span>
+    <span class=p >}</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%lld&quot;</span><span class=p >,</span><span class=n >n</span> <span class=o >-</span> <span class=n >MAX</span><span class=p >);</span>
+    <span class=n >file_close</span><span class=p >;</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <h3 id=substring ><tex>$substring$</tex></h3> <blockquote> <p>作为一个熟练的算法竞赛选手,<tex>$Cicada$</tex>喜爱研究字符串问题。特别的,他尤其喜爱研究字符串中的子串问题。某日,<tex>$Cicada$</tex>在研究这样一道题目。首先对于一个字符串<tex>$S$</tex>,我们定义其第<tex>$l$</tex>个字符到第<tex>$r$</tex>个字符构成的子串为<tex>$S_{l,r}$</tex> 。同时我们定义函数<tex>$f(S, l, r)$</tex>表示将字符串 <tex>$S$</tex> 的第 <tex>$l$</tex> 到第 <tex>$r$</tex>个字符删去后构成的字符串,<tex>$g(S, m, t)$</tex>表示将 <tex>$t$</tex> 插入 <tex>$s$</tex> 的第 <tex>$m$</tex> 个字符之后构成的字符串。<tex>$Cicada$</tex> 想知道,对于一个给定的长度为 <tex>$n$</tex> 的字符串 <tex>$s$</tex>,有多少个三元组 <tex>$(l, r, m)$</tex>,满足<tex>$S = g(f(S, l, r), m, S_{l,r} )$</tex></p> </blockquote> <p>考场上想的是<tex>$KMP$</tex>的部分操作</p> <p>然后不知道为什么脑子抽了，计算全部重复的结果的时候用的<tex>$O(n)$</tex>的算法</p> <p>但是可以是<tex>$O(1)$</tex>的平方和式子的</p> <p>于是就只有第<tex>$14,15$</tex>两个测试点的分</p> <p>最后不知道怎么去重，所以不会</p> <p>对于子串<tex>$(l, r)$</tex>,我们找出他的最短完整循环节<tex>$t$</tex>,即<tex>$S_{l,r} = t^m$</tex> ,即<tex>$S_{l,r}$</tex>可以表示为<tex>$m$</tex>个<tex>$t$</tex>前后拼接。</p> <p>那么所有可以选取的<tex>$r_1$</tex>就是循环节的分界点。我们只需要对于每个子串确定他的循环<br /> 节即可。</p> <p>这个问题是经典问题,可以选择哈希或者<tex>$KMP$</tex>来解决。<br /> 时间复杂度 <tex>$O(n^2)$</tex>,期望得分<code>100pts</code></p> <h3 id=permutation ><tex>$permutation$</tex></h3> <blockquote> <p>作为一个熟练的算法竞赛选手,<tex>$Dove$</tex> 尤其喜爱研究排列问题。特别的,他尤其喜爱研究排列的标号问题。我们定义一个长度为 <tex>$n$</tex> 的排列 <tex>$\{ a \}$</tex> 的标号为把所有长度为 <tex>$n$</tex> 的排列按字典序递增排序后这个排列的下标。一天,<tex>$Cicada$</tex> 送给了 <tex>$Dove$</tex> 一个长度为 <tex>$n$</tex> 的排列,但是这个排列有一些位置的具体数字丢失了。特别的,对于第 <tex>$i$</tex> 个位置,我们用 <tex>$a_i = 0$</tex> 来表示这个位置的数值受到了丢失,否则表示这个位置的数值没有丢失。如果一个排列满足抹去若干数值后(即把一些位置的值置为 <tex>$0$</tex>)和给定的排列相同,那么我们称这个排列是合法的。<tex>$Dove$</tex> 非常好奇,所有合法的排列的标号和是多少,因为还要学高考,所以 <tex>$Dove$</tex> 只关心答案对 <tex>$10^9 + 7$</tex> 取模的结果</p> </blockquote> <p>不会正解，直接康托展开</p> <table class=codehilitetable ><tr><td class=linenos ><div class=linenodiv ><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre></div><td class=code ><div class=codehilite ><pre><span></span><span class=cp >#include</span><span class=cpf >&lt;cstdio&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;algorithm&gt;</span><span class=cp ></span>
+<span class=cp >#include</span><span class=cpf >&lt;cstring&gt;</span><span class=cp ></span>
+<span class=k >using</span> <span class=k >namespace</span> <span class=n >std</span><span class=p >;</span>
+<span class=cp >#define file(SSS) freopen(SSS&quot;.in&quot;,&quot;r&quot;,stdin),freopen(SSS&quot;.out&quot;,&quot;w&quot;,stdout)</span>
+<span class=cp >#define file_close fclose(stdin),fclose(stdout)</span>
+<span class=cp >#define MAXN 300005</span>
+<span class=cp >#define ull unsigned long long</span>
+<span class=cp >#define Mod 1000000007</span>
+<span class=kt >int</span> <span class=n >n</span><span class=p >,</span><span class=n >a</span><span class=p >[</span><span class=n >MAXN</span><span class=p >],</span><span class=n >b</span><span class=p >[</span><span class=n >MAXN</span><span class=p >],</span> <span class=n >c</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=n >ull</span> <span class=n >ANS</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+<span class=kt >int</span> <span class=n >cnt</span> <span class=o >=</span> <span class=mi >0</span><span class=p >,</span><span class=n >q</span><span class=p >[</span><span class=n >MAXN</span><span class=p >],</span><span class=n >pos</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=kt >bool</span> <span class=n >vis</span><span class=p >[</span><span class=n >MAXN</span><span class=p >];</span>
+<span class=kr >inline</span> <span class=kt >int</span> <span class=nf >calc</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=kt >int</span> <span class=n >fac</span> <span class=o >=</span> <span class=mi >1</span><span class=p >,</span><span class=n >ans</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=kt >int</span> <span class=n >s</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=n >b</span><span class=p >[</span><span class=n >n</span> <span class=o >-</span> <span class=n >i</span> <span class=o >+</span> <span class=mi >1</span><span class=p >];</span><span class=n >j</span> <span class=o >&gt;</span> <span class=mi >0</span><span class=p >;</span><span class=n >j</span> <span class=o >-=</span> <span class=n >j</span> <span class=o >&amp;</span> <span class=o >-</span><span class=n >j</span> <span class=p >)</span> 
+            <span class=n >s</span> <span class=o >+=</span> <span class=n >c</span><span class=p >[</span><span class=n >j</span><span class=p >];</span>
+        <span class=n >ans</span> <span class=o >=</span> <span class=p >(</span> <span class=n >ans</span> <span class=o >+</span> <span class=mi >1ll</span> <span class=o >*</span> <span class=n >fac</span> <span class=o >*</span> <span class=n >s</span> <span class=p >)</span> <span class=o >%</span> <span class=n >Mod</span><span class=p >,</span> <span class=n >fac</span> <span class=o >=</span> <span class=mi >1ll</span> <span class=o >*</span> <span class=n >fac</span> <span class=o >*</span> <span class=n >i</span> <span class=o >%</span> <span class=n >Mod</span><span class=p >;</span>
+        <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >j</span> <span class=o >=</span> <span class=n >b</span><span class=p >[</span><span class=n >n</span> <span class=o >-</span> <span class=n >i</span> <span class=o >+</span> <span class=mi >1</span><span class=p >];</span><span class=n >j</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >j</span> <span class=o >+=</span> <span class=n >j</span> <span class=o >&amp;</span> <span class=o >-</span><span class=n >j</span> <span class=p >)</span> <span class=o >++</span> <span class=n >c</span><span class=p >[</span><span class=n >j</span><span class=p >];</span>
+    <span class=p >}</span> 
+    <span class=n >memset</span><span class=p >(</span><span class=n >c</span><span class=p >,</span><span class=mi >0</span><span class=p >,</span><span class=k >sizeof</span><span class=p >(</span><span class=n >c</span><span class=p >));</span>
+    <span class=k >return</span> <span class=n >ans</span><span class=p >;</span>
+<span class=p >}</span>
+<span class=kt >void</span> <span class=nf >dfs</span><span class=p >(</span><span class=kt >int</span> <span class=n >now</span><span class=p >)</span>
+<span class=p >{</span>
+    <span class=k >if</span><span class=p >(</span><span class=n >now</span> <span class=o >==</span> <span class=n >cnt</span><span class=p >){</span><span class=n >ANS</span> <span class=o >+=</span> <span class=n >calc</span><span class=p >();</span><span class=k >return</span> <span class=p >;}</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;</span> <span class=n >cnt</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+        <span class=k >if</span><span class=p >(</span><span class=o >!</span><span class=n >vis</span><span class=p >[</span><span class=n >q</span><span class=p >[</span><span class=n >i</span><span class=p >]])</span>
+        <span class=p >{</span>
+            <span class=n >b</span><span class=p >[</span><span class=n >pos</span><span class=p >[</span><span class=n >now</span><span class=p >]]</span> <span class=o >=</span> <span class=n >q</span><span class=p >[</span><span class=n >i</span><span class=p >],</span><span class=n >vis</span><span class=p >[</span><span class=n >q</span><span class=p >[</span><span class=n >i</span><span class=p >]]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span>
+            <span class=n >dfs</span><span class=p >(</span><span class=n >now</span> <span class=o >+</span> <span class=mi >1</span><span class=p >);</span>
+            <span class=n >vis</span><span class=p >[</span><span class=n >q</span><span class=p >[</span><span class=n >i</span><span class=p >]]</span> <span class=o >=</span> <span class=mi >0</span><span class=p >,</span><span class=n >b</span><span class=p >[</span><span class=n >pos</span><span class=p >[</span><span class=n >now</span><span class=p >]]</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+        <span class=p >}</span>
+    <span class=k >return</span> <span class=p >;</span>
+<span class=p >}</span>
+<span class=kt >int</span> <span class=nf >main</span><span class=p >()</span>
+<span class=p >{</span>
+    <span class=n >file</span><span class=p >(</span><span class=s >&quot;permutation&quot;</span><span class=p >);</span>
+    <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >n</span><span class=p >);</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span>
+    <span class=p >{</span>
+        <span class=n >scanf</span><span class=p >(</span><span class=s >&quot;%d&quot;</span><span class=p >,</span><span class=o >&amp;</span><span class=n >b</span><span class=p >[</span><span class=n >i</span><span class=p >]),</span><span class=n >vis</span><span class=p >[</span><span class=n >b</span><span class=p >[</span><span class=n >i</span><span class=p >]]</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span>
+        <span class=k >if</span><span class=p >(</span><span class=o >!</span><span class=n >b</span><span class=p >[</span><span class=n >i</span><span class=p >])</span> <span class=n >pos</span><span class=p >[</span><span class=n >cnt</span> <span class=o >++</span><span class=p >]</span> <span class=o >=</span> <span class=n >i</span><span class=p >;</span>
+    <span class=p >}</span>
+    <span class=n >cnt</span> <span class=o >=</span> <span class=mi >0</span><span class=p >;</span>
+    <span class=k >for</span><span class=p >(</span><span class=kt >int</span> <span class=n >i</span> <span class=o >=</span> <span class=mi >1</span><span class=p >;</span><span class=n >i</span> <span class=o >&lt;=</span> <span class=n >n</span><span class=p >;</span><span class=n >i</span> <span class=o >++</span><span class=p >)</span> <span class=k >if</span><span class=p >(</span><span class=o >!</span><span class=n >vis</span><span class=p >[</span><span class=n >i</span><span class=p >])</span> <span class=n >q</span><span class=p >[</span><span class=n >cnt</span> <span class=o >++</span><span class=p >]</span> <span class=o >=</span> <span class=n >i</span><span class=p >;</span>
+    <span class=n >dfs</span><span class=p >(</span><span class=mi >0</span><span class=p >);</span>
+    <span class=n >printf</span><span class=p >(</span><span class=s >&quot;%llu&quot;</span><span class=p >,</span><span class=n >ANS</span><span class=p >);</span>
+    <span class=n >file_close</span><span class=p >;</span>
+    <span class=k >return</span> <span class=mi >0</span><span class=p >;</span>
+<span class=p >}</span>
+</pre></div> </table> <p>然后此题的本质是:</p> <p>求<br /> <tex>$$\sum\limits_{s \in S}\sum\limits_{i = 0}^{n - 1}(s_i - \sum\limits_{j = 0}^{i - 1}[s_j &lt; s_i]) * (n - i - 1)!$$</tex></p> <p>枚举 <tex>$i$</tex>,利用 <tex>$BIT$</tex> 来维护 <tex>$j$</tex> 即可。</p> <p>时间复杂度 <tex>$O(n log n)$</tex>,期望得分<code>100pts</code></p> <hr/> <div id=comments ></div> <script> window.addEventListener('load', () => { quicklink(); }); const gitment = new Gitment({id: 'f2bf1c10bc20ad33921ff2ae2d769810', owner: 'eqvpkbz', repo: 'eqvpkbz.github.io', oauth: { client_id: 'f3fcfa20487ff3c17b18', client_secret: '6417358b1238dde3f33dd28c2bb10693b7604ce2' }, perPage: 10, }); gitment.render('comments'); </script> </div> </div> <div class="mdl-cell sidebar"> <div class=article > <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">页面信息</div> <div class=mdl-card__supporting-text > 标签: <a href="/search.html?q=TEST"><span class=label >TEST</span></a><br/> 创建时间: 2019.10.25<br/> 上次修改: 2019.10.25<br/> 字数统计: 4241 字 / 约 16 分钟 </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">目录</div> <div class=mdl-card__supporting-text > <div class=toc > <ul> <li><a href="#2019-10-25">2019-10-25测试总结</a><ul> <li><a href="#chess">$chess$</a> <li><a href="#substring">$substring$</a> <li><a href="#permutation">$permutation$</a> </ul> </ul> <ul><li><a href="#comments">评论区</a></ul></div> </div> </div> <br/> <div class="mdl-card mdl-shadow--2dp sidebar-card"> <div class="mdl-card__actions sidebar-title">数学公式渲染</div> <div class=mdl-card__supporting-text > <form name=mathopt > <label class="mdl-radio mdl-js-radio" for=option-1 > <input type=radio  id=option-1  class=mdl-radio__button  name=sel  value=mathjax > <span class=mdl-radio__label >MathJax</span> </label><br/> <label class="mdl-radio mdl-js-radio" for=option-2 > <input type=radio  id=option-2  class=mdl-radio__button  name=sel  value=katex > <span class=mdl-radio__label >KaTeX</span> </label> <div id=tip-1 > <label class="mdl-radio mdl-js-radio" for=option-3 > <input type=radio  id=option-3  class=mdl-radio__button  name=sel  value="katex&mathjax"> <span class=mdl-radio__label >Mixed</span> </label> </div> </form> <div id=tip-2 > <label class="mdl-checkbox mdl-js-checkbox" for=mathopt-align > <input type=checkbox  id=mathopt-align  class=mdl-checkbox__input > <span class=mdl-checkbox__label >居中显示</span> </label> </div> </div> </div> <div class=mdl-tooltip  data-mdl-for=tip-1 >先使用 KaTeX 渲染，再使用 MathJax 渲染</div> <div class=mdl-tooltip  data-mdl-for=tip-2 >该选项目前仅支持 KaTeX 渲染的公式<br/>点击公式可以切换单个公式的对齐方式</div> <br/> <div class="nano mdl-card mdl-shadow--2dp sidebar-card"> <div class=mdl-card__actions > <div class=nano-shell ><span class=shell-start >$</span> nano <a href="https://github.com/eqvpkbz/eqvpkbz.github.io/blob/master/blog/2019-10-25/2019.10.25_test.md" id=nano-link >2019.10.25_test.md</a></div> </div> </div> <div class=mdl-tooltip  data-mdl-for=nano-link >查看原始 Markdown 文档</div> </div> </div> </div> <footer class=mdl-mega-footer > <div class=mdl-mega-footer__middle-section > <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >EQVPKBZ.GITHUB.IO</h2><del>一个不太正经的博客</del> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >POWERED BY</h2> <ul class=mdl-mega-footer__link-list > <li><a href="http://pythonhosted.org/Markdown/">Python Markdown</a> <li><a href="http://getmdl.io/">Material Design Lite</a> <li><a href="http://www.tipue.com/search/">Tipuesearch</a> <li><a href="http://www.mathjax.org/">MathJax</a> & <a href="http://khan.github.io/KaTeX/">KaTeX</a> <li><a href="https://github.com/imsun/gitment">Gitment</a> </ul> </div> <div class=mdl-mega-footer__drop-down-section > <input class=mdl-mega-footer__heading-checkbox  type=checkbox  checked> <h2 class=mdl-mega-footer__heading >有用的网站</h2> <ul class=mdl-mega-footer__link-list > <li><a href="https://www.luogu.org/">Luogu</a> <li><a href="https://shields.io/">shields.io</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/diffing_tool/">diffing_tool</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> <li><a href="https://csacademy.com/app/graph_editor/">graph_editor</a> </ul> </div> </div> <div class=mdl-mega-footer__bottom-section >Theme based on <a href="https://getmdl.io/">MDL</a> | <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class=cc  src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0 </div> </footer> </main> </div>

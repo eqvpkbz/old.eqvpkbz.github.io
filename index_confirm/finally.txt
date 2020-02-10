@@ -1,0 +1,1 @@
+<a href="posts.html"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="width: 100%">查看全部</button></a>

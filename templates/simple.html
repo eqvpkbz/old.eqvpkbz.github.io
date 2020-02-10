@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title} - riteme.site</title>
+  <link rel="shortcut icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/styles/material-icons.css">
+  <link rel="stylesheet" href="/styles/material.min.css" >
+  <link rel="stylesheet" href="/math-renderer/katex/katex.min.css">
+  <link rel="stylesheet" href="/styles/site.css">
+  <script src="/scripts/jquery.min.js"></script>
+  <script src="/scripts/js-cookie.js"></script>
+  <script src="/scripts/quicklink.umd.js"></script>
+  <script defer src="/scripts/material.min.js"></script>
+  <script src="/scripts/site.js"></script>
+</head>
+<body>
+  <div class="mdl-layout mdl-js-layout">
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title drawer-title">
+        <a href="/index.html" style="color: inherit; font-weight: inherit;text-decoration: none;"><img src="/favicon.png" width=32 height=32> riteme.site</a>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="/index.html"><i class="material-icons drawer-icon">home</i> 首页</a>
+        <a class="mdl-navigation__link" href="/posts.html"><i class="material-icons drawer-icon">library_books</i> 所有文章</a>
+        <a class="mdl-navigation__link" href="/about.html"><i class="material-icons drawer-icon">info</i> 关于</a>
+        <a class="mdl-navigation__link" href="/links.html"><i class="material-icons drawer-icon">link</i> 友链</a>
+        <a class="mdl-navigation__link" href="/search.html"><i class="material-icons drawer-icon">search</i> 搜索</a>
+        <a class="mdl-navigation__link" href="https://github.com/riteme/riteme.github.io"><i class="material-icons drawer-icon">class</i> GitHub 项目</a>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+          <div class="article main-article main-article-simple" lang="en-US">{content}</div>
+        </div>
+      </div>
+      <footer class="mdl-mega-footer">
+        <div class="mdl-mega-footer__bottom-section">Theme based on <a href="https://getmdl.io/">MDL</a> |
+          <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" class="cc" src="/assets/cc-by-nc-sa-4.png" /></a> CC BY-NC-SA 4.0
+        </div>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

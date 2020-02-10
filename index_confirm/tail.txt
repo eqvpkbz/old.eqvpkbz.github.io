@@ -1,0 +1,11 @@
+tags: Home
+template: template
+---
+
+### 欢迎来到 Eqvpkbz's Site!
+
+博客里多关于OI,各位随意翻阅
+
+水平不高，文章有错误烦请各位及时提出
+
+### 最近更新

@@ -1,0 +1,22 @@
+#mobilewrap
+  #container
+    div.score
+      p 
+        span.title Score
+        span.scorefield 0
+    div.newgame
+      div.button
+        span New Game
+    div.grid
+      - for (var y = 0; y < 4; y++)
+        div.row
+          - for (var x = 0; x < 4; x++)
+            div.base
+    div.tiles
+    div.over
+      span Game Over
+    div.won
+      span.winner You win!
+      span.bestscore BEST SCORE: 
+      span.numbest 
+  <a href="https://twitter.com/simoberny" target='_blank'><i class="fa fa-twitter" aria-hidden="true"></i></a>
